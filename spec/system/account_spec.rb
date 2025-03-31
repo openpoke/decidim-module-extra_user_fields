@@ -92,7 +92,7 @@ describe "Account" do
           fill_in :user_personal_url, with: "https://example.org"
           fill_in :user_about, with: "A Serbian-American inventor, electrical engineer, mechanical engineer, physicist, and futurist."
 
-          fill_in :user_date_of_birth, with: "01/01/2000"
+          fill_in :user_date_of_birth_date, with: "01/01/2000"
           select "Other", from: :user_gender
           select "Argentina", from: :user_country
           fill_in :user_postal_code, with: "00000"
@@ -222,7 +222,7 @@ describe "Account" do
           fill_in :user_personal_url, with: "https://example.org"
           fill_in :user_about, with: "A Serbian-American inventor, electrical engineer, mechanical engineer, physicist, and futurist."
 
-          fill_in :user_date_of_birth, with: "01/01/2000"
+          fill_in :user_date_of_birth_date, with: "01/01/2000"
           select "Other", from: :user_gender
           select "Argentina", from: :user_country
           fill_in :user_postal_code, with: "00000"
@@ -282,7 +282,7 @@ describe "Account" do
           fill_in :user_personal_url, with: "https://example.org"
           fill_in :user_about, with: "A Serbian-American inventor, electrical engineer, mechanical engineer, physicist, and futurist."
 
-          fill_in :user_date_of_birth, with: "01/01/2000"
+          fill_in :user_date_of_birth_date, with: "01/01/2000"
           select "Other", from: :user_gender
           select "Argentina", from: :user_country
           fill_in :user_postal_code, with: "00000"
