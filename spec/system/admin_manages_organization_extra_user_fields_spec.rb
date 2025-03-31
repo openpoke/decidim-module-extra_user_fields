@@ -2,7 +2,7 @@
 
 require "spec_helper"
 
-describe "Admin manages organization extra user fields" do
+describe "Admin manages organization extra user fields" do # rubocop:disable RSpec/DescribeClass
   let(:organization) { create(:organization) }
   let(:user) { create(:user, :admin, :confirmed, organization:) }
 

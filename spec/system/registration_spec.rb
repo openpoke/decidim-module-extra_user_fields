@@ -22,7 +22,7 @@ def fill_extra_user_fields
   # EndBlock
 end
 
-describe "Extra user fields" do
+describe "Extra user fields" do # rubocop:disable RSpec/DescribeClass
   shared_examples_for "mandatory extra user fields" do |field|
     it "displays #{field} as mandatory" do
       within "label[for='registration_user_#{field}']" do
