@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-DECIDIM_VERSION = { github: "decidim/decidim", branch: "release/0.29-stable" }.freeze
+DECIDIM_VERSION = "~> 0.29.2"
 
 source "https://rubygems.org"
 
@@ -10,7 +10,6 @@ gem "decidim", DECIDIM_VERSION
 gem "decidim-extra_user_fields", path: "."
 
 gem "bootsnap", "~> 1.7"
-gem "country_select", "~> 4.0"
 gem "puma", ">= 6.3.1"
 
 group :development, :test do
