@@ -10,7 +10,8 @@ module Decidim
 
         template = ""
         template += (label_text + required_for_attribute(name)) if options.fetch(:label, true)
-        template += country_select(name)
+        template += @template.country_select(@object_name, name)
+
         template.html_safe
       end
     end

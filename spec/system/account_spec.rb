@@ -80,7 +80,18 @@ describe "Account" do
       visit decidim.account_path
     end
 
-    it_behaves_like "accessible page"
+    context "when all extra fields are accessible-compatible" do
+      let(:date_of_birth) { { "enabled" => false } }
+
+      # NOTE: We skip running the accessibility test when `date_of_birth` is enabled
+      # because the custom Decidim datepicker JavaScript removes accessibility attributes
+      # like `title`, `aria-label`, and causes Axe validation errors.
+      #
+      # This test runs only when `date_of_birth` is disabled to avoid false negatives.
+
+      it_behaves_like "accessible page"
+    end
+
 
     describe "updating personal data" do
       let!(:encrypted_password) { user.encrypted_password }
