@@ -24,8 +24,3 @@ group :development do
   gem "rubocop-faker"
   gem "web-console", "~> 4.2"
 end
-
-group :test do
-  gem "rubocop-factory_bot", "!= 2.26.0", require: false
-  gem "rubocop-rspec_rails", "!= 2.29.0", require: false
-end
