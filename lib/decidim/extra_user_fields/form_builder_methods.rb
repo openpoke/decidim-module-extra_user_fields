@@ -5,10 +5,11 @@ module Decidim
     # This module adds the FormBuilder methods for extra user fields
     module FormBuilderMethods
       def custom_country_select(name, options = {})
-        label_text = options[:label].to_s
-        label_text = label_for(name) if label_text.blank?
-        select_html = sanitize_country_select(country_select(name))
-        (label_text + select_html).html_safe
+        label_text = options[:label].presence || label_for(name)
+        html = +""
+        html << (label_text + required_for_attribute(name)) if options.fetch(:label, true)
+        html << sanitize_country_select(country_select(name))
+        html.html_safe
       end
 
       private
