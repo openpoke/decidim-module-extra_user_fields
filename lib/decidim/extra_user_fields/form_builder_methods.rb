@@ -7,12 +7,15 @@ module Decidim
       def custom_country_select(name, options = {})
         label_text = options[:label].to_s
         label_text = label_for(name) if label_text.blank?
+        select_html = sanitize_country_select(country_select(name))
+        (label_text + select_html).html_safe
+      end
 
-        template = ""
-        template += (label_text + required_for_attribute(name)) if options.fetch(:label, true)
-        template += @template.country_select(@object_name, name)
+      private
 
-        template.html_safe
+      # Remove non-standard attrs added by country_select that fail HTML/accessibility validation
+      def sanitize_country_select(html)
+        html.gsub(/\s(skip_default_ids|allow_method_names_outside_object)="[^"]*"/, "")
       end
     end
   end

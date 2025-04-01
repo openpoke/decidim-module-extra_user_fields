@@ -92,7 +92,6 @@ describe "Account" do
       it_behaves_like "accessible page"
     end
 
-
     describe "updating personal data" do
       let!(:encrypted_password) { user.encrypted_password }
 
