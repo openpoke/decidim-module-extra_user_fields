@@ -17,6 +17,12 @@ This module also enables an Export action in the participants admin panel, which
 
 Pick the version of the gem that matches your Decidim version.
 
+For Decidim 0.28:
+
+```ruby
+gem "decidim-extra_user_fields", git: "https://github.com/PopulateTools/decidim-module-extra_user_fields.git", branch: "release/0.28-stable"
+```
+
 For Decidim 0.27:
 
 ```ruby

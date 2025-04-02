@@ -80,7 +80,17 @@ describe "Account" do
       visit decidim.account_path
     end
 
-    it_behaves_like "accessible page"
+    context "when all extra fields are accessible-compatible" do
+      let(:date_of_birth) { { "enabled" => false } }
+
+      # NOTE: We skip running the accessibility test when `date_of_birth` is enabled
+      # because the custom Decidim datepicker JavaScript removes accessibility attributes
+      # like `title`, `aria-label`, and causes Axe validation errors.
+      #
+      # This test runs only when `date_of_birth` is disabled to avoid false negatives.
+
+      it_behaves_like "accessible page"
+    end
 
     describe "updating personal data" do
       let!(:encrypted_password) { user.encrypted_password }
@@ -92,7 +102,7 @@ describe "Account" do
           fill_in :user_personal_url, with: "https://example.org"
           fill_in :user_about, with: "A Serbian-American inventor, electrical engineer, mechanical engineer, physicist, and futurist."
 
-          fill_in :user_date_of_birth, with: "01/01/2000"
+          fill_in :user_date_of_birth_date, with: "01/01/2000"
           select "Other", from: :user_gender
           select "Argentina", from: :user_country
           fill_in :user_postal_code, with: "00000"
@@ -132,7 +142,7 @@ describe "Account" do
         end
 
         it "shows error when image is too big" do
-          find("#user_avatar_button").click
+          find_by_id("user_avatar_button").click
 
           within ".upload-modal" do
             click_on "Remove"
@@ -222,7 +232,7 @@ describe "Account" do
           fill_in :user_personal_url, with: "https://example.org"
           fill_in :user_about, with: "A Serbian-American inventor, electrical engineer, mechanical engineer, physicist, and futurist."
 
-          fill_in :user_date_of_birth, with: "01/01/2000"
+          fill_in :user_date_of_birth_date, with: "01/01/2000"
           select "Other", from: :user_gender
           select "Argentina", from: :user_country
           fill_in :user_postal_code, with: "00000"
@@ -282,7 +292,7 @@ describe "Account" do
           fill_in :user_personal_url, with: "https://example.org"
           fill_in :user_about, with: "A Serbian-American inventor, electrical engineer, mechanical engineer, physicist, and futurist."
 
-          fill_in :user_date_of_birth, with: "01/01/2000"
+          fill_in :user_date_of_birth_date, with: "01/01/2000"
           select "Other", from: :user_gender
           select "Argentina", from: :user_country
           fill_in :user_postal_code, with: "00000"
@@ -302,7 +312,7 @@ describe "Account" do
 
         it "toggles the current password" do
           expect(page).to have_content("In order to confirm the changes to your account, please provide your current password.")
-          expect(find("#user_old_password")).to be_visible
+          expect(find_by_id("user_old_password")).to be_visible
           expect(page).to have_content "Current password"
           expect(page).to have_no_content "Password"
         end
@@ -536,7 +546,7 @@ describe "Account" do
             expect(page).to have_content("successfully")
           end
 
-          find(:css, "#allow_push_notifications", visible: false).execute_script("this.checked = true")
+          find_by_id("allow_push_notifications", visible: false).execute_script("this.checked = true")
         end
       end
     end

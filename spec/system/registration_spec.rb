@@ -11,7 +11,7 @@ def fill_registration_form
 end
 
 def fill_extra_user_fields
-  fill_in :registration_user_date_of_birth, with: "01/01/2000"
+  fill_in :registration_user_date_of_birth_date, with: "01/01/2000"
   select "Other", from: :registration_user_gender
   select "Argentina", from: :registration_user_country
   fill_in :registration_user_postal_code, with: "00000"
@@ -22,7 +22,7 @@ def fill_extra_user_fields
   # EndBlock
 end
 
-describe "Extra user fields" do
+describe "Extra user fields" do # rubocop:disable RSpec/DescribeClass
   shared_examples_for "mandatory extra user fields" do |field|
     it "displays #{field} as mandatory" do
       within "label[for='registration_user_#{field}']" do

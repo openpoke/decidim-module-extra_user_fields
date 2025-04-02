@@ -1,4 +1,5 @@
-inherit_from: https://raw.githubusercontent.com/decidim/decidim/release/0.28-stable/.rubocop.yml
+inherit_gem:
+  decidim-dev: rubocop-decidim.yml
 
 AllCops:
   Include:
@@ -14,7 +15,3 @@ AllCops:
     - "node_modules/**/*"
     - "db/schema.rb"
     - "vendor/**/*"
-
-RSpec/FilePath:
-  Exclude:
-    - "spec/serializers/user_export_serializer_spec.rb"
