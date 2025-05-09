@@ -28,6 +28,9 @@ eu:
           users: Parte-hartzaileak
         extra_user_fields:
           fields:
+            age_range:
+              description: Eremu hau adin tarte bat da. Erabiltzaileek adin tarte bat aukeratu ahal izango dute.
+              label: Adin tartearen eremua aktibatu
             country:
               description: Eremu hau herrien zerrenda bat da. Erabiltzaileek herri bat aukeratu ahal izango dute.
               label: Herriaren eremua aktibatu

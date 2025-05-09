@@ -3,10 +3,10 @@ ca:
   activemodel:
     attributes:
       user:
+        age_range: Quina edat tens?
         country: País
         date_of_birth: Data de naixement
         gender: Quin gènere identifiques?
-        age_range: Quina edat tens?
         location: Localització
         phone_number: Telèfon
         postal_code: Codi postal
@@ -37,6 +37,10 @@ ca:
           users: Participants
         extra_user_fields:
           fields:
+            age_range:
+              description: Aquest camp és una llista de rangs d'edat. Si está activat,
+                l'usuari haurà de triar un rang d'edat.
+              label: Habilitar camp de rang d'edat
             country:
               description: Aquest camp és una llista de països. Si está activat, l'usuari
                 haurà de triar un país.

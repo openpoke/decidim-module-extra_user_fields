@@ -34,6 +34,9 @@ de:
           users: Teilnehmer
         extra_user_fields:
           fields:
+            age_range:
+              description: Dieses Feld ist eine Liste von Altersgruppen. Der Benutzer kann eine Altersgruppe auswählen.
+              label: Das Feld Altersgruppe aktivieren
             country:
               description: Dieses Feld enthält eine Liste von Ländern. Der Benutzer kann ein Land auswählen.
               label: Das Feld Land aktivieren

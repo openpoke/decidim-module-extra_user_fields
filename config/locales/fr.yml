@@ -37,6 +37,10 @@ fr:
           users: Participants
         extra_user_fields:
           fields:
+            age_range:
+              description: Ce champ est une liste de tranches d'âge. L'utilisateur
+                pourra choisir une tranche d'âge.
+              label: Activer le champ tranche d'âge
             country:
               description: Ce champ contient une liste de pays. L'utilisateur pourra
                 choisir un pays.

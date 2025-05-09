@@ -37,6 +37,10 @@ es:
           users: Participantes
         extra_user_fields:
           fields:
+            age_range:
+              description: Este campo es una lista de rangos de edad. Si está marcado,
+                el usuario tendrá que elegir un rango de edad.
+              label: Habilitar campo de rango de edad
             country:
               description: Este campo es una lista de países. Si está marcado, el
                 usuario tendrá que elegir un país.
