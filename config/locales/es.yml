@@ -3,10 +3,10 @@ es:
   activemodel:
     attributes:
       user:
+        age_range: Cuántos años tienes?
         country: País
         date_of_birth: Fecha de nacimiento
         gender: Con qué género te identificas?
-        age_range: Cuántos años tienes?
         location: Localización
         phone_number: Teléfono
         postal_code: Código postal
