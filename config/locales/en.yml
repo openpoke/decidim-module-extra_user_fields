@@ -83,11 +83,20 @@ en:
             extra_user_fields:
               extra_user_fields_enabled: Enable extra user fields
               section: Available extra fields for signup form
+              section_extras: Additional custom fields
+              section_extras_description: If you have configured any extra user fields,
+                you can manage them here (See section "Configuration through an initializer"
+                in the plugin README).
             global:
               title: Activate / deactivate functionality
           index:
             save: Save configuration
             title: Manage extra user fields
+          select_fields:
+            participant_type:
+              description: This field is a list of participant types. If checked,
+                user will have to choose a participant type
+              label: Enable participant type field
           update:
             failure: An error occurred on update
             success: Extra user fields correctly updated in organization

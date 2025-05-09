@@ -24,6 +24,17 @@ module Decidim
       def phone_number_extra_user_field_placeholder
         current_organization.extra_user_field_configuration(:phone_number)["placeholder"]
       end
+
+      def custom_select_field_options_for_select
+        Decidim::ExtraUserFields.select_fields.map do |field, options|
+          [
+            field,
+            options.map do |option, label|
+              [option, I18n.t(label, scope: "decidim.extra_user_fields.select_fields")]
+            end
+          ]
+        end
+      end
     end
   end
 end

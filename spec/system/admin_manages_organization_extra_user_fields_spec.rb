@@ -46,5 +46,48 @@ describe "Admin manages organization extra user fields" do # rubocop:disable RSp
         expect(page).to have_content("Extra user fields correctly updated in organization")
       end
     end
+
+    context "when custom select_fields" do
+      it "displays the custom select fields" do
+        within "#accordion-setup" do
+          expect(page).to have_content("Additional custom fields")
+          expect(page).to have_content("Enable participant type")
+          expect(page).to have_content("This field is a list of participant types")
+
+          page.check("Enable participant type field")
+        end
+
+        find("*[type=submit]", text: "Save configuration").click
+        expect(page).to have_content("Extra user fields correctly updated in organization")
+      end
+    end
+  end
+
+  context "and no translations are provided" do
+    let(:custom_select_fields) do
+      {
+        animal_type: {
+          dog: "I love dogs",
+          cat: "I love cats"
+        }
+      }
+    end
+
+    before do
+      allow(Decidim::ExtraUserFields).to receive(:select_fields).and_return(custom_select_fields)
+      visit decidim_extra_user_fields.root_path
+    end
+
+    it "displays the custom select fields" do
+      within "#accordion-setup" do
+        expect(page).to have_content("Additional custom fields")
+        expect(page).to have_content("Animal type")
+
+        page.check("Animal type")
+      end
+
+      find("*[type=submit]", text: "Save configuration").click
+      expect(page).to have_content("Extra user fields correctly updated in organization")
+    end
   end
 end

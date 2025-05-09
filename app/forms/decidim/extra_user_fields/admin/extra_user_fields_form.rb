@@ -19,9 +19,8 @@ module Decidim
 
         attribute :phone_number_pattern, String
         translatable_attribute :phone_number_placeholder, String
-        # Block ExtraUserFields Attributes
 
-        # EndBlock
+        attribute :select_fields, Array, default: []
 
         def map_model(model)
           self.enabled = model.extra_user_fields["enabled"]
@@ -36,9 +35,13 @@ module Decidim
           self.underage_limit = model.extra_user_fields.fetch("underage_limit", Decidim::ExtraUserFields.underage_limit)
           self.phone_number_pattern = model.extra_user_fields.dig("phone_number", "pattern")
           self.phone_number_placeholder = model.extra_user_fields.dig("phone_number", "placeholder")
-          # Block ExtraUserFields MapModel
+          self.select_fields = model.extra_user_fields["select_fields"] || []
+        end
 
-          # EndBlock
+        def select_fields
+          super.filter do |field|
+            Decidim::ExtraUserFields.select_fields.keys.map(&:to_s).include?(field)
+          end
         end
       end
     end

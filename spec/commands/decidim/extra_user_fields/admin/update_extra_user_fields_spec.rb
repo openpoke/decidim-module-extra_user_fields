@@ -21,11 +21,7 @@ module Decidim
         let(:location) { true }
         let(:underage) { true }
         let(:underage_limit) { 18 }
-        # Block ExtraUserFields RspecVar
 
-        # EndBlock
-
-        # rubocop:disable Style/TrailingCommaInHashLiteral
         let(:form_params) do
           {
             "postal_code" => postal_code,
@@ -40,13 +36,9 @@ module Decidim
             "location" => location,
             "underage" => underage,
             "underage_limit" => underage_limit,
-            # Block ExtraUserFields ExtraUserFields
-
-            # EndBlock
+            "select_fields" => %w(participant_type non_existing_field)
           }
         end
-        # rubocop:enable Style/TrailingCommaInHashLiteral
-
         let(:form) do
           ExtraUserFieldsForm.from_params(
             form_params
@@ -96,9 +88,7 @@ module Decidim
               expect(extra_user_fields).to include("location" => { "enabled" => true })
               expect(extra_user_fields).to include("underage" => { "enabled" => true })
               expect(extra_user_fields).to include("underage_limit" => 18)
-              # Block ExtraUserFields InclusionSpec
-
-              # EndBlock
+              expect(extra_user_fields).to include("select_fields" => ["participant_type"])
             end
           end
         end

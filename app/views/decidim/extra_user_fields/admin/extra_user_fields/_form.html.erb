@@ -33,6 +33,13 @@
       <%= render partial: "decidim/extra_user_fields/admin/extra_user_fields/fields/phone_number", locals: { form: form } %>
       <%= render partial: "decidim/extra_user_fields/admin/extra_user_fields/fields/location", locals: { form: form } %>
       <%= render partial: "decidim/extra_user_fields/admin/extra_user_fields/fields/underage", locals: { form: form } %>
+
+      <div class="card-divider">
+        <h2 class="card-title"><%= t(".extra_user_fields.section_extras") %></h2>
+        <p class="help-text"><%= t(".extra_user_fields.section_extras_description") %></p>
+      </div>
+
+      <%= render partial: "decidim/extra_user_fields/admin/extra_user_fields/fields/select_fields", locals: { form: form } %>
     </div>
   </div>
 </div>
