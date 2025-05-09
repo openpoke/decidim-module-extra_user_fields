@@ -49,7 +49,7 @@
         </div>
       <% end %>
     <% end %>
-    
+
     <% if current_organization.activated_extra_field?(:select_fields) %>
       <%= render partial: "decidim/extra_user_fields/select_fields", locals: { f: f } %>
     <% end %>
