@@ -111,10 +111,15 @@ en:
         male: Male
         other: Other
         prefer_not_to_say: Prefer not to say
+      select_fields:
+        participant_type:
+          label: Are you participating as an individual, or officially on behalf of an organization?
       registration_form:
         signup:
           legend: More information
           underage: I am under %{limit} years old and I agree to get a parental authorization
+      errors:
+        select_fields: The field "%{field}" is not valid.
     statutory_representative:
       inform:
         body: |

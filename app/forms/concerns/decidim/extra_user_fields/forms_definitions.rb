@@ -22,6 +22,7 @@ module Decidim
         attribute :location, String
         attribute :underage, ActiveRecord::Type::Boolean
         attribute :statutory_representative_email, String
+        attribute :select_fields, Hash, default: {}
 
         # EndBlock
 
@@ -46,6 +47,7 @@ module Decidim
                   "valid_email_2/email": { disposable: true },
                   if: :underage_accepted?
         validate :birth_date_under_limit
+        validate :select_fields_configured
 
         # EndBlock
       end
@@ -61,11 +63,8 @@ module Decidim
         self.phone_number = extended_data[:phone_number]
         self.location = extended_data[:location]
         self.underage = extended_data[:underage]
+        self.select_fields = extended_data[:select_fields] || {}
         self.statutory_representative_email = extended_data[:statutory_representative_email]
-
-        # Block ExtraUserFields MapModel
-
-        # EndBlock
       end
 
       private
@@ -109,6 +108,10 @@ module Decidim
         extra_user_fields_enabled && current_organization.activated_extra_field?(:underage)
       end
 
+      def select_fields?
+        extra_user_fields_enabled && current_organization.activated_extra_field?(:select_fields)
+      end
+
       def underage_accepted?
         underage? && underage == "1"
       end
@@ -145,6 +148,21 @@ module Decidim
 
       def underage_limit
         current_organization.extra_user_fields["underage_limit"]
+      end
+
+      def select_fields_configured
+        return unless select_fields?
+
+        select_fields.each do |field, value|
+          next unless current_organization.extra_user_field_configuration(:select_fields).include?(field.to_s)
+
+          conf = Decidim::ExtraUserFields.select_fields.with_indifferent_access[field]
+          next unless conf.is_a?(Hash)
+          next if conf.with_indifferent_access.has_key?(value)
+
+          label = I18n.t("decidim.extra_user_fields.select_fields.#{field}.label", default: field.to_s.humanize)
+          errors.add(:base, I18n.t("decidim.extra_user_fields.errors.select_fields", field: label))
+        end
       end
     end
   end

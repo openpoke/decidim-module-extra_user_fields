@@ -49,9 +49,10 @@
         </div>
       <% end %>
     <% end %>
-    <%# Block ExtraUserFields SignUpFormFields %>
-
-    <%# EndBlock %>
+    
+    <% if current_organization.activated_extra_field?(:select_fields) %>
+      <%= render partial: "decidim/extra_user_fields/select_fields", locals: { f: f } %>
+    <% end %>
 
   </div>
   <%= append_javascript_pack_tag "decidim_extra_user_fields.js" %>

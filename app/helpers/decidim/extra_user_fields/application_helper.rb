@@ -25,15 +25,20 @@ module Decidim
         current_organization.extra_user_field_configuration(:phone_number)["placeholder"]
       end
 
-      def custom_select_field_options_for_select
-        Decidim::ExtraUserFields.select_fields.map do |field, options|
+      def custom_select_fields_options
+        Decidim::ExtraUserFields.select_fields.filter_map do |field, options|
+          next unless options.is_a?(Hash)
+          next if options.blank?
+          next if current_organization.extra_user_field_configuration(:select_fields).include?(field)
+
           [
             field,
             options.map do |option, label|
-              [option, I18n.t(label, scope: "decidim.extra_user_fields.select_fields")]
+              label = I18n.t(label, default: label.split(".").last.to_s.humanize) if label.present?
+              [label, option]
             end
           ]
-        end
+        end.to_h
       end
     end
   end
