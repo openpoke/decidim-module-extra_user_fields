@@ -33,7 +33,7 @@ module Decidim
           self.phone_number = model.extra_user_fields.dig("phone_number", "enabled")
           self.location = model.extra_user_fields.dig("location", "enabled")
           self.underage = model.extra_user_fields.dig("underage", "enabled")
-          self.underage_limit = model.extra_user_fields.fetch("underage_limit", Decidim::ExtraUserFields::Engine::DEFAULT_UNDERAGE_LIMIT)
+          self.underage_limit = model.extra_user_fields.fetch("underage_limit", Decidim::ExtraUserFields.underage_limit)
           self.phone_number_pattern = model.extra_user_fields.dig("phone_number", "pattern")
           self.phone_number_placeholder = model.extra_user_fields.dig("phone_number", "placeholder")
           # Block ExtraUserFields MapModel

@@ -2,6 +2,6 @@
   <div class="row column">
     <p><%= t(".description") %></p>
     <%= form.check_box :underage, label: t(".label") %>
-    <%= form.select :underage_limit, ( Decidim::ExtraUserFields::Engine::DEFAULT_UNDERAGE_OPTIONS).to_a, selected: current_organization.extra_user_fields["underage_limit"] || Decidim::ExtraUserFields::Engine::DEFAULT_UNDERAGE_LIMIT, label: t(".limit") %>
+    <%= form.select :underage_limit, ( Decidim::ExtraUserFields.underage_options).to_a, selected: current_organization.extra_user_fields["underage_limit"] || Decidim::ExtraUserFields.underage_limit, label: t(".limit") %>
   </div>
 </div>

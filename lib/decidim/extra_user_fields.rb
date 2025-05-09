@@ -10,6 +10,14 @@ module Decidim
   module ExtraUserFields
     include ActiveSupport::Configurable
 
+    config_accessor :underage_limit do
+      ENV.fetch("EXTRA_USER_FIELDS_UNDERAGE_LIMIT", 18).to_i
+    end
+
+    config_accessor :underage_options do
+      ENV.fetch("EXTRA_USER_FIELDS_UNDERAGE_OPTIONS", "15 16 17 18 19 20 21").split.map(&:to_i)
+    end
+
     # These options require the I18n translations to be set in the locale files.
     # decidim.extra_user_fields.genders.female
     # decidim.extra_user_fields.genders.male
