@@ -15,45 +15,43 @@ This module also enables an Export action in the participants admin panel, which
 
 ## Installation
 
-Pick the version of the gem that matches your Decidim version.
-
-For Decidim 0.28:
+Add this line to your application's Gemfile:
 
 ```ruby
-gem "decidim-extra_user_fields", git: "https://github.com/PopulateTools/decidim-module-extra_user_fields.git", branch: "release/0.28-stable"
+gem 'decidim-extra_user_fields', github: 'openpoke/decidim-module-extra_user_fields'
 ```
 
-For Decidim 0.27:
+or for the original one:
 
 ```ruby
-gem "decidim-extra_user_fields", git: "https://github.com/PopulateTools/decidim-module-extra_user_fields.git", branch: "release/0.27-stable"
-```
-
-For Decidim 0.26:
-
-```ruby
-gem "decidim-extra_user_fields", git: "https://github.com/PopulateTools/decidim-module-extra_user_fields.git", branch: "release/0.26-stable"
-```
-
-For Decidim 0.25:
-
-```ruby
-gem "decidim-extra_user_fields", git: "https://github.com/PopulateTools/decidim-module-extra_user_fields.git", branch: "release/0.25-stable"
-```
-
-For Decidim 0.24:
-
-```ruby
-gem "decidim-extra_user_fields", git: "https://github.com/PopulateTools/decidim-module-extra_user_fields.git", branch: "release/0.24-stable"
+gem 'decidim-extra_user_fields', github: 'PopulateTools/decidim-module-extra_user_fields'
 ```
 
 And then execute:
 
 ```bash
-bundle install
-# For versions >= 0.27
-bundle exec rake railties:install:migrations
-bundle exec rake db:migrate
+bundle
+bin/rails decidim:upgrade
+bin/rails db:migrate
+```
+
+> **EXPERTS ONLY**
+>
+> Under the hood, when running `bundle exec rails decidim:upgrade` the `decidim-extra_user_fields` gem will run the following (that can also be run manually if you consider):
+> 
+> ```bash
+> bin/rails decidim_extra_user_fields:install:migrations
+> ```
+
+You can also the version of the gem that matches your Decidim version:
+
+
+```ruby
+gem "decidim-extra_user_fields", github: "PopulateTools/decidim-module-extra_user_fields", branch: "release/0.28-stable"
+gem "decidim-extra_user_fields", github: "PopulateTools/decidim-module-extra_user_fields", branch: "release/0.27-stable"
+gem "decidim-extra_user_fields", github: "PopulateTools/decidim-module-extra_user_fields", branch: "release/0.26-stable"
+gem "decidim-extra_user_fields", github: "PopulateTools/decidim-module-extra_user_fields", branch: "release/0.25-stable"
+gem "decidim-extra_user_fields", github: "PopulateTools/decidim-module-extra_user_fields", branch: "release/0.24-stable"
 ```
 
 ## Usage
@@ -62,7 +60,7 @@ bundle exec rake db:migrate
 
 After installing the gem and migrating the database, you can enable the extra fields in the admin panel of the organization. Go to Settings > Manage extra user fields. There you can enable the fields you want to use. By default all fields are required and don't include any format validation.
 
-![Admin panel](https://github.com/PopulateTools/decidim-module-extra_user_fields/blob/extra-fields-0-27/docs/resources/extra_user_fields_admin.png)
+![Admin panel](docs/resources/extra_user_fields_admin.png)
 
 Most of the fields are plain text inputs, but other have a special format:
 
@@ -73,16 +71,42 @@ Most of the fields are plain text inputs, but other have a special format:
 
 Once the fields are enabled, they will be shown in the user signup form and in the user profile.
 
-![User signup](https://github.com/PopulateTools/decidim-module-extra_user_fields/blob/extra-fields-0-27/docs/resources/extra_user_fields_signup.png)
+![User signup](docs/resources/extra_user_fields_signup.png)
 
-![User profile](https://github.com/PopulateTools/decidim-module-extra_user_fields/blob/extra-fields-0-27/docs/resources/extra_user_fields_profile.png)
+![User profile](docs/resources/extra_user_fields_profile.png)
 
 
 ### Admin users export
 
 An extra feature of this plugin is to enable an Export action in the participants admin panel. This action allows to download a list of participants in CSV, JSON or Excel. The fields included in the export are the Decidim User attributes plus the extra fields enabled in the admin panel.
 
-![User export](https://github.com/PopulateTools/decidim-module-extra_user_fields/blob/extra-fields-0-27/docs/resources/extra_user_fields_export.png)
+![User export](docs/resources/extra_user_fields_export.png)
+
+
+## Configuration
+
+By default, the module is configured to read the configuration from ENV variables.
+
+Currently, the following ENV variables are supported:
+
+| ENV variable | Description | Default value |
+| ------------ | ----------- |-------|
+| EXTRA_USER_FIELDS_GENDER_OPTIONS | Options for the gender field (you need to add the corresponding I18n keys, ie: `decidim.extra_user_fields.genders.prefer_not_to_say` ) | `female male other prefer_not_to_say` |
+
+
+It is also possible to configure the module using the an initializer:
+
+Create an initializer (for instance `config/initializers/extra_user_fields.rb`) and configure the following:
+
+```ruby
+# config/initializers/extra_user_fields.rb
+
+Decidim::ExtraUserFields.configure do |config|
+  config.gender_options = [:female, :male, :other, :prefer_not_say]
+  
+  ...
+end
+```
 
 ## Contributing
 

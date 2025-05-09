@@ -69,6 +69,7 @@ de:
         female: Frau
         male: Mann
         other: Divers
+        prefer_not_to_say: Bevorzuge es, nicht zu sagen
       registration_form:
         signup:
           legend: Weitere Informationen

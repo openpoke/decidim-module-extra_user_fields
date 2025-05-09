@@ -93,6 +93,7 @@ es:
         female: Mujer
         male: Hombre
         other: Otro
+        prefer_not_to_say: Prefiero no decirlo
       registration_form:
         signup:
           legend: Más información

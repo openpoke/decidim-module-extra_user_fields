@@ -63,6 +63,7 @@ eu:
         female: Emakumea
         male: Gizona
         other: Beste bat
+        prefer_not_to_say: Ez esan nahi
       registration_form:
         signup:
           legend: Argibide gehiago
