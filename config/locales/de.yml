@@ -5,7 +5,8 @@ de:
       user:
         country: Land
         date_of_birth: Geburtsdatum
-        gender: Geschlecht
+        gender: Welches Geschlecht identifizieren Sie?
+        age_range: Wie alt sind Sie?
         location: Standort
         phone_number: Telefonnummer
         postal_code: Postleitzahl
@@ -65,6 +66,12 @@ de:
           update:
             failure: Bei der Aktualisierung ist ein Fehler aufgetreten.
             success: Die Anmeldefelder wurden erfolgreich aktualisiert.
+      age_ranges:
+        17_to_30: 17 bis 30
+        31_to_60: 31 bis 60
+        61_or_more: 61 oder älter
+        prefer_not_to_say: Bevorzuge es, nicht zu sagen
+        up_to_16: 16 oder jünger
       genders:
         female: Frau
         male: Mann

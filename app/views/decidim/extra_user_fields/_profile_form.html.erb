@@ -7,6 +7,10 @@
     <%= f.collection_select :gender, f.object.gender_options_for_select, :first, :last %>
   <% end %>
 
+  <% if current_organization.activated_extra_field?(:age_range) %>
+    <%= f.collection_select :age_range, f.object.age_range_options_for_select, :first, :last %>
+  <% end %>
+
   <% if current_organization.activated_extra_field?(:country) %>
     <%= f.label :country do %>
       <%= f.custom_country_select :country %>

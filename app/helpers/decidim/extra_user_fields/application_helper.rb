@@ -6,8 +6,14 @@ module Decidim
     #
     module ApplicationHelper
       def gender_options_for_select
-        Decidim::ExtraUserFields.gender_options.map do |gender|
+        Decidim::ExtraUserFields.genders.map do |gender|
           [gender, I18n.t(gender, scope: "decidim.extra_user_fields.genders")]
+        end
+      end
+
+      def age_range_options_for_select
+        Decidim::ExtraUserFields.age_ranges.map do |age_range|
+          [age_range, I18n.t(age_range, scope: "decidim.extra_user_fields.age_ranges")]
         end
       end
 

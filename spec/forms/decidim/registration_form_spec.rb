@@ -22,6 +22,7 @@ module Decidim
         "postal_code" => { "enabled" => true },
         "date_of_birth" => { "enabled" => true },
         "gender" => { "enabled" => true },
+        "age_range" => { "enabled" => true },
         "phone_number" => { "enabled" => true, "pattern" => phone_number_pattern, "placeholder" => nil },
         "location" => { "enabled" => true }
       }
@@ -35,6 +36,7 @@ module Decidim
     let(:country) { "Argentina" }
     let(:date_of_birth) { "01/01/2000" }
     let(:gender) { "other" }
+    let(:age_range) { "17_to_30" }
     let(:location) { "Paris" }
     let(:phone_number) { "0123456789" }
     let(:postal_code) { "75001" }
@@ -50,6 +52,7 @@ module Decidim
         postal_code:,
         date_of_birth:,
         gender:,
+        age_range:,
         phone_number:,
         location:
       }

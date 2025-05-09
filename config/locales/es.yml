@@ -5,7 +5,8 @@ es:
       user:
         country: País
         date_of_birth: Fecha de nacimiento
-        gender: Género
+        gender: Con qué género te identificas?
+        age_range: Cuántos años tienes?
         location: Localización
         phone_number: Teléfono
         postal_code: Código postal
@@ -89,6 +90,12 @@ es:
             failure: Se ha producido un error en la actualización
             success: Campos de usuario adicionales actualizados correctamente en la
               organización
+      age_ranges:
+        17_to_30: 17 a 30
+        31_to_60: 31 a 60
+        61_or_more: 61 o más
+        prefer_not_to_say: Prefiero no decirlo
+        up_to_16: 16 o menos
       genders:
         female: Mujer
         male: Hombre

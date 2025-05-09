@@ -25,7 +25,7 @@ module Decidim
           UpdateExtraUserFields.call(@form) do
             on(:ok) do
               flash[:notice] = t(".success")
-              render action: "index"
+              redirect_to root_path
             end
 
             on(:invalid) do

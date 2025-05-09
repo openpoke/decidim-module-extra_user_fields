@@ -9,10 +9,11 @@ module Decidim
         let(:organization) { create(:organization, extra_user_fields: {}) }
         let(:user) { create(:user, :admin, :confirmed, organization:) }
 
-        let(:extra_user_fields_enabled) { true }
         let(:postal_code) { true }
+        let(:extra_user_fields_enabled) { true }
         let(:country) { true }
         let(:gender) { true }
+        let(:age_range) { true }
         let(:date_of_birth) { true }
         let(:phone_number) { true }
         let(:phone_number_pattern) { "^(\\+34)?[0-9 ]{9,12}$" }
@@ -27,10 +28,11 @@ module Decidim
         # rubocop:disable Style/TrailingCommaInHashLiteral
         let(:form_params) do
           {
-            "enabled" => extra_user_fields_enabled,
             "postal_code" => postal_code,
+            "enabled" => extra_user_fields_enabled,
             "country" => country,
             "gender" => gender,
+            "age_range" => age_range,
             "date_of_birth" => date_of_birth,
             "phone_number" => phone_number,
             "phone_number_pattern" => phone_number_pattern,
@@ -86,7 +88,9 @@ module Decidim
               expect(extra_user_fields).to include("enabled" => true)
               expect(extra_user_fields).to include("country" => { "enabled" => true })
               expect(extra_user_fields).to include("date_of_birth" => { "enabled" => true })
+              expect(extra_user_fields).to include("postal_code" => { "enabled" => true })
               expect(extra_user_fields).to include("gender" => { "enabled" => true })
+              expect(extra_user_fields).to include("age_range" => { "enabled" => true })
               expect(extra_user_fields).to include("country" => { "enabled" => true })
               expect(extra_user_fields).to include("phone_number" => { "enabled" => true, "pattern" => phone_number_pattern, "placeholder" => phone_number_placeholder })
               expect(extra_user_fields).to include("location" => { "enabled" => true })

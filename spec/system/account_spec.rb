@@ -19,6 +19,7 @@ describe "Account" do
       "date_of_birth" => date_of_birth,
       "postal_code" => postal_code,
       "gender" => gender,
+      "age_range" => age_range,
       "country" => country,
       "phone_number" => phone_number,
       "location" => location,
@@ -42,6 +43,10 @@ describe "Account" do
   end
 
   let(:gender) do
+    { "enabled" => true }
+  end
+
+  let(:age_range) do
     { "enabled" => true }
   end
 
@@ -104,6 +109,7 @@ describe "Account" do
 
           fill_in :user_date_of_birth_date, with: "01/01/2000"
           select "Other", from: :user_gender
+          select "17 to 30", from: :user_age_range
           select "Argentina", from: :user_country
           fill_in :user_postal_code, with: "00000"
           fill_in :user_phone_number, with: "0123456789"
@@ -208,6 +214,14 @@ describe "Account" do
       it_behaves_like "does not display extra user field", "gender", "Gender"
     end
 
+    context "when age_range is not enabled" do
+      let(:age_range) do
+        { "enabled" => false }
+      end
+
+      it_behaves_like "does not display extra user field", "age_range", "Age range"
+    end
+
     context "when phone number is not enabled" do
       let(:phone_number) do
         { "enabled" => false }
@@ -234,6 +248,7 @@ describe "Account" do
 
           fill_in :user_date_of_birth_date, with: "01/01/2000"
           select "Other", from: :user_gender
+          select "17 to 30", from: :user_age_range
           select "Argentina", from: :user_country
           fill_in :user_postal_code, with: "00000"
           fill_in :user_phone_number, with: "0123456789"
@@ -294,6 +309,7 @@ describe "Account" do
 
           fill_in :user_date_of_birth_date, with: "01/01/2000"
           select "Other", from: :user_gender
+          select "17 to 30", from: :user_age_range
           select "Argentina", from: :user_country
           fill_in :user_postal_code, with: "00000"
           fill_in :user_phone_number, with: "0123456789"

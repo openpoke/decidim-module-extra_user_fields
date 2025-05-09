@@ -91,7 +91,8 @@ Currently, the following ENV variables are supported:
 
 | ENV variable | Description | Default value |
 | ------------ | ----------- |-------|
-| EXTRA_USER_FIELDS_GENDER_OPTIONS | Options for the gender field (you need to add the corresponding I18n keys, ie: `decidim.extra_user_fields.genders.prefer_not_to_say` ) | `female male other prefer_not_to_say` |
+| EXTRA_USER_FIELDS_GENDERS | Options for the gender field (you need to add the corresponding I18n keys, ie: `decidim.extra_user_fields.genders.prefer_not_to_say` ) | `female male other prefer_not_to_say` |
+| EXTRA_USER_FIELDS_AGE_RANGES | 
 
 
 It is also possible to configure the module using the an initializer:
@@ -102,7 +103,8 @@ Create an initializer (for instance `config/initializers/extra_user_fields.rb`) 
 # config/initializers/extra_user_fields.rb
 
 Decidim::ExtraUserFields.configure do |config|
-  config.gender_options = [:female, :male, :other, :prefer_not_say]
+  config.genders = [:female, :male, :other, :prefer_not_to_say]
+  config.age_ranges = ["30_or_younger", "31_or_older", "prefer_not_to_say"]
   
   ...
 end

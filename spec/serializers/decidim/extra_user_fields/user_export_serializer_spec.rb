@@ -10,6 +10,7 @@ describe Decidim::ExtraUserFields::UserExportSerializer do
   let(:registration_metadata) do
     {
       gender:,
+      age_range:,
       postal_code:,
       date_of_birth:,
       country:,
@@ -25,6 +26,7 @@ describe Decidim::ExtraUserFields::UserExportSerializer do
   # rubocop:enable Style/TrailingCommaInHashLiteral
 
   let(:gender) { "other" }
+  let(:age_range) { "17_to_30" }
   let(:postal_code) { "00000" }
   let(:date_of_birth) { "01/01/2000" }
   let(:country) { "Argentina" }
@@ -45,6 +47,10 @@ describe Decidim::ExtraUserFields::UserExportSerializer do
 
     it "includes the gender" do
       expect(serialized).to include(gender: resource.extended_data["gender"])
+    end
+
+    it "includes the age range" do
+      expect(serialized).to include(age_range: resource.extended_data["age_range"])
     end
 
     it "includes the postal code" do

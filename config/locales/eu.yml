@@ -5,7 +5,8 @@ eu:
       user:
         country: Herria
         date_of_birth: Jaioteguna
-        gender: Generoa
+        gender: Zer generotako pertsona zara?
+        age_range: Zenbat urte dituzu?
         location: Helbidea
         phone_number: Telefono zenbakia
         postal_code: Posta kodea
@@ -59,6 +60,12 @@ eu:
           update:
             failure: Erakundearen datuak eguneratzean errore bat sortu da
             success: Extra user fields zuzen eguneratu dira erakundean
+      age_ranges:
+        17_to_30: 17tik 30era
+        31_to_60: 31tik 60ra
+        61_or_more: 61 edo gehiago
+        prefer_not_to_say: Ez esan nahi
+        up_to_16: 16 edo gutxiago
       genders:
         female: Emakumea
         male: Gizona

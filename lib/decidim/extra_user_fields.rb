@@ -10,8 +10,20 @@ module Decidim
   module ExtraUserFields
     include ActiveSupport::Configurable
 
-    config_accessor :gender_options do
-      ENV.fetch("EXTRA_USER_FIELDS_GENDER_OPTIONS", "female male other prefer_not_to_say").split
+    # These options require the I18n translations to be set in the locale files.
+    # decidim.extra_user_fields.genders.female
+    # decidim.extra_user_fields.genders.male
+    # decidim.extra_user_fields.genders. ...
+    config_accessor :genders do
+      ENV.fetch("EXTRA_USER_FIELDS_GENDERS", "female male other prefer_not_to_say").split
+    end
+
+    # These options require the I18n translations to be set in the locale files.
+    # decidim.extra_user_fields.age_range.up_to_16
+    # decidim.extra_user_fields.age_range.17_to_30
+    # decidim.extra_user_fields.age_range. ...
+    config_accessor :age_ranges do
+      ENV.fetch("EXTRA_USER_FIELDS_AGE_RANGES", "up_to_16 17_to_30 31_to_60 61_or_more prefer_not_to_say").split
     end
   end
 end

@@ -3,9 +3,10 @@ en:
   activemodel:
     attributes:
       user:
+        age_range: How old are you?
         country: Country
         date_of_birth: Date of birth
-        gender: Gender
+        gender: Which gender do you identify with?
         location: Location
         phone_number: Phone Number
         postal_code: Postal code
@@ -35,6 +36,10 @@ en:
           users: Participants
         extra_user_fields:
           fields:
+            age_range:
+              description: This field is a list of age ranges. If checked, user will
+                have to choose an age range
+              label: Enable age range field
             country:
               description: This field is a list of countries. If checked, user will
                 have to choose a country
@@ -86,6 +91,12 @@ en:
           update:
             failure: An error occurred on update
             success: Extra user fields correctly updated in organization
+      age_ranges:
+        17_to_30: 17 to 30
+        31_to_60: 31 to 60
+        61_or_more: 61 or older
+        prefer_not_to_say: Prefer not to say
+        up_to_16: 16 or younger
       genders:
         female: Female
         male: Male

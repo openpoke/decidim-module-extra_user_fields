@@ -11,6 +11,7 @@ module Decidim
         attribute :postal_code, Boolean
         attribute :date_of_birth, Boolean
         attribute :gender, Boolean
+        attribute :age_range, Boolean
         attribute :phone_number, Boolean
         attribute :location, Boolean
         attribute :underage, Boolean
@@ -28,6 +29,7 @@ module Decidim
           self.postal_code = model.extra_user_fields.dig("postal_code", "enabled")
           self.date_of_birth = model.extra_user_fields.dig("date_of_birth", "enabled")
           self.gender = model.extra_user_fields.dig("gender", "enabled")
+          self.age_range = model.extra_user_fields.dig("age_range", "enabled")
           self.phone_number = model.extra_user_fields.dig("phone_number", "enabled")
           self.location = model.extra_user_fields.dig("location", "enabled")
           self.underage = model.extra_user_fields.dig("underage", "enabled")

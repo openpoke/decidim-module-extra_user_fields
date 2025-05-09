@@ -17,6 +17,7 @@ module Decidim
         attribute :postal_code, String
         attribute :date_of_birth, Decidim::Attributes::LocalizedDate
         attribute :gender, String
+        attribute :age_range, String
         attribute :phone_number, String
         attribute :location, String
         attribute :underage, ActiveRecord::Type::Boolean
@@ -29,7 +30,8 @@ module Decidim
         validates :country, presence: true, if: :country?
         validates :postal_code, presence: true, if: :postal_code?
         validates :date_of_birth, presence: true, if: :date_of_birth?
-        validates :gender, presence: true, inclusion: { in: Decidim::ExtraUserFields.gender_options.map(&:to_s) }, if: :gender?
+        validates :gender, presence: true, inclusion: { in: Decidim::ExtraUserFields.genders.map(&:to_s) }, if: :gender?
+        validates :age_range, presence: true, inclusion: { in: Decidim::ExtraUserFields.age_ranges.map(&:to_s) }, if: :age_range?
         validates :phone_number, presence: true, if: :phone_number?
         validates(
           :phone_number,
@@ -55,6 +57,7 @@ module Decidim
         self.postal_code = extended_data[:postal_code]
         self.date_of_birth = Date.parse(extended_data[:date_of_birth]) if extended_data[:date_of_birth].present?
         self.gender = extended_data[:gender]
+        self.age_range = extended_data[:age_range]
         self.phone_number = extended_data[:phone_number]
         self.location = extended_data[:location]
         self.underage = extended_data[:underage]
@@ -78,6 +81,10 @@ module Decidim
 
       def gender?
         extra_user_fields_enabled && current_organization.activated_extra_field?(:gender)
+      end
+
+      def age_range?
+        extra_user_fields_enabled && current_organization.activated_extra_field?(:age_range)
       end
 
       def postal_code?
