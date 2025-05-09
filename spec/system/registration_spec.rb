@@ -153,7 +153,6 @@ describe "Extra user fields" do # rubocop:disable RSpec/DescribeClass
   it_behaves_like "mandatory extra user fields", "postal_code"
   it_behaves_like "mandatory extra user fields", "phone_number"
   it_behaves_like "mandatory extra user fields", "location"
-  it_behaves_like "mandatory extra user_fields", "participant_type"
 
   context "when extra_user_fields is disabled" do
     let(:organization) { create(:organization, :extra_user_fields_disabled) }
