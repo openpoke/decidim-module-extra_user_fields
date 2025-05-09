@@ -3,9 +3,10 @@ de:
   activemodel:
     attributes:
       user:
+        age_range: Wie alt sind Sie?
         country: Land
         date_of_birth: Geburtsdatum
-        gender: Geschlecht
+        gender: Welches Geschlecht identifizieren Sie?
         location: Standort
         phone_number: Telefonnummer
         postal_code: Postleitzahl
@@ -14,7 +15,8 @@ de:
         user:
           attributes:
             date_of_birth:
-              underage: ungültig. Wenn Sie minderjährig sind, müssen Sie die Erlaubnis der Eltern einholen
+              underage: ungültig. Wenn Sie minderjährig sind, müssen Sie die Erlaubnis
+                der Eltern einholen
   decidim:
     admin:
       actions:
@@ -33,27 +35,40 @@ de:
           users: Teilnehmer
         extra_user_fields:
           fields:
+            age_range:
+              description: Dieses Feld ist eine Liste von Altersgruppen. Der Benutzer
+                kann eine Altersgruppe auswählen.
+              label: Das Feld Altersgruppe aktivieren
             country:
-              description: Dieses Feld enthält eine Liste von Ländern. Der Benutzer kann ein Land auswählen.
+              description: Dieses Feld enthält eine Liste von Ländern. Der Benutzer
+                kann ein Land auswählen.
               label: Das Feld Land aktivieren
             date_of_birth:
-              description: Dieses Feld ist ein Feld für das Geburtsdatum. Der Benutzer kann ein Datum auswählen.
+              description: Dieses Feld ist ein Feld für das Geburtsdatum. Der Benutzer
+                kann ein Datum auswählen.
               label: Das Feld Geburtsdatum aktivieren
             gender:
-              description: Dieses Feld ist ein Feld für die Geschlechtsidentität. Der Benutzer kann ein Geschlecht auswählen.
+              description: Dieses Feld ist ein Feld für die Geschlechtsidentität.
+                Der Benutzer kann ein Geschlecht auswählen.
               label: Das Feld Geschlecht aktivieren
             location:
-              description: Dieses Feld ermöglicht das Hinzufügen von Text. Der Benutzer kann einen Ort auswählen.
+              description: Dieses Feld ermöglicht das Hinzufügen von Text. Der Benutzer
+                kann einen Ort auswählen.
               label: Das Feld Standort aktivieren
             phone_number:
-              description: Dieses Feld ist ein Telefonnummernfeld. Der Benutzer kann eine Nummer auswählen.
+              description: Dieses Feld ist ein Telefonnummernfeld. Der Benutzer kann
+                eine Nummer auswählen.
               label: Das Feld Telefonnummer aktivieren
             postal_code:
-              description: Dieses Feld ist für die Postleitzahl. Der Benutzer kann eine Postleitzahl auswählen.
+              description: Dieses Feld ist für die Postleitzahl. Der Benutzer kann
+                eine Postleitzahl auswählen.
               label: Das Postleitzahlenfeld aktivieren.
           form:
             callout:
-              help: Aktivieren Sie die Funktion für benutzerdefinierte Anmeldefelder, um zusätzliche Felder in Ihrem Anmeldeformular zu verwalten. Auch bei aktivierter Option wird das Anmeldeformular nur aktualisiert, wenn mindestens ein zusätzliches Feld aktiviert ist.
+              help: Aktivieren Sie die Funktion für benutzerdefinierte Anmeldefelder,
+                um zusätzliche Felder in Ihrem Anmeldeformular zu verwalten. Auch
+                bei aktivierter Option wird das Anmeldeformular nur aktualisiert,
+                wenn mindestens ein zusätzliches Feld aktiviert ist.
             extra_user_fields:
               extra_user_fields_enabled: Benutzerdefinierte Anmeldefelder aktivieren
               section: Verfügbare Anmeldefelder für das Anmeldeformular
@@ -65,10 +80,17 @@ de:
           update:
             failure: Bei der Aktualisierung ist ein Fehler aufgetreten.
             success: Die Anmeldefelder wurden erfolgreich aktualisiert.
+      age_ranges:
+        17_to_30: 17 bis 30
+        31_to_60: 31 bis 60
+        61_or_more: 61 oder älter
+        prefer_not_to_say: Bevorzuge es, nicht zu sagen
+        up_to_16: 16 oder jünger
       genders:
         female: Frau
         male: Mann
         other: Divers
+        prefer_not_to_say: Bevorzuge es, nicht zu sagen
       registration_form:
         signup:
           legend: Weitere Informationen

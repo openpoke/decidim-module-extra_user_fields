@@ -3,9 +3,10 @@ ca:
   activemodel:
     attributes:
       user:
+        age_range: Quina edat tens?
         country: País
         date_of_birth: Data de naixement
-        gender: Gènere
+        gender: Quin gènere identifiques?
         location: Localització
         phone_number: Telèfon
         postal_code: Codi postal
@@ -36,6 +37,10 @@ ca:
           users: Participants
         extra_user_fields:
           fields:
+            age_range:
+              description: Aquest camp és una llista de rangs d'edat. Si está activat,
+                l'usuari haurà de triar un rang d'edat.
+              label: Habilitar camp de rang d'edat
             country:
               description: Aquest camp és una llista de països. Si está activat, l'usuari
                 haurà de triar un país.
@@ -89,10 +94,17 @@ ca:
           update:
             failure: S'ha produït un error en l'actualització
             success: Camps d'usuari addicionals actualitzats correctament a l'organització
+      age_ranges:
+        17_to_30: De 17 a 30
+        31_to_60: De 31 a 60
+        61_or_more: 61 o més
+        prefer_not_to_say: Prefereixo no dir-ho
+        up_to_16: 16 o menys
       genders:
         female: Dona
         male: Home
         other: Altre
+        prefer_not_to_say: Prefereixo no dir-ho
       registration_form:
         signup:
           legend: Més informació

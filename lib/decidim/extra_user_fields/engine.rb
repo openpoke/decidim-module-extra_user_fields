@@ -11,12 +11,6 @@ module Decidim
     class Engine < ::Rails::Engine
       isolate_namespace Decidim::ExtraUserFields
 
-      DEFAULT_GENDER_OPTIONS = [:male, :female, :other].freeze
-
-      DEFAULT_UNDERAGE_LIMIT = 18
-
-      DEFAULT_UNDERAGE_OPTIONS = (15..21)
-
       routes do
         # Add engine routes here
         # resources :extra_user_fields

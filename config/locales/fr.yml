@@ -3,9 +3,10 @@ fr:
   activemodel:
     attributes:
       user:
+        age_range: Quel âge avez-vous?
         country: Pays
         date_of_birth: Date de naissance
-        gender: Genre
+        gender: Quel genre identifiez-vous?
         location: Localisation
         phone_number: Numéro de téléphone
         postal_code: Code postal
@@ -36,6 +37,10 @@ fr:
           users: Participants
         extra_user_fields:
           fields:
+            age_range:
+              description: Ce champ est une liste de tranches d'âge. L'utilisateur
+                pourra choisir une tranche d'âge.
+              label: Activer le champ tranche d'âge
             country:
               description: Ce champ contient une liste de pays. L'utilisateur pourra
                 choisir un pays.
@@ -88,10 +93,17 @@ fr:
           update:
             failure: Une erreur est survenue lors de la mise à jour
             success: Les champs d'inscription ont été mis à jour avec succ§s
+      age_ranges:
+        17_to_30: 17 à 30
+        31_to_60: 31 à 60
+        61_or_more: 61 ou plus
+        prefer_not_to_say: Préfère ne pas dire
+        up_to_16: 16 ou moins
       genders:
         female: Femme
         male: Homme
         other: Autre
+        prefer_not_to_say: Préfère ne pas dire
       registration_form:
         signup:
           legend: Plus d'information

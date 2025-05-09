@@ -13,6 +13,7 @@ end
 def fill_extra_user_fields
   fill_in :registration_user_date_of_birth_date, with: "01/01/2000"
   select "Other", from: :registration_user_gender
+  select "17 to 30", from: :registration_user_age_range
   select "Argentina", from: :registration_user_country
   fill_in :registration_user_postal_code, with: "00000"
   fill_in :registration_user_phone_number, with: "0123456789"
@@ -41,6 +42,7 @@ describe "Extra user fields" do # rubocop:disable RSpec/DescribeClass
       "date_of_birth" => date_of_birth,
       "postal_code" => postal_code,
       "gender" => gender,
+      "age_range" => age_range,
       "country" => country,
       "phone_number" => phone_number,
       "location" => location,
@@ -65,6 +67,10 @@ describe "Extra user fields" do # rubocop:disable RSpec/DescribeClass
     { "enabled" => true }
   end
 
+  let(:age_range) do
+    { "enabled" => true }
+  end
+
   let(:phone_number) do
     { "enabled" => true, "pattern" => phone_number_pattern, "placeholder" => nil }
   end
@@ -86,7 +92,7 @@ describe "Extra user fields" do # rubocop:disable RSpec/DescribeClass
   it "contains extra user fields" do
     within "#card__extra_user_fields" do
       expect(page).to have_content("Date of birth")
-      expect(page).to have_content("Gender")
+      expect(page).to have_content("Which gender do you identify with?")
       expect(page).to have_content("Country")
       expect(page).to have_content("Postal code")
       expect(page).to have_content("Phone Number")
@@ -143,6 +149,7 @@ describe "Extra user fields" do # rubocop:disable RSpec/DescribeClass
 
   it_behaves_like "mandatory extra user fields", "date_of_birth"
   it_behaves_like "mandatory extra user fields", "gender"
+  it_behaves_like "mandatory extra user fields", "age_range"
   it_behaves_like "mandatory extra user fields", "country"
   it_behaves_like "mandatory extra user fields", "postal_code"
   it_behaves_like "mandatory extra user fields", "phone_number"
@@ -156,7 +163,8 @@ describe "Extra user fields" do # rubocop:disable RSpec/DescribeClass
 
     it "does not contain extra user fields" do
       expect(page).to have_no_content("Date of birth")
-      expect(page).to have_no_content("Gender")
+      expect(page).to have_no_content("Which gender do you identify with?")
+      expect(page).to have_no_content("How old are you?")
       expect(page).to have_no_content("Country")
       expect(page).to have_no_content("Postal code")
       expect(page).to have_no_content("Phone Number")

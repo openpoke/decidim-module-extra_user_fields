@@ -77,6 +77,7 @@ module Decidim
           postal_code: form.postal_code,
           date_of_birth: form.date_of_birth,
           gender: form.gender,
+          age_range: form.age_range,
           phone_number: form.phone_number,
           location: form.location,
           underage: form.underage,

@@ -11,6 +11,7 @@ module Decidim
         attribute :postal_code, Boolean
         attribute :date_of_birth, Boolean
         attribute :gender, Boolean
+        attribute :age_range, Boolean
         attribute :phone_number, Boolean
         attribute :location, Boolean
         attribute :underage, Boolean
@@ -28,10 +29,11 @@ module Decidim
           self.postal_code = model.extra_user_fields.dig("postal_code", "enabled")
           self.date_of_birth = model.extra_user_fields.dig("date_of_birth", "enabled")
           self.gender = model.extra_user_fields.dig("gender", "enabled")
+          self.age_range = model.extra_user_fields.dig("age_range", "enabled")
           self.phone_number = model.extra_user_fields.dig("phone_number", "enabled")
           self.location = model.extra_user_fields.dig("location", "enabled")
           self.underage = model.extra_user_fields.dig("underage", "enabled")
-          self.underage_limit = model.extra_user_fields.fetch("underage_limit", Decidim::ExtraUserFields::Engine::DEFAULT_UNDERAGE_LIMIT)
+          self.underage_limit = model.extra_user_fields.fetch("underage_limit", Decidim::ExtraUserFields.underage_limit)
           self.phone_number_pattern = model.extra_user_fields.dig("phone_number", "pattern")
           self.phone_number_placeholder = model.extra_user_fields.dig("phone_number", "placeholder")
           # Block ExtraUserFields MapModel

@@ -3,9 +3,10 @@ es:
   activemodel:
     attributes:
       user:
+        age_range: Cuántos años tienes?
         country: País
         date_of_birth: Fecha de nacimiento
-        gender: Género
+        gender: Con qué género te identificas?
         location: Localización
         phone_number: Teléfono
         postal_code: Código postal
@@ -36,6 +37,10 @@ es:
           users: Participantes
         extra_user_fields:
           fields:
+            age_range:
+              description: Este campo es una lista de rangos de edad. Si está marcado,
+                el usuario tendrá que elegir un rango de edad.
+              label: Habilitar campo de rango de edad
             country:
               description: Este campo es una lista de países. Si está marcado, el
                 usuario tendrá que elegir un país.
@@ -89,10 +94,17 @@ es:
             failure: Se ha producido un error en la actualización
             success: Campos de usuario adicionales actualizados correctamente en la
               organización
+      age_ranges:
+        17_to_30: 17 a 30
+        31_to_60: 31 a 60
+        61_or_more: 61 o más
+        prefer_not_to_say: Prefiero no decirlo
+        up_to_16: 16 o menos
       genders:
         female: Mujer
         male: Hombre
         other: Otro
+        prefer_not_to_say: Prefiero no decirlo
       registration_form:
         signup:
           legend: Más información

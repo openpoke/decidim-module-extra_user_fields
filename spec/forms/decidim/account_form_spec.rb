@@ -62,6 +62,7 @@ module Decidim
     let(:country) { "Argentina" }
     let(:date_of_birth) { "01/01/2000" }
     let(:gender) { "other" }
+    let(:age_range) { "17_to_30" }
     let(:location) { "Paris" }
     let(:phone_number) { "0123456789" }
     let(:postal_code) { "75001" }

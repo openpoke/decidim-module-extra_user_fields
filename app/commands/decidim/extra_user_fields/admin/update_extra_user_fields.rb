@@ -39,6 +39,7 @@ module Decidim
         end
 
         # rubocop:disable Metrics/CyclomaticComplexity
+        # rubocop:disable Metrics/PerceivedComplexity
         def extra_user_fields
           {
             "enabled" => form.enabled.presence || false,
@@ -46,6 +47,7 @@ module Decidim
             "country" => { "enabled" => form.country.presence || false },
             "postal_code" => { "enabled" => form.postal_code.presence || false },
             "gender" => { "enabled" => form.gender.presence || false },
+            "age_range" => { "enabled" => form.age_range.presence || false },
             "phone_number" => {
               "enabled" => form.phone_number.presence || false,
               "pattern" => form.phone_number_pattern.presence,
@@ -53,13 +55,11 @@ module Decidim
             },
             "location" => { "enabled" => form.location.presence || false },
             "underage" => { "enabled" => form.underage || false },
-            "underage_limit" => form.underage_limit || Decidim::ExtraUserFields::Engine::DEFAULT_UNDERAGE_LIMIT
-            # Block ExtraUserFields SaveFieldInConfig
-
-            # EndBlock
+            "underage_limit" => form.underage_limit || Decidim::ExtraUserFields.underage_limit
           }
         end
         # rubocop:enable Metrics/CyclomaticComplexity
+        # rubocop:enable Metrics/PerceivedComplexity
       end
     end
   end
