@@ -33,4 +33,8 @@
     <%= f.hidden_field :underage, value: current_user.extended_data["underage"] || "0" %>
     <%= f.hidden_field :statutory_representative_email, value: current_user.extended_data["statutory_representative_email"] || "" %>
   <% end %>
+
+  <% if current_organization.activated_extra_field?(:select_fields) %>
+    <%= render partial: "decidim/extra_user_fields/select_fields", locals: { f: f } %>
+  <% end %>
 <% end %>

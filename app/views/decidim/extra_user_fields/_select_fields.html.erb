@@ -1,0 +1,14 @@
+    <% f.object.custom_select_fields_options.each do |field, options| %>
+      <div class="fieldset">
+        <%= label_tag "user_select_fields_#{field}" do %>
+          <%= t("decidim.extra_user_fields.select_fields.#{field}.label", default: field.to_s.humanize) %>
+          <% if (help = t("decidim.extra_user_fields.select_fields.#{field}.description", default: "")).present? %>
+            <span class="help-text"><%= help %></span>
+          <% end %>
+
+          <%= select_tag "user[select_fields][#{field}]",
+                        options_for_select(options, f.object.select_fields[field]),
+                        id: "user_select_fields_#{field}" %>
+        <% end %>
+      </div>
+    <% end %>

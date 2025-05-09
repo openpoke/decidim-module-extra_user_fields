@@ -18,6 +18,14 @@ module Decidim
             end.join.html_safe
           end
         end
+
+        def custom_select_fields(form)
+          return {} unless Decidim::ExtraUserFields.select_fields.is_a?(Hash)
+
+          Decidim::ExtraUserFields.select_fields.keys.index_with do |field|
+            form.object.select_fields.include?(field.to_s)
+          end
+        end
       end
     end
   end

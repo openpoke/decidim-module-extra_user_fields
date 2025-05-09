@@ -55,7 +55,8 @@ module Decidim
             },
             "location" => { "enabled" => form.location.presence || false },
             "underage" => { "enabled" => form.underage || false },
-            "underage_limit" => form.underage_limit || Decidim::ExtraUserFields.underage_limit
+            "underage_limit" => form.underage_limit || Decidim::ExtraUserFields.underage_limit,
+            "select_fields" => form.select_fields.to_a
           }
         end
         # rubocop:enable Metrics/CyclomaticComplexity

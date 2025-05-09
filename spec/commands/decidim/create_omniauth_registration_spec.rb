@@ -20,6 +20,11 @@ module Decidim
         let(:phone_number) { "0123456789" }
         let(:postal_code) { "75001" }
         let(:underage) { false }
+        let(:select_fields) do
+          {
+            "participant_type" => "individual"
+          }
+        end
         let(:statutory_representative_email) { nil }
         let(:extended_data) do
           {
@@ -31,6 +36,7 @@ module Decidim
             phone_number:,
             postal_code:,
             underage:,
+            select_fields:,
             statutory_representative_email:
           }
         end
@@ -54,6 +60,7 @@ module Decidim
               "phone_number" => phone_number,
               "location" => location,
               "underage" => underage,
+              "select_fields" => select_fields,
               "statutory_representative_email" => statutory_representative_email
             }
           }
@@ -115,6 +122,16 @@ module Decidim
             expect(user.newsletter_notifications_at).to be_nil
             expect(user).to be_confirmed
             expect(user.valid_password?("decidim123456789")).to be(true)
+
+            expect(user.extended_data["country"]).to eq(country)
+            expect(user.extended_data["postal_code"]).to eq(postal_code)
+            expect(user.extended_data["date_of_birth"]).to eq(date_of_birth.to_date.iso8601)
+            expect(user.extended_data["gender"]).to eq(gender)
+            expect(user.extended_data["age_range"]).to eq(age_range)
+            expect(user.extended_data["phone_number"]).to eq(phone_number)
+            expect(user.extended_data["location"]).to eq(location)
+            expect(user.extended_data["underage"]).to eq(underage)
+            expect(user.extended_data["select_fields"]).to eq(select_fields)
           end
 
           # NOTE: This is important so that the users who are only
