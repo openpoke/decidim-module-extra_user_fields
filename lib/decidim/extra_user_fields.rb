@@ -46,7 +46,7 @@ module Decidim
     config_accessor :select_fields do
       {
         participant_type: {
-          "" => "",
+          # "" => "",
           "individual" => "decidim.extra_user_fields.participant_types.individual",
           "organization" => "decidim.extra_user_fields.participant_types.organization"
         }

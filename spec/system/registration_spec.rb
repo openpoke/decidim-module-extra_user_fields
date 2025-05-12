@@ -11,11 +11,11 @@ def fill_registration_form
 end
 
 def fill_extra_user_fields
-  fill_in :registration_user_date_of_birth_date, with: "01/01/2000"
+  fill_in_datepicker :registration_user_date_of_birth_date, with: "01/01/2000"
   select "Other", from: :registration_user_gender
   select "17 to 30", from: :registration_user_age_range
   select "Argentina", from: :registration_user_country
-  select "Individual", from: :registration_user_participant_type
+  select "Individual", from: :registration_user_select_fields_participant_type
   fill_in :registration_user_postal_code, with: "00000"
   fill_in :registration_user_phone_number, with: "0123456789"
   fill_in :registration_user_location, with: "Cahors"
@@ -97,8 +97,7 @@ describe "Extra user fields" do # rubocop:disable RSpec/DescribeClass
       expect(page).to have_content("Phone Number")
       expect(page).to have_content("Location")
       expect(page).to have_content("How old are you?")
-      expect(page).to have_content("How do you identify?")
-      expect(page).to have_content("Select your participant type")
+      expect(page).to have_content("Are you participating as an individual, or officially on behalf of an organization?")
     end
   end
 
@@ -165,8 +164,8 @@ describe "Extra user fields" do # rubocop:disable RSpec/DescribeClass
       expect(page).to have_no_content("Postal code")
       expect(page).to have_no_content("Phone Number")
       expect(page).to have_no_content("Location")
-      expect(page).to have_no_content("How do you identify?")
-      expect(page).to have_no_content("Select your participant type")
+      expect(page).to have_no_content("Which gender do you identify with?")
+      expect(page).to have_no_content("Are you participating as an individual, or officially on behalf of an organization?")
     end
 
     it "allows to create a new account" do

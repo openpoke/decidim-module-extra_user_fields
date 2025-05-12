@@ -85,11 +85,20 @@ fr:
             extra_user_fields:
               extra_user_fields_enabled: Activer les champs d'inscription personnalisés
               section: Champs d'inscription disponibles pour le formulaire d'inscription
+              section_extras: Champs supplémentaires personnalisés
+              section_extras_description: Si vous avez configuré des champs d'utilisateur
+                supplémentaires, vous pouvez les gérer ici (Voir la section "Configuration
+                via un initializer" dans le README du plugin).
             global:
               title: Activer / Désactiver les champs d'inscription personnalisés
           index:
             save: Sauvegarder
             title: Gérer les champs d'inscription personnalisés
+          select_fields:
+            participant_type:
+              description: Ce champ est une liste de types de participants. L'utilisateur
+                devra choisir un type de participant.
+              label: Activer le champ type de participant
           update:
             failure: Une erreur est survenue lors de la mise à jour
             success: Les champs d'inscription ont été mis à jour avec succ§s
@@ -99,6 +108,8 @@ fr:
         61_or_more: 61 ou plus
         prefer_not_to_say: Préfère ne pas dire
         up_to_16: 16 ou moins
+      errors:
+        select_fields: Le champ "%{field}" n'est pas valide.
       genders:
         female: Femme
         male: Homme
@@ -109,6 +120,9 @@ fr:
           legend: Plus d'information
           underage: Je suis âgé de moins de %{limit} ans et j'accepte d'obtenir une
             autorisation parentale
+      select_fields:
+        participant_type:
+          label: Activer le champ type de participant
     statutory_representative:
       inform:
         body: |
