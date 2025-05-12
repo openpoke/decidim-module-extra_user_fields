@@ -96,6 +96,16 @@ Currently, the following ENV variables are supported:
 | EXTRA_USER_FIELDS_GENDERS | Options for the gender field (you need to add the corresponding I18n keys, ie: `decidim.extra_user_fields.genders.prefer_not_to_say` ) | `female male other prefer_not_to_say` |
 | EXTRA_USER_FIELDS_AGE_RANGES | Options for the age range field (you need to add the corresponding I18n keys, e.g., `decidim.extra_user_fields.age_ranges.up_to_16`) | `up_to_16 17_to_30 31_to_60 61_or_more prefer_not_to_say` |
 
+## Custom fields
+
+If your use case include fields not defined in this module, it is possible to define custom fields of different types:
+
+1. **Select fields** This configuration option allows you to define any number of extra user fields of the type "Select".
+
+
+See the next section "Configuration through an initializer" for more information.
+
+
 ### Configuration through an initializer
 
 It is also possible to configure the module using the an initializer:
@@ -110,6 +120,30 @@ Decidim::ExtraUserFields.configure do |config|
   config.age_ranges = ["30_or_younger", "31_or_older", "prefer_not_to_say"]
   
   ...
+
+
+    # I extra select fields are needed, they can be added here.
+    # The key is the field name and the value is a hash with the options.
+    # You can (optionally) add I18n keys for the options (if not the text will be used as it is).
+    # For the user interface, you can defined labels and descriptions for the fields (optionally):
+    # decidim.extra_user_fields.select_fields.field_name.label
+    # decidim.extra_user_fields.select_fields.field_name.description
+    # For the admin interface, you can defined labels and descriptions for the fields (optionally):
+    # decidim.extra_user_fields.admin.extra_user_fields.select_fields.field_name.label
+    # decidim.extra_user_fields.admin.extra_user_fields.select_fields.field_name.description
+    config_accessor :select_fields do
+      {
+        participant_type: {
+          # "" => "",
+          "individual" => "decidim.extra_user_fields.participant_types.individual",
+          "organization" => "decidim.extra_user_fields.participant_types.organization"
+        },
+        favorite_pet: {
+          "cat" => "my_app.favorite_pets.cat".
+          "dog" => "my_app.favorite_pets.dog"
+        }
+      }
+    end
 end
 ```
 

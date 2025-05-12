@@ -3,7 +3,7 @@
     <h2 class="h4"><%= t(".signup.legend") %></h2>
 
     <% if current_organization.activated_extra_field?(:date_of_birth) %>
-      <div><%= f.date_field :date_of_birth, id: "user_date_of_birth" %></div>
+      <div><%= f.date_field :date_of_birth %></div>
     <% end %>
 
     <% if current_organization.activated_extra_field?(:gender) %>
@@ -49,9 +49,10 @@
         </div>
       <% end %>
     <% end %>
-    <%# Block ExtraUserFields SignUpFormFields %>
 
-    <%# EndBlock %>
+    <% if current_organization.activated_extra_field?(:select_fields) %>
+      <%= render partial: "decidim/extra_user_fields/select_fields", locals: { f: f } %>
+    <% end %>
 
   </div>
   <%= append_javascript_pack_tag "decidim_extra_user_fields.js" %>

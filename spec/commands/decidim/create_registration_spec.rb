@@ -23,6 +23,11 @@ module Decidim
         let(:phone_number) { "0123456789" }
         let(:postal_code) { "75001" }
         let(:underage) { "0" }
+        let(:select_fields) do
+          {
+            participant_type: "individual"
+          }
+        end
         let(:statutory_representative_email) { nil }
         let(:extended_data) do
           {
@@ -33,6 +38,7 @@ module Decidim
             phone_number:,
             postal_code:,
             underage:,
+            age_range:,
             statutory_representative_email:
           }
         end
@@ -54,6 +60,7 @@ module Decidim
               "phone_number" => phone_number,
               "location" => location,
               "underage" => underage,
+              "select_fields" => select_fields,
               "statutory_representative_email" => statutory_representative_email
             }
           }
@@ -129,6 +136,7 @@ module Decidim
                 phone_number:,
                 postal_code:,
                 underage:,
+                select_fields:,
                 statutory_representative_email:
               }
             ).and_call_original

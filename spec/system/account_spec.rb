@@ -12,23 +12,20 @@ describe "Account" do
   let(:organization) { create(:organization, extra_user_fields:) }
   let(:user) { create(:user, :confirmed, organization:, password:) }
   let(:password) { "dqCFgjfDbC7dPbrv" }
-  # rubocop:disable Style/TrailingCommaInHashLiteral
+
   let(:extra_user_fields) do
     {
       "enabled" => true,
       "date_of_birth" => date_of_birth,
       "postal_code" => postal_code,
       "gender" => gender,
+      "select_fields" => select_fields,
       "age_range" => age_range,
       "country" => country,
       "phone_number" => phone_number,
-      "location" => location,
-      # Block ExtraUserFields ExtraUserFields
-
-      # EndBlock
+      "location" => location
     }
   end
-  # rubocop:enable Style/TrailingCommaInHashLiteral
 
   let(:date_of_birth) do
     { "enabled" => true }
@@ -57,6 +54,10 @@ describe "Account" do
 
   let(:location) do
     { "enabled" => true }
+  end
+
+  let(:select_fields) do
+    ["participant_type"]
   end
 
   # Block ExtraUserFields RspecVar
@@ -107,10 +108,11 @@ describe "Account" do
           fill_in :user_personal_url, with: "https://example.org"
           fill_in :user_about, with: "A Serbian-American inventor, electrical engineer, mechanical engineer, physicist, and futurist."
 
-          fill_in :user_date_of_birth_date, with: "01/01/2000"
+          fill_in_datepicker :user_date_of_birth_date, with: "01/01/2000"
           select "Other", from: :user_gender
           select "17 to 30", from: :user_age_range
           select "Argentina", from: :user_country
+          select "Individual", from: :user_select_fields_participant_type
           fill_in :user_postal_code, with: "00000"
           fill_in :user_phone_number, with: "0123456789"
           fill_in :user_location, with: "Cahors"
@@ -238,6 +240,14 @@ describe "Account" do
       it_behaves_like "does not display extra user field", "location", "Location"
     end
 
+    context "when select_fields is not enabled" do
+      let(:select_fields) do
+        ["another_field"]
+      end
+
+      it_behaves_like "does not display extra user field", "select_fields", "Select fields"
+    end
+
     describe "when update password" do
       before do
         within "form.edit_user" do
@@ -246,10 +256,11 @@ describe "Account" do
           fill_in :user_personal_url, with: "https://example.org"
           fill_in :user_about, with: "A Serbian-American inventor, electrical engineer, mechanical engineer, physicist, and futurist."
 
-          fill_in :user_date_of_birth_date, with: "01/01/2000"
+          fill_in_datepicker :user_date_of_birth_date, with: "01/01/2000"
           select "Other", from: :user_gender
           select "17 to 30", from: :user_age_range
           select "Argentina", from: :user_country
+          select "Individual", from: :user_select_fields_participant_type
           fill_in :user_postal_code, with: "00000"
           fill_in :user_phone_number, with: "0123456789"
           fill_in :user_location, with: "Cahors"
@@ -307,10 +318,11 @@ describe "Account" do
           fill_in :user_personal_url, with: "https://example.org"
           fill_in :user_about, with: "A Serbian-American inventor, electrical engineer, mechanical engineer, physicist, and futurist."
 
-          fill_in :user_date_of_birth_date, with: "01/01/2000"
+          fill_in_datepicker :user_date_of_birth_date, with: "01/01/2000"
           select "Other", from: :user_gender
           select "17 to 30", from: :user_age_range
           select "Argentina", from: :user_country
+          select "Individual", from: :user_select_fields_participant_type
           fill_in :user_postal_code, with: "00000"
           fill_in :user_phone_number, with: "0123456789"
           fill_in :user_location, with: "Cahors"

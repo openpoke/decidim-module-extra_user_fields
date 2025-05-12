@@ -22,9 +22,11 @@ module Decidim
         postal_code:,
         date_of_birth:,
         gender:,
+        age_range:,
         phone_number:,
         location:,
         underage:,
+        select_fields:,
         statutory_representative_email:
       ).with_context(
         current_organization: organization,
@@ -44,7 +46,8 @@ module Decidim
         "phone_number" => { "enabled" => true, "pattern" => phone_number_pattern, "placeholder" => nil },
         "location" => { "enabled" => true },
         "underage" => { "enabled" => true },
-        "underage_limit" => 18
+        "underage_limit" => 18,
+        "select_fields" => ["participant_type"]
       }
     end
     let(:phone_number_pattern) { "^(\\+34)?[0-9 ]{9,12}$" }
@@ -67,6 +70,11 @@ module Decidim
     let(:phone_number) { "0123456789" }
     let(:postal_code) { "75001" }
     let(:underage) { "0" }
+    let(:select_fields) do
+      {
+        participant_type: "individual"
+      }
+    end
     let(:statutory_representative_email) { nil }
 
     context "with correct data" do
@@ -85,6 +93,31 @@ module Decidim
 
     context "with invalid phone number format" do
       let(:phone_number) { "ABCDEFGHIJK" }
+
+      it "is invalid" do
+        expect(subject).not_to be_valid
+      end
+    end
+
+    context "with non configured select fields" do
+      let(:select_fields) do
+        {
+          participant_type: "individual",
+          foo: "bar"
+        }
+      end
+
+      it "is invalid" do
+        expect(subject).to be_valid
+      end
+    end
+
+    context "with incorrect select fields" do
+      let(:select_fields) do
+        {
+          participant_type: "i_dont_exist"
+        }
+      end
 
       it "is invalid" do
         expect(subject).not_to be_valid

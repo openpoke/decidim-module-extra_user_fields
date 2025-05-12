@@ -11,10 +11,11 @@ def fill_registration_form
 end
 
 def fill_extra_user_fields
-  fill_in :registration_user_date_of_birth_date, with: "01/01/2000"
+  fill_in_datepicker :registration_user_date_of_birth_date, with: "01/01/2000"
   select "Other", from: :registration_user_gender
   select "17 to 30", from: :registration_user_age_range
   select "Argentina", from: :registration_user_country
+  select "Individual", from: :registration_user_select_fields_participant_type
   fill_in :registration_user_postal_code, with: "00000"
   fill_in :registration_user_phone_number, with: "0123456789"
   fill_in :registration_user_location, with: "Cahors"
@@ -34,10 +35,9 @@ describe "Extra user fields" do # rubocop:disable RSpec/DescribeClass
 
   let(:organization) { create(:organization, extra_user_fields:) }
   let!(:terms_and_conditions_page) { Decidim::StaticPage.find_by(slug: "terms-and-conditions", organization:) }
-  # rubocop:disable Style/TrailingCommaInHashLiteral
+
   let(:extra_user_fields) do
     {
-      # Block ExtraUserFields ExtraUserFields
       "enabled" => true,
       "date_of_birth" => date_of_birth,
       "postal_code" => postal_code,
@@ -46,10 +46,9 @@ describe "Extra user fields" do # rubocop:disable RSpec/DescribeClass
       "country" => country,
       "phone_number" => phone_number,
       "location" => location,
-      # EndBlock
+      "select_fields" => select_fields
     }
   end
-  # rubocop:enable Style/TrailingCommaInHashLiteral
 
   let(:date_of_birth) do
     { "enabled" => true }
@@ -80,9 +79,9 @@ describe "Extra user fields" do # rubocop:disable RSpec/DescribeClass
     { "enabled" => true }
   end
 
-  # Block ExtraUserFields RspecVar
-
-  # EndBlock
+  let(:select_fields) do
+    ["participant_type"]
+  end
 
   before do
     switch_to_host(organization.host)
@@ -97,9 +96,8 @@ describe "Extra user fields" do # rubocop:disable RSpec/DescribeClass
       expect(page).to have_content("Postal code")
       expect(page).to have_content("Phone Number")
       expect(page).to have_content("Location")
-      # Block ExtraUserFields ContainsFieldSpec
-
-      # EndBlock
+      expect(page).to have_content("How old are you?")
+      expect(page).to have_content("Are you participating as an individual, or officially on behalf of an organization?")
     end
   end
 
@@ -154,9 +152,6 @@ describe "Extra user fields" do # rubocop:disable RSpec/DescribeClass
   it_behaves_like "mandatory extra user fields", "postal_code"
   it_behaves_like "mandatory extra user fields", "phone_number"
   it_behaves_like "mandatory extra user fields", "location"
-  # Block ExtraUserFields ItBehavesLikeSpec
-
-  # EndBlock
 
   context "when extra_user_fields is disabled" do
     let(:organization) { create(:organization, :extra_user_fields_disabled) }
@@ -169,9 +164,8 @@ describe "Extra user fields" do # rubocop:disable RSpec/DescribeClass
       expect(page).to have_no_content("Postal code")
       expect(page).to have_no_content("Phone Number")
       expect(page).to have_no_content("Location")
-      # Block ExtraUserFields DoesNotContainFieldSpec
-
-      # EndBlock
+      expect(page).to have_no_content("Which gender do you identify with?")
+      expect(page).to have_no_content("Are you participating as an individual, or officially on behalf of an organization?")
     end
 
     it "allows to create a new account" do
