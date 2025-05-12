@@ -67,7 +67,7 @@ describe "Admin manages organization extra user fields" do # rubocop:disable RSp
         within "#accordion-setup" do
           expect(page).to have_content("Additional custom fields")
           expect(page).to have_content("Enable NGO field")
-          expect(page).to have_content("This field is a boolean")
+          expect(page).to have_content("This field is a Boolean field. User will be able to check if is a NGO")
 
           page.check("Enable NGO field")
         end

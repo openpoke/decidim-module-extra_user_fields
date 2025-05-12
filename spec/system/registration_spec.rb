@@ -101,7 +101,7 @@ describe "Extra user fields" do # rubocop:disable RSpec/DescribeClass
       expect(page).to have_content("Location")
       expect(page).to have_content("How old are you?")
       expect(page).to have_content("Are you participating as an individual, or officially on behalf of an organization?")
-      expect(page).to have_content("Are you a non-profit organization?")
+      expect(page).to have_content("I am a member of a non-governmental organization (NGO)")
     end
   end
 
@@ -170,7 +170,7 @@ describe "Extra user fields" do # rubocop:disable RSpec/DescribeClass
       expect(page).to have_no_content("Location")
       expect(page).to have_no_content("Which gender do you identify with?")
       expect(page).to have_no_content("Are you participating as an individual, or officially on behalf of an organization?")
-      expect(page).to have_no_content("Are you a non-profit organization?")
+      expect(page).to have_no_content("I am a member of a non-governmental organization (NGO)")
     end
 
     it "allows to create a new account" do

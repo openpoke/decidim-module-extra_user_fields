@@ -115,7 +115,6 @@ en:
         ngo:
           label: I am a member of a non-governmental organization (NGO)
       errors:
-        boolean_fields: The field "%{field}" is not valid.
         select_fields: The field "%{field}" is not valid.
       genders:
         female: Female

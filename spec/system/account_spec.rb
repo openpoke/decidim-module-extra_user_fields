@@ -118,7 +118,7 @@ describe "Account" do
           select "17 to 30", from: :user_age_range
           select "Argentina", from: :user_country
           select "Individual", from: :user_select_fields_participant_type
-          check "user[ngo]"
+          check "I am a member of a non-governmental organization (NGO)"
           fill_in :user_postal_code, with: "00000"
           fill_in :user_phone_number, with: "0123456789"
           fill_in :user_location, with: "Cahors"
@@ -275,7 +275,7 @@ describe "Account" do
           select "17 to 30", from: :user_age_range
           select "Argentina", from: :user_country
           select "Individual", from: :user_select_fields_participant_type
-          check "user[ngo]"
+          check "I am a member of a non-governmental organization (NGO)"
           fill_in :user_postal_code, with: "00000"
           fill_in :user_phone_number, with: "0123456789"
           fill_in :user_location, with: "Cahors"
@@ -338,7 +338,7 @@ describe "Account" do
           select "17 to 30", from: :user_age_range
           select "Argentina", from: :user_country
           select "Individual", from: :user_select_fields_participant_type
-          check "user[ngo]"
+          check "I am a member of a non-governmental organization (NGO)"
           fill_in :user_postal_code, with: "00000"
           fill_in :user_phone_number, with: "0123456789"
           fill_in :user_location, with: "Cahors"

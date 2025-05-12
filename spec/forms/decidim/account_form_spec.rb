@@ -139,14 +139,6 @@ module Decidim
       end
     end
 
-    context "with incorrect boolean fields" do
-      let(:boolean_fields) { :i_dont_exist }
-
-      it "is invalid" do
-        expect(subject).not_to be_valid
-      end
-    end
-
     describe "name" do
       context "with an empty name" do
         let(:name) { "" }
