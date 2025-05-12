@@ -6,7 +6,6 @@ describe Decidim::ExtraUserFields::UserExportSerializer do
   subject { described_class.new(resource) }
 
   let(:resource) { create(:user, extended_data: registration_metadata) }
-  # rubocop:disable Style/TrailingCommaInHashLiteral
   let(:registration_metadata) do
     {
       gender:,
@@ -17,13 +16,10 @@ describe Decidim::ExtraUserFields::UserExportSerializer do
       phone_number:,
       location:,
       underage:,
-      statutory_representative_email:,
-      # Block ExtraUserFields ExtraUserFields
-
-      # EndBlock
+      select_fields:,
+      statutory_representative_email:
     }
   end
-  # rubocop:enable Style/TrailingCommaInHashLiteral
 
   let(:gender) { "other" }
   let(:age_range) { "17_to_30" }
@@ -35,9 +31,12 @@ describe Decidim::ExtraUserFields::UserExportSerializer do
   let(:underage) { true }
   let(:underage_limit) { 18 }
   let(:statutory_representative_email) { "parent@example.org" }
-  # Block ExtraUserFields RspecVar
+  let(:select_fields) do
+    {
+      "participant_type" => "individual"
+    }
+  end
 
-  # EndBlock
   let(:serialized) { subject.serialize }
 
   describe "#serialize" do
@@ -71,6 +70,10 @@ describe Decidim::ExtraUserFields::UserExportSerializer do
 
     it "includes the location" do
       expect(serialized).to include(location: resource.extended_data["location"])
+    end
+
+    it "includes the select fields" do
+      expect(serialized).to include(select_fields: resource.extended_data["select_fields"])
     end
 
     context "when users are blocked" do
