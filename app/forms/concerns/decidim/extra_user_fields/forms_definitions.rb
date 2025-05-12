@@ -23,6 +23,7 @@ module Decidim
         attribute :underage, ActiveRecord::Type::Boolean
         attribute :statutory_representative_email, String
         attribute :select_fields, Hash, default: {}
+        attribute :boolean_fields, Array, default: []
 
         # EndBlock
 
@@ -64,6 +65,7 @@ module Decidim
         self.location = extended_data[:location]
         self.underage = extended_data[:underage]
         self.select_fields = extended_data[:select_fields] || {}
+        self.boolean_fields = extended_data[:boolean_fields] || {}
         self.statutory_representative_email = extended_data[:statutory_representative_email]
       end
 

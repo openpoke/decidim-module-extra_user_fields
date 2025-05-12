@@ -20,6 +20,7 @@ describe "Account" do
       "postal_code" => postal_code,
       "gender" => gender,
       "select_fields" => select_fields,
+      "boolean_fields" => boolean_fields,
       "age_range" => age_range,
       "country" => country,
       "phone_number" => phone_number,
@@ -58,6 +59,10 @@ describe "Account" do
 
   let(:select_fields) do
     ["participant_type"]
+  end
+
+  let(:boolean_fields) do
+    ["ngo"]
   end
 
   # Block ExtraUserFields RspecVar
@@ -113,6 +118,7 @@ describe "Account" do
           select "17 to 30", from: :user_age_range
           select "Argentina", from: :user_country
           select "Individual", from: :user_select_fields_participant_type
+          check "user[ngo]"
           fill_in :user_postal_code, with: "00000"
           fill_in :user_phone_number, with: "0123456789"
           fill_in :user_location, with: "Cahors"
@@ -248,6 +254,14 @@ describe "Account" do
       it_behaves_like "does not display extra user field", "select_fields", "Select fields"
     end
 
+    context "when boolean_fields is not enabled" do
+      let(:boolean_fields) do
+        ["another_field"]
+      end
+
+      it_behaves_like "does not display extra user field", "boolean_fields", "Boolean fields"
+    end
+
     describe "when update password" do
       before do
         within "form.edit_user" do
@@ -261,6 +275,7 @@ describe "Account" do
           select "17 to 30", from: :user_age_range
           select "Argentina", from: :user_country
           select "Individual", from: :user_select_fields_participant_type
+          check "user[ngo]"
           fill_in :user_postal_code, with: "00000"
           fill_in :user_phone_number, with: "0123456789"
           fill_in :user_location, with: "Cahors"
@@ -323,6 +338,7 @@ describe "Account" do
           select "17 to 30", from: :user_age_range
           select "Argentina", from: :user_country
           select "Individual", from: :user_select_fields_participant_type
+          check "user[ngo]"
           fill_in :user_postal_code, with: "00000"
           fill_in :user_phone_number, with: "0123456789"
           fill_in :user_location, with: "Cahors"

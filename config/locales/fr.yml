@@ -36,6 +36,11 @@ fr:
         exports:
           users: Participants
         extra_user_fields:
+          boolean_fields:
+            ngo:
+              description: Ce champ est un champ booléen. L'utilisateur pourra cocher
+                s'il représente une ONG.
+              label: Activer le champ ONG
           fields:
             age_range:
               description: Ce champ est une liste de tranches d'âge. L'utilisateur
@@ -108,7 +113,11 @@ fr:
         61_or_more: 61 ou plus
         prefer_not_to_say: Préfère ne pas dire
         up_to_16: 16 ou moins
+      boolean_fields:
+        ngo:
+          label: Activer le champ ONG
       errors:
+        boolean_fields: Le champ "%{field}" n'est pas valide.
         select_fields: Le champ "%{field}" n'est pas valide.
       genders:
         female: Femme

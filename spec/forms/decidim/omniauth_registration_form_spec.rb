@@ -31,6 +31,9 @@ module Decidim
         "participant_type" => "individual"
       }
     end
+    let(:boolean_fields) do
+      ["ngo"]
+    end
 
     let(:attributes) do
       {
@@ -49,7 +52,8 @@ module Decidim
         phone_number:,
         location:,
         underage:,
-        select_fields:
+        select_fields:,
+        boolean_fields:
       }
     end
 

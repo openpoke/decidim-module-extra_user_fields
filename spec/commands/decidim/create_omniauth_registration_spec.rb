@@ -25,6 +25,9 @@ module Decidim
             "participant_type" => "individual"
           }
         end
+        let(:boolean_fields) do
+          ["ngo"]
+        end
         let(:statutory_representative_email) { nil }
         let(:extended_data) do
           {
@@ -37,6 +40,7 @@ module Decidim
             postal_code:,
             underage:,
             select_fields:,
+            boolean_fields:,
             statutory_representative_email:
           }
         end
@@ -61,6 +65,7 @@ module Decidim
               "location" => location,
               "underage" => underage,
               "select_fields" => select_fields,
+              "boolean_fields" => boolean_fields,
               "statutory_representative_email" => statutory_representative_email
             }
           }
@@ -132,6 +137,7 @@ module Decidim
             expect(user.extended_data["location"]).to eq(location)
             expect(user.extended_data["underage"]).to eq(underage)
             expect(user.extended_data["select_fields"]).to eq(select_fields)
+            expect(user.extended_data["boolean_fields"]).to eq(boolean_fields)
           end
 
           # NOTE: This is important so that the users who are only

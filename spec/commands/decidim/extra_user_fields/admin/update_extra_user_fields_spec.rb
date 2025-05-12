@@ -36,7 +36,8 @@ module Decidim
             "location" => location,
             "underage" => underage,
             "underage_limit" => underage_limit,
-            "select_fields" => %w(participant_type non_existing_field)
+            "select_fields" => %w(participant_type non_existing_field),
+            "boolean_fields" => %w(ngo non_existing_field)
           }
         end
         let(:form) do
@@ -89,6 +90,7 @@ module Decidim
               expect(extra_user_fields).to include("underage" => { "enabled" => true })
               expect(extra_user_fields).to include("underage_limit" => 18)
               expect(extra_user_fields).to include("select_fields" => ["participant_type"])
+              expect(extra_user_fields).to include("boolean_fields" => ["ngo"])
             end
           end
         end
