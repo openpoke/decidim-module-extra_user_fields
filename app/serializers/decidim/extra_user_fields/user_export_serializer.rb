@@ -38,6 +38,7 @@ module Decidim
           :underage,
           :select_fields,
           :boolean_fields,
+          :text_fields,
           :statutory_representative_email
         ]
       end

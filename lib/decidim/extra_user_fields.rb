@@ -63,5 +63,16 @@ module Decidim
     config_accessor :boolean_fields do
       [:ngo]
     end
+
+    # If extra text fields are needed, they can be added as an Array here.
+    # For the user interface, you can defined labels and descriptions for the fields (optionally):
+    # decidim.extra_user_fields.text_fields.field_name.label
+    # decidim.extra_user_fields.text_fields.field_name.description
+    # For the admin interface, you can defined labels and descriptions for the fields (optionally):
+    # decidim.extra_user_fields.admin.extra_user_fields.text_fields.field_name.label
+    # decidim.extra_user_fields.admin.extra_user_fields.text_fields.field_name.description
+    config_accessor :text_fields do
+      [:moto]
+    end
   end
 end

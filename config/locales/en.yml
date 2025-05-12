@@ -35,6 +35,11 @@ en:
         exports:
           users: Participants
         extra_user_fields:
+          text_fields:
+            moto:
+              description: This field is a String field. If checked, user will have
+                to fill in a moto
+              label: Enable moto field
           boolean_fields:
             ngo:
               description: This field is a Boolean field. User will be able to check
@@ -111,6 +116,9 @@ en:
         61_or_more: 61 or older
         prefer_not_to_say: Prefer not to say
         up_to_16: 16 or younger
+      text_fields:
+        moto:
+          label: What is your moto?
       boolean_fields:
         ngo:
           label: I am a member of a non-governmental organization (NGO)

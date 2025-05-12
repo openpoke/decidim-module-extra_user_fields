@@ -1,0 +1,14 @@
+    <% f.object.custom_text_fields.each do |field, label| %>
+      <div class="fieldset">
+        <%= label_tag f.field_id("text_fields_#{field}") do %>
+          <%= t("decidim.extra_user_fields.text_fields.#{field}.label", default: field.to_s.humanize) %>
+          <% if (help = t("decidim.extra_user_fields.text_fields.#{field}.description", default: "")).present? %>
+            <span class="help-text"><%= help %></span>
+          <% end %>
+          <%= text_field_tag "user[text_fields][]",
+                            field,
+                            f.object.text_fields.map(&:to_s).include?(field.to_s),
+                        id: f.field_id("text_fields_#{field}") %>
+        <% end %>
+      </div>
+    <% end %>

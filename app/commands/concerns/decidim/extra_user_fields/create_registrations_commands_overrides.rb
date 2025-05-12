@@ -56,6 +56,7 @@ module Decidim
           underage: form.underage,
           select_fields: form.select_fields,
           boolean_fields: form.boolean_fields,
+          text_fields: form.text_fields,
           statutory_representative_email: form.statutory_representative_email
         )
       end

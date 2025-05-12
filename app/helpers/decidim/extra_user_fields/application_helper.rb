@@ -50,6 +50,13 @@ module Decidim
           current_organization.extra_user_field_configuration(:boolean_fields).include?(field.to_s)
         end
       end
+
+      def custom_text_fields
+        return [] unless Decidim::ExtraUserFields.text_fields.is_a?(Array)
+
+        Decidim::ExtraUserFields.text_fields.filter do |field|
+          current_organization.extra_user_field_configuration(:text_fields).include?(field.to_s)
+      end
     end
   end
 end
