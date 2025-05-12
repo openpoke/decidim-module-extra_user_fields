@@ -16,12 +16,10 @@ def fill_extra_user_fields
   select "17 to 30", from: :registration_user_age_range
   select "Argentina", from: :registration_user_country
   select "Individual", from: :registration_user_select_fields_participant_type
+  check "registration_user_boolean_fields_ngo"
   fill_in :registration_user_postal_code, with: "00000"
   fill_in :registration_user_phone_number, with: "0123456789"
   fill_in :registration_user_location, with: "Cahors"
-  # Block ExtraUserFields FillExtraUserFields
-
-  # EndBlock
 end
 
 describe "Extra user fields" do # rubocop:disable RSpec/DescribeClass
@@ -46,7 +44,8 @@ describe "Extra user fields" do # rubocop:disable RSpec/DescribeClass
       "country" => country,
       "phone_number" => phone_number,
       "location" => location,
-      "select_fields" => select_fields
+      "select_fields" => select_fields,
+      "boolean_fields" => boolean_fields
     }
   end
 
@@ -83,6 +82,10 @@ describe "Extra user fields" do # rubocop:disable RSpec/DescribeClass
     ["participant_type"]
   end
 
+  let(:boolean_fields) do
+    ["ngo"]
+  end
+
   before do
     switch_to_host(organization.host)
     visit decidim.new_user_registration_path
@@ -98,6 +101,7 @@ describe "Extra user fields" do # rubocop:disable RSpec/DescribeClass
       expect(page).to have_content("Location")
       expect(page).to have_content("How old are you?")
       expect(page).to have_content("Are you participating as an individual, or officially on behalf of an organization?")
+      expect(page).to have_content("I am a member of a non-governmental organization (NGO)")
     end
   end
 
@@ -166,6 +170,7 @@ describe "Extra user fields" do # rubocop:disable RSpec/DescribeClass
       expect(page).to have_no_content("Location")
       expect(page).to have_no_content("Which gender do you identify with?")
       expect(page).to have_no_content("Are you participating as an individual, or officially on behalf of an organization?")
+      expect(page).to have_no_content("I am a member of a non-governmental organization (NGO)")
     end
 
     it "allows to create a new account" do

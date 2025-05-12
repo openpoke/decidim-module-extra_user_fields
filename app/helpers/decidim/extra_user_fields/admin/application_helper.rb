@@ -26,6 +26,14 @@ module Decidim
             form.object.select_fields.include?(field.to_s)
           end
         end
+
+        def custom_boolean_fields(form)
+          return {} unless Decidim::ExtraUserFields.boolean_fields.is_a?(Array)
+
+          Decidim::ExtraUserFields.boolean_fields.index_with do |field|
+            form.object.boolean_fields.include?(field.to_s)
+          end
+        end
       end
     end
   end

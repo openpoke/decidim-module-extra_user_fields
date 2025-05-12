@@ -21,6 +21,7 @@ module Decidim
         translatable_attribute :phone_number_placeholder, String
 
         attribute :select_fields, Array, default: []
+        attribute :boolean_fields, Array, default: []
 
         def map_model(model)
           self.enabled = model.extra_user_fields["enabled"]
@@ -36,11 +37,18 @@ module Decidim
           self.phone_number_pattern = model.extra_user_fields.dig("phone_number", "pattern")
           self.phone_number_placeholder = model.extra_user_fields.dig("phone_number", "placeholder")
           self.select_fields = model.extra_user_fields["select_fields"] || []
+          self.boolean_fields = model.extra_user_fields["boolean_fields"] || []
         end
 
         def select_fields
           super.filter do |field|
             Decidim::ExtraUserFields.select_fields.keys.map(&:to_s).include?(field)
+          end
+        end
+
+        def boolean_fields
+          super.filter do |field|
+            Decidim::ExtraUserFields.boolean_fields.map(&:to_s).include?(field)
           end
         end
       end

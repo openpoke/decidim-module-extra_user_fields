@@ -26,10 +26,12 @@ module Decidim
       end
 
       def custom_select_fields_options
+        return {} unless Decidim::ExtraUserFields.select_fields.is_a?(Hash)
+
         Decidim::ExtraUserFields.select_fields.filter_map do |field, options|
           next unless options.is_a?(Hash)
           next if options.blank?
-          next if current_organization.extra_user_field_configuration(:select_fields).include?(field)
+          next unless current_organization.extra_user_field_configuration(:select_fields).include?(field.to_s)
 
           [
             field,
@@ -39,6 +41,14 @@ module Decidim
             end
           ]
         end.to_h
+      end
+
+      def custom_boolean_fields
+        return [] unless Decidim::ExtraUserFields.boolean_fields.is_a?(Array)
+
+        Decidim::ExtraUserFields.boolean_fields.filter do |field|
+          current_organization.extra_user_field_configuration(:boolean_fields).include?(field.to_s)
+        end
       end
     end
   end

@@ -34,7 +34,7 @@ module Decidim
       ENV.fetch("EXTRA_USER_FIELDS_AGE_RANGES", "up_to_16 17_to_30 31_to_60 61_or_more prefer_not_to_say").split
     end
 
-    # I extra select fields are needed, they can be added here.
+    # If extra select fields are needed, they can be added as a Hash here.
     # The key is the field name and the value is a hash with the options.
     # You can (optionally) add I18n keys for the options (if not the text will be used as it is).
     # For the user interface, you can defined labels and descriptions for the fields (optionally):
@@ -51,6 +51,17 @@ module Decidim
           "organization" => "decidim.extra_user_fields.participant_types.organization"
         }
       }
+    end
+
+    # If extra boolean fields are needed, they can be added as an Array here.
+    # For the user interface, you can defined labels and descriptions for the fields (optionally):
+    # decidim.extra_user_fields.boolean_fields.field_name.label
+    # decidim.extra_user_fields.boolean_fields.field_name.description
+    # For the admin interface, you can defined labels and descriptions for the fields (optionally):
+    # decidim.extra_user_fields.admin.extra_user_fields.boolean_fields.field_name.label
+    # decidim.extra_user_fields.admin.extra_user_fields.boolean_fields.field_name.description
+    config_accessor :boolean_fields do
+      [:ngo]
     end
   end
 end

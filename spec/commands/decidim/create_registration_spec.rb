@@ -28,6 +28,9 @@ module Decidim
             participant_type: "individual"
           }
         end
+        let(:boolean_fields) do
+          ["ngo"]
+        end
         let(:statutory_representative_email) { nil }
         let(:extended_data) do
           {
@@ -61,6 +64,7 @@ module Decidim
               "location" => location,
               "underage" => underage,
               "select_fields" => select_fields,
+              "boolean_fields" => boolean_fields,
               "statutory_representative_email" => statutory_representative_email
             }
           }
@@ -137,6 +141,7 @@ module Decidim
                 postal_code:,
                 underage:,
                 select_fields:,
+                boolean_fields:,
                 statutory_representative_email:
               }
             ).and_call_original

@@ -11,8 +11,6 @@ module Decidim
       included do
         include ::Decidim::ExtraUserFields::ApplicationHelper
 
-        # Block ExtraUserFields Attributes
-
         attribute :country, String
         attribute :postal_code, String
         attribute :date_of_birth, Decidim::Attributes::LocalizedDate
@@ -23,10 +21,7 @@ module Decidim
         attribute :underage, ActiveRecord::Type::Boolean
         attribute :statutory_representative_email, String
         attribute :select_fields, Hash, default: {}
-
-        # EndBlock
-
-        # Block ExtraUserFields Validations
+        attribute :boolean_fields, Array, default: []
 
         validates :country, presence: true, if: :country?
         validates :postal_code, presence: true, if: :postal_code?
@@ -48,8 +43,6 @@ module Decidim
                   if: :underage_accepted?
         validate :birth_date_under_limit
         validate :select_fields_configured
-
-        # EndBlock
       end
 
       def map_model(model)
@@ -64,12 +57,12 @@ module Decidim
         self.location = extended_data[:location]
         self.underage = extended_data[:underage]
         self.select_fields = extended_data[:select_fields] || {}
+        self.boolean_fields = extended_data[:boolean_fields] || {}
         self.statutory_representative_email = extended_data[:statutory_representative_email]
       end
 
       private
 
-      # Block ExtraUserFields EnableFieldMethod
       def country?
         extra_user_fields_enabled && current_organization.activated_extra_field?(:country)
       end
@@ -115,8 +108,6 @@ module Decidim
       def underage_accepted?
         underage? && underage == "1"
       end
-
-      # EndBlock
 
       def extra_user_fields_enabled
         @extra_user_fields_enabled ||= current_organization.extra_user_fields_enabled?

@@ -35,6 +35,11 @@ en:
         exports:
           users: Participants
         extra_user_fields:
+          boolean_fields:
+            ngo:
+              description: This field is a Boolean field. User will be able to check
+                if is a NGO
+              label: Enable NGO field
           fields:
             age_range:
               description: This field is a list of age ranges. If checked, user will
@@ -106,6 +111,9 @@ en:
         61_or_more: 61 or older
         prefer_not_to_say: Prefer not to say
         up_to_16: 16 or younger
+      boolean_fields:
+        ngo:
+          label: I am a member of a non-governmental organization (NGO)
       errors:
         select_fields: The field "%{field}" is not valid.
       genders:
