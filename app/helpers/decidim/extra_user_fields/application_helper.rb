@@ -29,18 +29,21 @@ module Decidim
         return {} unless Decidim::ExtraUserFields.select_fields.is_a?(Hash)
 
         Decidim::ExtraUserFields.select_fields.filter_map do |field, options|
-          next unless options.is_a?(Hash)
           next if options.blank?
           next unless current_organization.extra_user_field_configuration(:select_fields).include?(field.to_s)
 
           [
             field,
-            options.map do |option, label|
-              label = I18n.t(label, default: label.split(".").last.to_s.humanize) if label.present?
-              [label, option]
-            end
+            options.is_a?(Hash) ? map_options(options) : options
           ]
         end.to_h
+      end
+
+      def map_options(options)
+        options.map do |option, label|
+          label = I18n.t(label, default: label.split(".").last.to_s.humanize) if label.present?
+          [label, option]
+        end
       end
 
       def custom_boolean_fields
