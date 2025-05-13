@@ -76,6 +76,21 @@ describe "Admin manages organization extra user fields" do # rubocop:disable RSp
         expect(page).to have_content("Extra user fields correctly updated in organization")
       end
     end
+
+    context "when custom text_fields" do
+      it "displays the custom text fields" do
+        within "#accordion-setup" do
+          expect(page).to have_content("Additional custom fields")
+          expect(page).to have_content("Enable \"My Motto\" field")
+          expect(page).to have_content("This field is a String field. If checked, user can fill in a personal phrase or motto")
+
+          page.check("Enable \"My Motto\" field")
+        end
+
+        find("*[type=submit]", text: "Save configuration").click
+        expect(page).to have_content("Extra user fields correctly updated in organization")
+      end
+    end
   end
 
   context "and no translations are provided" do
@@ -90,10 +105,16 @@ describe "Admin manages organization extra user fields" do # rubocop:disable RSp
     let(:custom_boolean_fields) do
       [:dog_person]
     end
+    let(:custom_text_fields) do
+      {
+        pet_name: false
+      }
+    end
 
     before do
       allow(Decidim::ExtraUserFields).to receive(:select_fields).and_return(custom_select_fields)
       allow(Decidim::ExtraUserFields).to receive(:boolean_fields).and_return(custom_boolean_fields)
+      allow(Decidim::ExtraUserFields).to receive(:text_fields).and_return(custom_text_fields)
       visit decidim_extra_user_fields.root_path
     end
 
@@ -115,6 +136,18 @@ describe "Admin manages organization extra user fields" do # rubocop:disable RSp
         expect(page).to have_content("Dog person")
 
         page.check("Dog person")
+      end
+
+      find("*[type=submit]", text: "Save configuration").click
+      expect(page).to have_content("Extra user fields correctly updated in organization")
+    end
+
+    it "displays the custom text fields" do
+      within "#accordion-setup" do
+        expect(page).to have_content("Additional custom fields")
+        expect(page).to have_content("Pet name")
+
+        page.check("Pet name")
       end
 
       find("*[type=submit]", text: "Save configuration").click

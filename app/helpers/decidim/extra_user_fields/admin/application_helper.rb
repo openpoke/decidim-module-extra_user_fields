@@ -36,9 +36,9 @@ module Decidim
         end
 
         def custom_text_fields(form)
-          return {} unless Decidim::ExtraUserFields.text_fields.is_a?(Array)
+          return {} unless Decidim::ExtraUserFields.text_fields.is_a?(Hash)
 
-          Decidim::ExtraUserFields.text_fields.index_with do |field|
+          Decidim::ExtraUserFields.text_fields.keys.index_with do |field|
             form.object.text_fields.include?(field.to_s)
           end
         end

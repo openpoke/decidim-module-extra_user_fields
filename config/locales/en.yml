@@ -35,11 +35,6 @@ en:
         exports:
           users: Participants
         extra_user_fields:
-          text_fields:
-            moto:
-              description: This field is a String field. If checked, user will have
-                to fill in a moto
-              label: Enable moto field
           boolean_fields:
             ngo:
               description: This field is a Boolean field. User will be able to check
@@ -107,6 +102,11 @@ en:
               description: This field is a list of participant types. If checked,
                 user will have to choose a participant type
               label: Enable participant type field
+          text_fields:
+            motto:
+              description: This field is a String field. If checked, user can fill
+                in a personal phrase or motto
+              label: Enable "My Motto" field
           update:
             failure: An error occurred on update
             success: Extra user fields correctly updated in organization
@@ -116,9 +116,6 @@ en:
         61_or_more: 61 or older
         prefer_not_to_say: Prefer not to say
         up_to_16: 16 or younger
-      text_fields:
-        moto:
-          label: What is your moto?
       boolean_fields:
         ngo:
           label: I am a member of a non-governmental organization (NGO)
@@ -137,6 +134,9 @@ en:
         participant_type:
           label: Are you participating as an individual, or officially on behalf of
             an organization?
+      text_fields:
+        motto:
+          label: What is your motto?
     statutory_representative:
       inform:
         body: |

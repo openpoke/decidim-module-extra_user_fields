@@ -52,10 +52,13 @@ module Decidim
       end
 
       def custom_text_fields
-        return [] unless Decidim::ExtraUserFields.text_fields.is_a?(Array)
+        return [] unless Decidim::ExtraUserFields.text_fields.is_a?(Hash)
 
-        Decidim::ExtraUserFields.text_fields.filter do |field|
+        Decidim::ExtraUserFields.text_fields.filter_map do |field, mandatory|
           current_organization.extra_user_field_configuration(:text_fields).include?(field.to_s)
+
+          [field, mandatory.present?]
+        end.to_h
       end
     end
   end

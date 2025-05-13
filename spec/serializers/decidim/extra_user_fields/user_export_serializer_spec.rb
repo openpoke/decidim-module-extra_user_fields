@@ -18,6 +18,7 @@ describe Decidim::ExtraUserFields::UserExportSerializer do
       underage:,
       select_fields:,
       boolean_fields:,
+      text_fields:,
       statutory_representative_email:
     }
   end
@@ -39,6 +40,11 @@ describe Decidim::ExtraUserFields::UserExportSerializer do
   end
   let(:boolean_fields) do
     ["ngo"]
+  end
+  let(:text_fields) do
+    {
+      "motto" => "I think, therefore I am"
+    }
   end
 
   let(:serialized) { subject.serialize }
@@ -82,6 +88,10 @@ describe Decidim::ExtraUserFields::UserExportSerializer do
 
     it "includes the boolean fields" do
       expect(serialized).to include(boolean_fields: resource.extended_data["boolean_fields"])
+    end
+
+    it "includes the text fields" do
+      expect(serialized).to include(text_fields: resource.extended_data["text_fields"])
     end
 
     context "when users are blocked" do

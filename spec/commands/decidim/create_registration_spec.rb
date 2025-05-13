@@ -31,6 +31,11 @@ module Decidim
         let(:boolean_fields) do
           ["ngo"]
         end
+        let(:text_fields) do
+          {
+            motto: "I think, therefore I am"
+          }
+        end
         let(:statutory_representative_email) { nil }
         let(:extended_data) do
           {
@@ -65,6 +70,7 @@ module Decidim
               "underage" => underage,
               "select_fields" => select_fields,
               "boolean_fields" => boolean_fields,
+              "text_fields" => text_fields,
               "statutory_representative_email" => statutory_representative_email
             }
           }
@@ -142,6 +148,7 @@ module Decidim
                 underage:,
                 select_fields:,
                 boolean_fields:,
+                text_fields:,
                 statutory_representative_email:
               }
             ).and_call_original

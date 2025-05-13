@@ -22,6 +22,7 @@ module Decidim
 
         attribute :select_fields, Array, default: []
         attribute :boolean_fields, Array, default: []
+        attribute :text_fields, Array, default: []
 
         def map_model(model)
           self.enabled = model.extra_user_fields["enabled"]
@@ -55,7 +56,7 @@ module Decidim
 
         def text_fields
           super.filter do |field|
-            Decidim::ExtraUserFields.text_fields.map(&:to_s).include?(field)
+            Decidim::ExtraUserFields.text_fields.keys.map(&:to_s).include?(field)
           end
         end
       end

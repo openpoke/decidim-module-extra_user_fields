@@ -34,6 +34,11 @@ module Decidim
     let(:boolean_fields) do
       ["ngo"]
     end
+    let(:text_fields) do
+      {
+        "motto" => false
+      }
+    end
 
     let(:attributes) do
       {
@@ -53,7 +58,8 @@ module Decidim
         location:,
         underage:,
         select_fields:,
-        boolean_fields:
+        boolean_fields:,
+        text_fields:
       }
     end
 

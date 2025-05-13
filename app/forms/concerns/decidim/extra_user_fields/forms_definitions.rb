@@ -22,7 +22,7 @@ module Decidim
         attribute :statutory_representative_email, String
         attribute :select_fields, Hash, default: {}
         attribute :boolean_fields, Array, default: []
-        attribute :text_fields, Array, default: []
+        attribute :text_fields, Hash, default: {}
 
         validates :country, presence: true, if: :country?
         validates :postal_code, presence: true, if: :postal_code?
@@ -59,7 +59,7 @@ module Decidim
         self.underage = extended_data[:underage]
         self.select_fields = extended_data[:select_fields] || {}
         self.boolean_fields = extended_data[:boolean_fields] || []
-        self.text_fields = extended_data[:text_fields] || []
+        self.text_fields = extended_data[:text_fields] || {}
         self.statutory_representative_email = extended_data[:statutory_representative_email]
       end
 

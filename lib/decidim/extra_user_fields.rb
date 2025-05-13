@@ -64,7 +64,7 @@ module Decidim
       [:ngo]
     end
 
-    # If extra text fields are needed, they can be added as an Array here.
+    # If extra text fields are needed, they can be added as a Hash here (key is the field, value whether mandatory or not).
     # For the user interface, you can defined labels and descriptions for the fields (optionally):
     # decidim.extra_user_fields.text_fields.field_name.label
     # decidim.extra_user_fields.text_fields.field_name.description
@@ -72,7 +72,9 @@ module Decidim
     # decidim.extra_user_fields.admin.extra_user_fields.text_fields.field_name.label
     # decidim.extra_user_fields.admin.extra_user_fields.text_fields.field_name.description
     config_accessor :text_fields do
-      [:moto]
+      {
+        motto: false
+      }
     end
   end
 end
