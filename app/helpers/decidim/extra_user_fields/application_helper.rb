@@ -34,7 +34,7 @@ module Decidim
 
           [
             field,
-            options.respond_to?(:call) ? options.call(self) : map_options(options)
+            options.is_a?(Hash) ? map_options(options) : options
           ]
         end.to_h
       end
