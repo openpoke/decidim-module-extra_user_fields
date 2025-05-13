@@ -28,6 +28,7 @@ module Decidim
         underage:,
         select_fields:,
         boolean_fields:,
+        text_fields:,
         statutory_representative_email:
       ).with_context(
         current_organization: organization,
@@ -49,7 +50,8 @@ module Decidim
         "underage" => { "enabled" => true },
         "underage_limit" => 18,
         "select_fields" => ["participant_type"],
-        "boolean_fields" => ["ngo"]
+        "boolean_fields" => ["ngo"],
+        "text_fields" => ["motto"]
       }
     end
     let(:phone_number_pattern) { "^(\\+34)?[0-9 ]{9,12}$" }
@@ -79,6 +81,11 @@ module Decidim
     end
     let(:boolean_fields) do
       ["ngo"]
+    end
+    let(:text_fields) do
+      {
+        motto: false
+      }
     end
     let(:statutory_representative_email) { nil }
 
@@ -132,6 +139,19 @@ module Decidim
     context "with non configured boolean fields" do
       let(:boolean_fields) do
         [:ngo, :foo]
+      end
+
+      it "is valid" do
+        expect(subject).to be_valid
+      end
+    end
+
+    context "with non configured text fields" do
+      let(:text_fields) do
+        {
+          motto: false,
+          foo: true
+        }
       end
 
       it "is valid" do

@@ -22,6 +22,7 @@ module Decidim
 
         attribute :select_fields, Array, default: []
         attribute :boolean_fields, Array, default: []
+        attribute :text_fields, Array, default: []
 
         def map_model(model)
           self.enabled = model.extra_user_fields["enabled"]
@@ -38,6 +39,7 @@ module Decidim
           self.phone_number_placeholder = model.extra_user_fields.dig("phone_number", "placeholder")
           self.select_fields = model.extra_user_fields["select_fields"] || []
           self.boolean_fields = model.extra_user_fields["boolean_fields"] || []
+          self.text_fields = model.extra_user_fields["text_fields"] || []
         end
 
         def select_fields
@@ -49,6 +51,12 @@ module Decidim
         def boolean_fields
           super.filter do |field|
             Decidim::ExtraUserFields.boolean_fields.map(&:to_s).include?(field)
+          end
+        end
+
+        def text_fields
+          super.filter do |field|
+            Decidim::ExtraUserFields.text_fields.keys.map(&:to_s).include?(field)
           end
         end
       end

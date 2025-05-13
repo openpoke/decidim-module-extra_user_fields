@@ -101,6 +101,8 @@ Currently, the following ENV variables are supported:
 If your use case include fields not defined in this module, it is possible to define custom fields of different types:
 
 1. **Select fields** This configuration option allows you to define any number of extra user fields of the type "Select".
+2. **Boolean fields** This configuration option allows you to define any number of extra user fields of the type "Boolean". These fields can be used for true/false values, such as "Accept terms and conditions" or "Subscribe to newsletter".
+3. **Text fields** This configuration option allows you to define any number of extra user fields of the type "Text". These fields can be used for free-form text input, such as "Hobbies" or "Favorite quote".
 
 
 See the next section "Configuration through an initializer" for more information.
@@ -142,6 +144,31 @@ Decidim::ExtraUserFields.configure do |config|
         "cat" => "my_app.favorite_pets.cat".
         "dog" => "my_app.favorite_pets.dog"
       }
+    }
+  end
+
+    # If extra boolean fields are needed, they can be added as an Array here.
+    # For the user interface, you can defined labels and descriptions for the fields (optionally):
+    # decidim.extra_user_fields.boolean_fields.field_name.label
+    # decidim.extra_user_fields.boolean_fields.field_name.description
+    # For the admin interface, you can defined labels and descriptions for the fields (optionally):
+    # decidim.extra_user_fields.admin.extra_user_fields.boolean_fields.field_name.label
+    # decidim.extra_user_fields.admin.extra_user_fields.boolean_fields.field_name.description
+  config_accessor :boolean_fields do
+    [:ngo, :newsletter]
+  end
+
+    # If extra text fields are needed, they can be added as a Hash here (key is the field, value whether mandatory or not).
+  # For the user interface, you can define labels and descriptions for the fields (optionally):
+  # decidim.extra_user_fields.text_fields.field_name.label
+  # decidim.extra_user_fields.text_fields.field_name.description
+  # For the admin interface, you can define labels and descriptions for the fields (optionally):
+  # decidim.extra_user_fields.admin.extra_user_fields.text_fields.field_name.label
+  # decidim.extra_user_fields.admin.extra_user_fields.text_fields.field_name.description
+  config_accessor :text_fields do
+    {
+      hobbies: false, 
+      favorite_quote: true
     }
   end
 end

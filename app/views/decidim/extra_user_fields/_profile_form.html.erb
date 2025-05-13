@@ -41,4 +41,8 @@
   <% if current_organization.activated_extra_field?(:boolean_fields) %>
     <%= render partial: "decidim/extra_user_fields/boolean_fields", locals: { f: f } %>
   <% end %>
+
+  <% if current_organization.activated_extra_field?(:text_fields) %>
+    <%= render partial: "decidim/extra_user_fields/text_fields", locals: { f: f } %>
+  <% end %>
 <% end %>

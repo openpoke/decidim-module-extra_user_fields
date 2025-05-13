@@ -1,0 +1,15 @@
+<% custom_text_fields(form).each do |field, checked| %>
+  <div class="card-section">
+    <div class="row column">
+      <%= label_tag "extra_user_fields_select_field_#{field}" do %>
+
+        <%= check_box_tag "extra_user_fields[text_fields][]",
+                          field,
+                          checked,
+                          id: "extra_user_fields_select_field_#{field}" %>
+        <%= t("decidim.extra_user_fields.admin.extra_user_fields.text_fields.#{field}.label", default: field.to_s.humanize ) %>
+        <span class="help-text"><%= t("decidim.extra_user_fields.admin.extra_user_fields.text_fields.#{field}.description", default: "") %></span>
+      <% end %>
+    </div>
+  </div>
+<% end %>

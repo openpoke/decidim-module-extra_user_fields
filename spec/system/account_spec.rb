@@ -21,6 +21,7 @@ describe "Account" do
       "gender" => gender,
       "select_fields" => select_fields,
       "boolean_fields" => boolean_fields,
+      "text_fields" => text_fields,
       "age_range" => age_range,
       "country" => country,
       "phone_number" => phone_number,
@@ -65,11 +66,18 @@ describe "Account" do
     ["ngo"]
   end
 
-  # Block ExtraUserFields RspecVar
+  let(:text_fields) do
+    ["motto"]
+  end
 
-  # EndBlock
+  let(:enabled_text_fields) do
+    {
+      motto: false
+    }
+  end
 
   before do
+    allow(Decidim::ExtraUserFields).to receive(:text_fields).and_return(enabled_text_fields)
     switch_to_host(organization.host)
     login_as user, scope: :user
   end
@@ -105,6 +113,7 @@ describe "Account" do
 
     describe "updating personal data" do
       let!(:encrypted_password) { user.encrypted_password }
+      let(:motto) { "I think, therefore I am." }
 
       before do
         within "form.edit_user" do
@@ -119,6 +128,7 @@ describe "Account" do
           select "Argentina", from: :user_country
           select "Individual", from: :user_select_fields_participant_type
           check "I am a member of a non-governmental organization (NGO)"
+          fill_in :user_text_fields_motto, with: motto
           fill_in :user_postal_code, with: "00000"
           fill_in :user_phone_number, with: "0123456789"
           fill_in :user_location, with: "Cahors"
@@ -131,6 +141,10 @@ describe "Account" do
           expect(page).to have_content("successfully")
         end
 
+        expect(page).to have_field(with: "Nikola Tesla")
+        expect(page).to have_field(with: "I think, therefore I am.")
+        expect(page).to have_select(selected: "Individual")
+
         user.reload
 
         within_user_menu do
@@ -139,6 +153,8 @@ describe "Account" do
 
         expect(page).to have_content("example.org")
         expect(page).to have_content("Serbian-American")
+        expect(page).to have_content("Nikola Tesla")
+        expect(page).to have_content("A Serbian-American inventor, electrical engineer, mechanical engineer, physicist, and futurist.")
 
         # The user's password should not change when they did not update it
         expect(user.reload.encrypted_password).to eq(encrypted_password)
@@ -185,6 +201,41 @@ describe "Account" do
         it "does not update the user's data" do
           within("label[for='user_phone_number']") do
             expect(page).to have_content("There is an error in this field.")
+          end
+        end
+      end
+
+      context "with text field blank" do
+        let(:motto) { "" }
+
+        it "does not update the user's data" do
+          within_flash_messages do
+            expect(page).to have_content("successfully")
+          end
+
+          expect(page).to have_field(with: "Nikola Tesla")
+          expect(page).to have_no_field(with: "I think, therefore I am.")
+          expect(page).to have_select(selected: "Individual")
+        end
+
+        context "with text field mandatory" do
+          let(:enabled_text_fields) do
+            {
+              motto: true
+            }
+          end
+
+          it "displays the field as mandatory" do
+            within "label[for='user_text_fields_motto']" do
+              expect(page).to have_css("span.label-required")
+            end
+            within "form.edit_user" do
+              fill_in :user_text_fields_motto, with: ""
+              find("*[type=submit]").click
+            end
+            within "label[for='user_text_fields_motto']" do
+              expect(page).to have_content("There is an error in this field.")
+            end
           end
         end
       end
@@ -262,6 +313,14 @@ describe "Account" do
       it_behaves_like "does not display extra user field", "boolean_fields", "Boolean fields"
     end
 
+    context "when text_fields is not enabled" do
+      let(:text_fields) do
+        ["another_field"]
+      end
+
+      it_behaves_like "does not display extra user field", "text_fields", "Text fields"
+    end
+
     describe "when update password" do
       before do
         within "form.edit_user" do
@@ -276,6 +335,7 @@ describe "Account" do
           select "Argentina", from: :user_country
           select "Individual", from: :user_select_fields_participant_type
           check "I am a member of a non-governmental organization (NGO)"
+          fill_in :user_text_fields_motto, with: "I think, therefore I am."
           fill_in :user_postal_code, with: "00000"
           fill_in :user_phone_number, with: "0123456789"
           fill_in :user_location, with: "Cahors"
@@ -339,6 +399,7 @@ describe "Account" do
           select "Argentina", from: :user_country
           select "Individual", from: :user_select_fields_participant_type
           check "I am a member of a non-governmental organization (NGO)"
+          fill_in :user_text_fields_motto, with: "I think, therefore I am."
           fill_in :user_postal_code, with: "00000"
           fill_in :user_phone_number, with: "0123456789"
           fill_in :user_location, with: "Cahors"

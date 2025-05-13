@@ -104,6 +104,11 @@ fr:
               description: Ce champ est une liste de types de participants. L'utilisateur
                 devra choisir un type de participant.
               label: Activer le champ type de participant
+          text_fields:
+            motto:
+              description: Ce champ permet l'ajout de texte. L'utilisateur pourra
+                choisir un slogan.
+              label: Activer le champ slogan
           update:
             failure: Une erreur est survenue lors de la mise à jour
             success: Les champs d'inscription ont été mis à jour avec succ§s
@@ -131,6 +136,9 @@ fr:
       select_fields:
         participant_type:
           label: Activer le champ type de participant
+      text_fields:
+        motto:
+          label: Activer le champ "Mon slogan"
     statutory_representative:
       inform:
         body: |

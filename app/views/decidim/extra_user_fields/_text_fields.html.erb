@@ -1,0 +1,13 @@
+<% f.object.custom_text_fields.each do |field, required| %>
+  <div class="fieldset">
+    <%= f.text_field :text_fields, name: "user[text_fields][#{field}]",
+                      value: f.object.text_fields[field],
+                      label: t("decidim.extra_user_fields.text_fields.#{field}.label", default: field.to_s.humanize),
+                      help_text: t("decidim.extra_user_fields.text_fields.#{field}.description", default: nil),
+                  id: f.field_id("text_fields_#{field}"),
+                  label_options: {
+                    for: f.field_id("text_fields_#{field}"),
+                  },
+                  required: %>
+  </div>
+<% end %>

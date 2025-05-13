@@ -28,6 +28,11 @@ module Decidim
         let(:boolean_fields) do
           ["ngo"]
         end
+        let(:text_fields) do
+          {
+            "motto" => "I think, therefore I am"
+          }
+        end
         let(:statutory_representative_email) { nil }
         let(:extended_data) do
           {
@@ -41,6 +46,7 @@ module Decidim
             underage:,
             select_fields:,
             boolean_fields:,
+            text_fields:,
             statutory_representative_email:
           }
         end
@@ -66,6 +72,7 @@ module Decidim
               "underage" => underage,
               "select_fields" => select_fields,
               "boolean_fields" => boolean_fields,
+              "text_fields" => text_fields,
               "statutory_representative_email" => statutory_representative_email
             }
           }
@@ -138,6 +145,7 @@ module Decidim
             expect(user.extended_data["underage"]).to eq(underage)
             expect(user.extended_data["select_fields"]).to eq(select_fields)
             expect(user.extended_data["boolean_fields"]).to eq(boolean_fields)
+            expect(user.extended_data["text_fields"]).to eq(text_fields)
           end
 
           # NOTE: This is important so that the users who are only

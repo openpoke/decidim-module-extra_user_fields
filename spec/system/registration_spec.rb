@@ -17,6 +17,7 @@ def fill_extra_user_fields
   select "Argentina", from: :registration_user_country
   select "Individual", from: :registration_user_select_fields_participant_type
   check "registration_user_boolean_fields_ngo"
+  fill_in :registration_registration_user_text_fields_motto, with: "I think, therefore I am."
   fill_in :registration_user_postal_code, with: "00000"
   fill_in :registration_user_phone_number, with: "0123456789"
   fill_in :registration_user_location, with: "Cahors"
@@ -45,7 +46,8 @@ describe "Extra user fields" do # rubocop:disable RSpec/DescribeClass
       "phone_number" => phone_number,
       "location" => location,
       "select_fields" => select_fields,
-      "boolean_fields" => boolean_fields
+      "boolean_fields" => boolean_fields,
+      "text_fields" => text_fields
     }
   end
 
@@ -86,6 +88,10 @@ describe "Extra user fields" do # rubocop:disable RSpec/DescribeClass
     ["ngo"]
   end
 
+  let(:text_fields) do
+    ["motto"]
+  end
+
   before do
     switch_to_host(organization.host)
     visit decidim.new_user_registration_path
@@ -102,6 +108,7 @@ describe "Extra user fields" do # rubocop:disable RSpec/DescribeClass
       expect(page).to have_content("How old are you?")
       expect(page).to have_content("Are you participating as an individual, or officially on behalf of an organization?")
       expect(page).to have_content("I am a member of a non-governmental organization (NGO)")
+      expect(page).to have_content("What is your motto?")
     end
   end
 
@@ -114,6 +121,18 @@ describe "Extra user fields" do # rubocop:disable RSpec/DescribeClass
     end
 
     expect(page).to have_content("message with a confirmation link has been sent")
+
+    extended_data = Decidim::User.unscoped.last.extended_data
+    expect(extended_data["text_fields"]["motto"]).to eq("I think, therefore I am.")
+    expect(extended_data["boolean_fields"]).to eq(["ngo"])
+    expect(extended_data["select_fields"]["participant_type"]).to eq("individual")
+    expect(extended_data["date_of_birth"]).to eq("2000-01-01")
+    expect(extended_data["gender"]).to eq("other")
+    expect(extended_data["age_range"]).to eq("17_to_30")
+    expect(extended_data["country"]).to eq("AR")
+    expect(extended_data["postal_code"]).to eq("00000")
+    expect(extended_data["phone_number"]).to eq("0123456789")
+    expect(extended_data["location"]).to eq("Cahors")
   end
 
   context "with phone number pattern blank" do
