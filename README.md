@@ -143,7 +143,9 @@ Decidim::ExtraUserFields.configure do |config|
       favorite_pet: {
         "cat" => "my_app.favorite_pets.cat".
         "dog" => "my_app.favorite_pets.dog"
-      }
+      },
+      # It is also possible to specify a proc/lambda that returns a suitable list for the select:
+      organization_country: ->(form) { ISO3166::Country.translations(form.locale).invert },
     }
   end
 
