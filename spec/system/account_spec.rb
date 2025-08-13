@@ -530,44 +530,6 @@ describe "Account" do
       end
     end
 
-    context "when on the interests page" do
-      before do
-        visit decidim.user_interests_path
-      end
-
-      it "does not find any scopes" do
-        expect(page).to have_content("My interests")
-        expect(page).to have_content("This organization does not have any scope yet")
-      end
-
-      context "when scopes are defined" do
-        let!(:scopes) { create_list(:scope, 3, organization:) }
-        let!(:subscopes) { create_list(:subscope, 3, parent: scopes.first) }
-
-        before do
-          visit decidim.user_interests_path
-        end
-
-        it "display translated scope name" do
-          expect(page).to have_content("My interests")
-          within "label[for='user_scopes_#{scopes.first.id}_checked']" do
-            expect(page).to have_content(translated(scopes.first.name))
-          end
-        end
-
-        it "allows to choose interests" do
-          label_field = "label[for='user_scopes_#{scopes.first.id}_checked']"
-          expect(page).to have_content("My interests")
-          find(label_field).click
-          click_on "Update my interests"
-
-          within_flash_messages do
-            expect(page).to have_content("Your interests have been successfully updated.")
-          end
-        end
-      end
-    end
-
     context "when on the delete my account page" do
       before do
         visit decidim.delete_account_path
@@ -578,9 +540,8 @@ describe "Account" do
       end
 
       it "the user can delete their account" do
-        fill_in :delete_user_delete_account_delete_reason, with: "I just want to delete my account"
-
-        within ".form__wrapper-block" do
+        within ".delete-account" do
+          fill_in :delete_user_delete_account_delete_reason, with: "I just want to delete my account"
           click_on "Delete my account"
         end
 
