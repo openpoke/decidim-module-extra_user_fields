@@ -19,7 +19,7 @@ module Decidim
           end
 
           opts[:pattern] ||= object.send(:"#{attribute}_extra_user_field_pattern") if object.respond_to?(:"#{attribute}_extra_user_field_pattern")
-          opts[:type] = "phone"
+          opts[:type] = "tel"
 
           @template.text_field(@object_name, attribute, objectify_options(opts))
         end
