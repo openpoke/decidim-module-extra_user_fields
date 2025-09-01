@@ -10,12 +10,12 @@ checksums = [
     package: "decidim-core",
     files: {
       "/app/commands/decidim/create_registration.rb" => "c2fafd313dbe16624e3ef07584e946cd",
-      "/app/commands/decidim/create_omniauth_registration.rb" => "5bca48c990c3b82d47119902c0a56ca1",
-      "/app/commands/decidim/update_account.rb" => "d24090fdd9358c38e6e15c4607a78e18",
-      "/app/models/decidim/organization.rb" => "a72b9d9ef10aa06dbe5aef27c68d5c7a",
+      "/app/commands/decidim/create_omniauth_registration.rb" => "95f36dfd91fe8f32ca7fead4b250f095",
+      "/app/commands/decidim/update_account.rb" => "f6c1fbdfd2e2c38bd9b6a43b335df975",
+      "/app/models/decidim/organization.rb" => "2aeb36c0edbacbd6761d230a86226e95",
       "/app/views/decidim/account/show.html.erb" => "f13218e2358a2d611996c2a197c0de25",
-      "/app/views/decidim/devise/registrations/new.html.erb" => "b30423406afd43bb9af2c98d59d43632",
-      "/app/views/decidim/devise/omniauth_registrations/new.html.erb" => "49f44efcd7ae6f87c04b309733ff28f6"
+      "/app/views/decidim/devise/registrations/new.html.erb" => "56884184f7f1582828a77fbeff2bb546",
+      "/app/views/decidim/devise/omniauth_registrations/new.html.erb" => "968957ce3cfdb63b87a4cc984a310d1f"
     }
   },
   {

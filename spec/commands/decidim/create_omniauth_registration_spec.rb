@@ -12,6 +12,7 @@ module Decidim
         let(:uid) { "12345" }
         let(:oauth_signature) { OmniauthRegistrationForm.create_signature(provider, uid) }
         let(:verified_email) { email }
+        let(:tos_agreement) { true }
         let(:country) { "Argentina" }
         let(:date_of_birth) { "01/01/2000" }
         let(:gender) { "other" }
@@ -62,6 +63,7 @@ module Decidim
               "nickname" => "facebook_user",
               "oauth_signature" => oauth_signature,
               "avatar_url" => "http://www.example.com/foo.jpg",
+              "tos_agreement" => tos_agreement,
               "country" => country,
               "postal_code" => postal_code,
               "date_of_birth" => date_of_birth,
@@ -162,7 +164,7 @@ module Decidim
             user = create(:user, email:, organization:)
             identity = Decidim::Identity.new(id: 1234)
             allow(command).to receive(:create_identity).and_return(identity)
-
+            puts "user id in test: #{user.id}, tos_agreement: #{user.tos_agreement}"
             expect(ActiveSupport::Notifications)
               .to receive(:publish)
               .with(
@@ -175,7 +177,10 @@ module Decidim
                 name: "Facebook User",
                 nickname: "facebook_user",
                 avatar_url: "http://www.example.com/foo.jpg",
-                raw_data: {}
+                raw_data: {},
+                tos_agreement: true,
+                accepted_tos_version: user.accepted_tos_version,
+                newsletter_notifications_at: user.newsletter_notifications_at
               )
             command.call
           end

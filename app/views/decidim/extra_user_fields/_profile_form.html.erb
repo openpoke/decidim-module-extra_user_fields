@@ -22,10 +22,7 @@
   <% end %>
 
   <% if current_organization.activated_extra_field?(:phone_number) %>
-    <label for="user_phone_number">
-      <%= t("phone_number.label", scope: "decidim.extra_user_fields") %>
-      <%= f.phone_field :phone_number, placeholder: translated_attribute(f.object.phone_number_extra_user_field_placeholder), pattern: f.object.phone_number_extra_user_field_pattern %>
-    </label>
+    <%= f.phone_field :phone_number %>
   <% end %>
 
   <% if current_organization.activated_extra_field?(:location) %>
