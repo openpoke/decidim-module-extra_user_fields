@@ -12,6 +12,19 @@ module Decidim
         html.html_safe
       end
 
+      def phone_field(attribute, options = {})
+        field(attribute, options) do |opts|
+          if opts[:placeholder].blank? && object.respond_to?(:"#{attribute}_extra_user_field_placeholder")
+            opts[:placeholder] = translated_attribute(object.send(:"#{attribute}_extra_user_field_placeholder"))
+          end
+
+          opts[:pattern] ||= object.send(:"#{attribute}_extra_user_field_pattern") if object.respond_to?(:"#{attribute}_extra_user_field_pattern")
+          opts[:type] = "tel"
+
+          @template.text_field(@object_name, attribute, objectify_options(opts))
+        end
+      end
+
       private
 
       # Remove non-standard attrs added by country_select that fail HTML/accessibility validation
