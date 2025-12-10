@@ -618,21 +618,6 @@ describe "Account" do
       end
     end
 
-    context "when VAPID is disabled" do
-      before do
-        allow(Decidim).to receive(:vapid_public_key).and_return(nil)
-        allow(Decidim).to receive(:vapid_private_key).and_return(nil)
-        driven_by(:pwa_chrome)
-        switch_to_host(organization.host)
-        login_as user, scope: :user
-        visit decidim.notifications_settings_path
-      end
-
-      it "does not show the push notifications switch" do
-        expect(page).to have_no_selector(".push-notifications")
-      end
-    end
-
     context "when VAPID keys are not set" do
       before do
         allow(Decidim).to receive(:vapid_public_key).and_return(nil)

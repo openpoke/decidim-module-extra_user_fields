@@ -49,33 +49,41 @@ module Decidim
         )
 
         if @user.persisted?
-          # If user has left the account unconfirmed and later on decides to sign
-          # in with omniauth with an already verified account, the account needs
-          # to be marked confirmed.
-          if !@user.confirmed? && @user.email == verified_email
-            @user.skip_confirmation!
-            @user.after_confirmation
-          end
-          @user.tos_agreement = "1"
-          @user.save!
+          update_existing_user
         else
-          @user.email = (verified_email || form.email)
-          @user.name = form.name.gsub(REGEXP_SANITIZER, "")
-          @user.nickname = form.normalized_nickname
-          @user.newsletter_notifications_at = form.newsletter_at
-          @user.password = SecureRandom.hex
-          attach_avatar(form.avatar_url) if form.avatar_url.present?
-          @user.tos_agreement = form.tos_agreement
-          @user.accepted_tos_version = Time.current
-          raise NeedTosAcceptance if @user.tos_agreement.blank?
-
-          @user.skip_confirmation! if verified_email
+          initialize_new_user
         end
 
         @user.extended_data = extended_data
         was_new_record = @user.new_record?
         @user.save!
         @user.after_confirmation if verified_email && was_new_record
+      end
+
+      def update_existing_user
+        # If user has left the account unconfirmed and later on decides to sign
+        # in with omniauth with an already verified account, the account needs
+        # to be marked confirmed.
+        if !@user.confirmed? && @user.email == verified_email
+          @user.skip_confirmation!
+          @user.after_confirmation
+        end
+        @user.tos_agreement = "1"
+        @user.save!
+      end
+
+      def initialize_new_user
+        @user.email = (verified_email || form.email)
+        @user.name = form.name.gsub(REGEXP_SANITIZER, "")
+        @user.nickname = form.normalized_nickname
+        @user.newsletter_notifications_at = form.newsletter_at
+        @user.password = SecureRandom.hex
+        attach_avatar(form.avatar_url) if form.avatar_url.present?
+        @user.tos_agreement = form.tos_agreement
+        @user.accepted_tos_version = Time.current
+        raise NeedTosAcceptance if @user.tos_agreement.blank?
+
+        @user.skip_confirmation! if verified_email
       end
 
       def attach_avatar(avatar_url)
