@@ -14,11 +14,12 @@ module Decidim
         verify_oauth_signature!
 
         begin
-          if existing_identity
-            user = existing_identity.user
-            verify_user_confirmed(user)
+          if (@identity = existing_identity)
+            @user = existing_identity.user
+            verify_user_confirmed(@user)
 
-            return broadcast(:ok, user)
+            trigger_omniauth_event("decidim.user.omniauth_login")
+            return broadcast(:ok, @user)
           end
           return broadcast(:invalid) if form.invalid?
 
@@ -27,15 +28,19 @@ module Decidim
             send_email_to_statutory_representative
             @identity = create_identity
           end
-          trigger_omniauth_registration
+          trigger_omniauth_event
 
           broadcast(:ok, @user)
+        rescue NeedTosAcceptance
+          broadcast(:add_tos_errors, @user)
         rescue ActiveRecord::RecordInvalid => e
           broadcast(:error, e.record)
         end
       end
 
       private
+
+      REGEXP_SANITIZER = /[<>?%&\^*#@()\[\]=+:;"{}\\|]/
 
       def create_or_find_user
         @user = User.find_or_initialize_by(
@@ -47,24 +52,19 @@ module Decidim
           # If user has left the account unconfirmed and later on decides to sign
           # in with omniauth with an already verified account, the account needs
           # to be marked confirmed.
-          @user.skip_confirmation! if !@user.confirmed? && @user.email == verified_email
+          if !@user.confirmed? && @user.email == verified_email
+            @user.skip_confirmation!
+            @user.after_confirmation
+          end
           @user.tos_agreement = "1"
           @user.save!
         else
-          generated_password = SecureRandom.hex
-
           @user.email = (verified_email || form.email)
-          @user.name = form.name
+          @user.name = form.name.gsub(REGEXP_SANITIZER, "")
           @user.nickname = form.normalized_nickname
-          @user.newsletter_notifications_at = nil
-          @user.password = generated_password
-          @user.password_confirmation = generated_password
-          if form.avatar_url.present?
-            url = URI.parse(form.avatar_url)
-            filename = File.basename(url.path)
-            file = url.open
-            @user.avatar.attach(io: file, filename:)
-          end
+          @user.newsletter_notifications_at = form.newsletter_at
+          @user.password = SecureRandom.hex
+          attach_avatar(form.avatar_url) if form.avatar_url.present?
           @user.tos_agreement = form.tos_agreement
           @user.accepted_tos_version = Time.current
           raise NeedTosAcceptance if @user.tos_agreement.blank?
@@ -73,7 +73,18 @@ module Decidim
         end
 
         @user.extended_data = extended_data
+        was_new_record = @user.new_record?
         @user.save!
+        @user.after_confirmation if verified_email && was_new_record
+      end
+
+      def attach_avatar(avatar_url)
+        url = URI.parse(avatar_url)
+        filename = File.basename(url.path)
+        file = url.open
+        @user.avatar.attach(io: file, filename:)
+      rescue OpenURI::HTTPError, Errno::ECONNREFUSED
+        # Do not attach the avatar, as it fails to fetch it.
       end
 
       def extended_data

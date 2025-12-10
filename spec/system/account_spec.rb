@@ -589,7 +589,8 @@ describe "Account" do
 
     context "when VAPID keys are set" do
       before do
-        Rails.application.secrets[:vapid] = vapid_keys
+        allow(Decidim).to receive(:vapid_public_key).and_return(vapid_keys[:public_key])
+        allow(Decidim).to receive(:vapid_private_key).and_return(vapid_keys[:private_key])
         driven_by(:pwa_chrome)
         switch_to_host(organization.host)
         login_as user, scope: :user
@@ -619,7 +620,8 @@ describe "Account" do
 
     context "when VAPID is disabled" do
       before do
-        Rails.application.secrets[:vapid] = { enabled: false }
+        allow(Decidim).to receive(:vapid_public_key).and_return(nil)
+        allow(Decidim).to receive(:vapid_private_key).and_return(nil)
         driven_by(:pwa_chrome)
         switch_to_host(organization.host)
         login_as user, scope: :user
@@ -633,7 +635,8 @@ describe "Account" do
 
     context "when VAPID keys are not set" do
       before do
-        Rails.application.secrets.delete(:vapid)
+        allow(Decidim).to receive(:vapid_public_key).and_return(nil)
+        allow(Decidim).to receive(:vapid_private_key).and_return(nil)
         driven_by(:pwa_chrome)
         switch_to_host(organization.host)
         login_as user, scope: :user
