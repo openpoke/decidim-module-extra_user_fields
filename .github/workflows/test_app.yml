@@ -28,6 +28,9 @@ jobs:
       DATABASE_HOST: localhost
       RUBYOPT: '-W:no-deprecated'
     services:
+      validator:
+        image: ghcr.io/validator/validator:latest
+        ports: [ "8888:8888" ]
       postgres:
         image: postgres:14
         ports: ["5432:5432"]
@@ -79,6 +82,7 @@ jobs:
         name: RSpec
         working-directory: ./
         env:
+          VALIDATOR_HTML_URI: http://localhost:8888/
           RUBY_VERSION: ${{ inputs.ruby_version }}
           DECIDIM_MODULE: ${{ inputs.working-directory }}
           DISPLAY: ":99"
