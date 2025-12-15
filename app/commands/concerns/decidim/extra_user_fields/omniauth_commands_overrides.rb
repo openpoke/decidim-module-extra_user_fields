@@ -27,7 +27,7 @@ module Decidim
             send_email_to_statutory_representative
             @identity = create_identity
           end
-          trigger_omniauth_event
+          trigger_omniauth_event("decidim.user.omniauth_login")
 
           broadcast(:ok, @user)
         rescue ActiveRecord::RecordInvalid => e
