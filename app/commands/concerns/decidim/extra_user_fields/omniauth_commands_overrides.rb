@@ -14,12 +14,14 @@ module Decidim
         verify_oauth_signature!
 
         begin
-          if existing_identity
-            user = existing_identity.user
-            verify_user_confirmed(user)
+          if (@identity = existing_identity)
+            @user = existing_identity.user
+            verify_user_confirmed(@user)
+            trigger_omniauth_event("decidim.user.omniauth_login")
 
-            return broadcast(:ok, user)
+            return broadcast(:ok, @user)
           end
+
           return broadcast(:invalid) if form.invalid?
 
           transaction do
@@ -27,7 +29,7 @@ module Decidim
             send_email_to_statutory_representative
             @identity = create_identity
           end
-          trigger_omniauth_registration
+          trigger_omniauth_event
 
           broadcast(:ok, @user)
         rescue ActiveRecord::RecordInvalid => e

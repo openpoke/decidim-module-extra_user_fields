@@ -47,11 +47,9 @@ You can also the version of the gem that matches your Decidim version:
 
 
 ```ruby
-gem "decidim-extra_user_fields", github: "PopulateTools/decidim-module-extra_user_fields", branch: "release/0.28-stable"
-gem "decidim-extra_user_fields", github: "PopulateTools/decidim-module-extra_user_fields", branch: "release/0.27-stable"
-gem "decidim-extra_user_fields", github: "PopulateTools/decidim-module-extra_user_fields", branch: "release/0.26-stable"
-gem "decidim-extra_user_fields", github: "PopulateTools/decidim-module-extra_user_fields", branch: "release/0.25-stable"
-gem "decidim-extra_user_fields", github: "PopulateTools/decidim-module-extra_user_fields", branch: "release/0.24-stable"
+gem "decidim-extra_user_fields", github: "openpoke/decidim-module-extra_user_fields", branch: "release/0.31-stable"
+gem "decidim-extra_user_fields", github: "openpoke/decidim-module-extra_user_fields", branch: "release/0.30-stable"
+gem "decidim-extra_user_fields", github: "PopulateTools/decidim-module-extra_user_fields", branch: "release/0.29-stable"
 ```
 
 ## Usage
@@ -141,7 +139,7 @@ Decidim::ExtraUserFields.configure do |config|
         "organization" => "decidim.extra_user_fields.participant_types.organization"
       },
       favorite_pet: {
-        "cat" => "my_app.favorite_pets.cat".
+        "cat" => "my_app.favorite_pets.cat",
         "dog" => "my_app.favorite_pets.dog"
       },
       # It is also possible to specify a proc/lambda that returns a suitable list for the select:
