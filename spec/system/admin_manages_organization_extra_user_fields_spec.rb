@@ -12,7 +12,7 @@ describe "Admin manages organization extra user fields" do # rubocop:disable RSp
   end
 
   it "creates a new item in submenu" do
-    visit decidim_admin.edit_organization_path
+    visit decidim_admin.officializations_path
 
     within ".sidebar-menu" do
       expect(page).to have_content("Manage extra user fields")
