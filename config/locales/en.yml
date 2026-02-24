@@ -25,6 +25,11 @@ en:
       exports:
         export_as: Export %{export_format}
       extra_user_fields:
+        insights:
+          description: Explore participant activity across profile dimensions. Select
+            a metric and two profile fields to see how participation is distributed.
+          menu_title: Insights
+          title: Participatory Space Insights
         menu:
           title: Manage extra user fields
     components:

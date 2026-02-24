@@ -3,6 +3,7 @@
 require "decidim/extra_user_fields/admin"
 require "decidim/extra_user_fields/engine"
 require "decidim/extra_user_fields/admin_engine"
+require "decidim/extra_user_fields/insights_engine"
 require "decidim/extra_user_fields/form_builder_methods"
 
 module Decidim

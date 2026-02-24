@@ -8,6 +8,7 @@ ignore_unused:
   - activemodel.attributes.user.*
   - activemodel.errors.models.user.*
   - decidim.admin.extra_user_fields.menu.title
+  - decidim.admin.extra_user_fields.insights.*
   - decidim.extra_user_fields.genders.*
   - decidim.extra_user_fields.age_ranges.*
 

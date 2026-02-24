@@ -29,6 +29,14 @@ module Decidim::ExtraUserFields::Admin
 
         it_behaves_like "permission is not set"
       end
+
+      context "when reading insights" do
+        let(:action) do
+          { scope: :admin, action: :read, subject: :insights }
+        end
+
+        it { is_expected.to be_truthy }
+      end
     end
 
     context "when user is not admin" do
@@ -45,6 +53,14 @@ module Decidim::ExtraUserFields::Admin
       context "and tries to update extra user fields" do
         let(:action) do
           { scope: :admin, action: :update, subject: :extra_user_fields }
+        end
+
+        it_behaves_like "permission is not set"
+      end
+
+      context "and tries to read insights" do
+        let(:action) do
+          { scope: :admin, action: :read, subject: :insights }
         end
 
         it_behaves_like "permission is not set"
