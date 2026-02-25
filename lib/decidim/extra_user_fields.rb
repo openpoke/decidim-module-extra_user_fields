@@ -77,5 +77,20 @@ module Decidim
         motto: false
       }
     end
+
+    # Registry of insight metrics available for pivot tables.
+    # Keys are metric identifiers, values are fully-qualified class names.
+    # Custom metrics can be added via an initializer:
+    #   Decidim::ExtraUserFields.config.insight_metrics["my_metric"] = "MyApp::Metrics::CustomMetric"
+    # Each class must implement `initialize(participatory_space)` and `call` returning { user_id => count }.
+    config_accessor :insight_metrics do
+      {
+        "participants" => "Decidim::ExtraUserFields::Metrics::ParticipantsMetric",
+        "proposals_created" => "Decidim::ExtraUserFields::Metrics::ProposalsCreatedMetric",
+        "proposals_supported" => "Decidim::ExtraUserFields::Metrics::ProposalsSupportedMetric",
+        "comments" => "Decidim::ExtraUserFields::Metrics::CommentsMetric",
+        "budget_votes" => "Decidim::ExtraUserFields::Metrics::BudgetVotesMetric"
+      }
+    end
   end
 end

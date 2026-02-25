@@ -19,3 +19,4 @@ AllCops:
 RSpec/DescribeClass:
   Exclude:
     - "spec/system/**/*"
+    - spec/i18n_spec.rb
