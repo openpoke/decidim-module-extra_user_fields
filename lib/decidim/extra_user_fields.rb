@@ -78,6 +78,14 @@ module Decidim
       }
     end
 
+    # Extra user fields allowed as pivot table axes in the Insights page.
+    # Only categorical fields with limited unique values make sense here.
+    # Override via initializer:
+    #   Decidim::ExtraUserFields.config.insight_fields = %w(gender age_range country)
+    config_accessor :insight_fields do
+      %w(gender age_range country postal_code location)
+    end
+
     # Registry of insight metrics available for pivot tables.
     # Keys are metric identifiers, values are fully-qualified class names.
     # Custom metrics can be added via an initializer:

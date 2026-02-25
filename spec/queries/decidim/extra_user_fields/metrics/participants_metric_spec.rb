@@ -44,6 +44,25 @@ module Decidim::ExtraUserFields::Metrics
       end
     end
 
+    context "when users supported proposals" do
+      let!(:proposal) { create(:proposal, :published, component: proposal_component, users: [user1]) }
+
+      before do
+        create(:proposal_vote, proposal: proposal, author: user2)
+      end
+
+      it "includes the supporter" do
+        result = subject.call
+        expect(result[user2.id]).to eq(1)
+      end
+
+      it "does not double-count a user who also authored" do
+        create(:proposal_vote, proposal: proposal, author: user1)
+        result = subject.call
+        expect(result[user1.id]).to eq(1)
+      end
+    end
+
     context "when users voted on budgets" do
       let(:budgets_component) { create(:budgets_component, :published, participatory_space: participatory_process) }
       let(:budget) { create(:budget, component: budgets_component) }

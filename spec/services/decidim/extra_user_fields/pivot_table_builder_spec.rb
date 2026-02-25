@@ -47,8 +47,8 @@ module Decidim::ExtraUserFields
 
       it "builds a pivot table with correct dimensions" do
         result = subject.call
-        expect(result.row_values).to include("female", "male", "non_specified")
-        expect(result.col_values).to include("17_to_30", "61_or_more", "non_specified")
+        expect(result.row_values).to include("female", "male", nil)
+        expect(result.col_values).to include("17_to_30", "61_or_more", nil)
       end
 
       it "fills cells with correct counts" do
@@ -56,7 +56,7 @@ module Decidim::ExtraUserFields
         expect(result.cell("female", "17_to_30")).to eq(1)
         expect(result.cell("male", "17_to_30")).to eq(1)
         expect(result.cell("female", "61_or_more")).to eq(1)
-        expect(result.cell("non_specified", "non_specified")).to eq(1)
+        expect(result.cell(nil, nil)).to eq(1)
       end
 
       it "calculates correct totals" do

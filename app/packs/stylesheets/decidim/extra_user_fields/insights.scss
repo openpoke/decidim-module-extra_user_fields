@@ -1,0 +1,157 @@
+// Insights page styles for the participatory space admin panel.
+
+// Selectors — compact inline controls: "Label: [value ▾]"
+.insights-selectors {
+  display: flex;
+  gap: 1.25rem;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+
+  &__field {
+    display: flex;
+    align-items: center;
+    border: 1px solid #d1d5db;
+    border-radius: 6px;
+    background: #fff;
+    overflow: hidden;
+  }
+
+  &__label {
+    padding: 0.5rem 0 0.5rem 0.75rem;
+    font-weight: 600;
+    font-size: 0.875rem;
+    color: #374151;
+    white-space: nowrap;
+
+    &::after {
+      content: ":";
+    }
+  }
+
+  &__select {
+    border: none;
+    background: transparent;
+    padding: 0.5rem 0.75rem 0.5rem 0.375rem;
+    font-size: 0.875rem;
+    color: #6b7280;
+    cursor: pointer;
+    outline: none;
+    appearance: auto;
+
+    &:focus {
+      color: #111827;
+    }
+  }
+}
+
+// Pivot table
+.insights-pivot-table {
+  overflow-x: auto;
+
+  .card-section {
+    padding: 0;
+  }
+}
+
+.insights-table {
+  width: 100%;
+  border-collapse: collapse;
+
+  th,
+  td {
+    padding: 0.75rem;
+  }
+
+  // Header
+  &__corner-header,
+  &__col-header,
+  &__row-total-header {
+    border-bottom: 2px solid #e5e5e5;
+  }
+
+  &__corner-header {
+    text-align: left;
+  }
+
+  &__col-header,
+  &__row-total-header {
+    text-align: right;
+  }
+
+  &__row-total-header {
+    font-weight: bold;
+  }
+
+  // Body
+  &__row-header {
+    font-weight: 600;
+    border-bottom: 1px solid #f0f0f0;
+  }
+
+  &__cell {
+    text-align: right;
+    border-bottom: 1px solid #f0f0f0;
+  }
+
+  &__row-total {
+    text-align: right;
+    font-weight: bold;
+    border-bottom: 1px solid #f0f0f0;
+    background-color: #f8f8f8;
+  }
+
+  // Footer
+  &__footer-label,
+  &__col-total,
+  &__grand-total {
+    font-weight: bold;
+    border-top: 2px solid #e5e5e5;
+  }
+
+  &__col-total,
+  &__grand-total {
+    text-align: right;
+    background-color: #f8f8f8;
+  }
+
+  &__grand-total {
+    background-color: #f0f0f0;
+  }
+}
+
+// Legend
+.insights-legend {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-top: 0.75rem;
+  font-size: 0.85rem;
+  color: #666;
+
+  &__gradient {
+    display: flex;
+    height: 16px;
+    border-radius: 3px;
+    overflow: hidden;
+    width: 160px;
+
+    &-step {
+      flex: 1;
+    }
+  }
+
+  &__non-specified {
+    margin-left: 1rem;
+    color: #999;
+  }
+
+  &__non-specified-swatch {
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    background-color: hsl(0, 0%, 80%);
+    border-radius: 3px;
+    vertical-align: middle;
+  }
+}

@@ -34,25 +34,7 @@ module Decidim
         # Find comments on resources within this space.
         # Returns an ActiveRecord scope (not plucked).
         def comments_in_space
-          scopes = []
-
-          if proposal_ids.any?
-            scopes << Decidim::Comments::Comment.where(
-              decidim_root_commentable_type: "Decidim::Proposals::Proposal",
-              decidim_root_commentable_id: proposal_ids
-            )
-          end
-
-          if budget_project_ids.any?
-            scopes << Decidim::Comments::Comment.where(
-              decidim_root_commentable_type: "Decidim::Budgets::Project",
-              decidim_root_commentable_id: budget_project_ids
-            )
-          end
-
-          return Decidim::Comments::Comment.none if scopes.empty?
-
-          scopes.reduce(:or)
+          @comments_in_space ||= build_comments_scope
         end
 
         def budget_project_ids
@@ -85,6 +67,28 @@ module Decidim
           Decidim::Budgets::Project
             .where(decidim_budgets_budget_id: budget_ids)
             .pluck(:id)
+        end
+
+        def build_comments_scope
+          scopes = []
+
+          if proposal_ids.any?
+            scopes << Decidim::Comments::Comment.where(
+              decidim_root_commentable_type: "Decidim::Proposals::Proposal",
+              decidim_root_commentable_id: proposal_ids
+            )
+          end
+
+          if budget_project_ids.any?
+            scopes << Decidim::Comments::Comment.where(
+              decidim_root_commentable_type: "Decidim::Budgets::Project",
+              decidim_root_commentable_id: budget_project_ids
+            )
+          end
+
+          return Decidim::Comments::Comment.none if scopes.empty?
+
+          scopes.reduce(:or)
         end
       end
     end

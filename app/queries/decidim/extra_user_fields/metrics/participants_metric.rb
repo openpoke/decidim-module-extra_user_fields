@@ -3,13 +3,15 @@
 module Decidim
   module ExtraUserFields
     module Metrics
-      # Counts unique participants — users who authored any resource (proposal, comment, budget vote)
-      # within the given participatory space. Each user is counted once.
+      # Counts unique participants — users who have any activity in the participatory space.
+      # Includes: proposal authors, proposal supporters, commenters, budget voters.
+      # Each user is counted once regardless of how many activities they have.
       class ParticipantsMetric < BaseMetric
         def call
           user_ids = Set.new
 
           user_ids.merge(proposal_author_ids)
+          user_ids.merge(proposal_supporter_ids)
           user_ids.merge(comment_author_ids)
           user_ids.merge(budget_voter_ids)
 
@@ -25,6 +27,14 @@ module Decidim
             .where(coauthorable_type: "Decidim::Proposals::Proposal", coauthorable_id: proposal_ids)
             .where(decidim_author_type: "Decidim::UserBaseEntity")
             .where.not(decidim_author_id: nil)
+            .distinct.pluck(:decidim_author_id)
+        end
+
+        def proposal_supporter_ids
+          return [] if proposal_ids.empty?
+
+          Decidim::Proposals::ProposalVote
+            .where(decidim_proposal_id: proposal_ids)
             .distinct.pluck(:decidim_author_id)
         end
 

@@ -1,0 +1,64 @@
+<% if pivot_table.empty? %>
+  <div class="card">
+    <div class="card-section">
+      <p class="help-text"><%= t("decidim.admin.extra_user_fields.insights.no_data") %></p>
+    </div>
+  </div>
+<% else %>
+  <div class="card insights-pivot-table">
+    <div class="card-section">
+      <table class="table-list insights-table">
+        <thead>
+          <tr>
+            <th class="insights-table__corner-header">
+              <%= field_label(current_row_field) %> \ <%= field_label(current_col_field) %>
+            </th>
+            <% pivot_table.col_values.each do |col| %>
+              <th class="insights-table__col-header">
+                <%= field_value_label(current_col_field, col) %>
+              </th>
+            <% end %>
+            <th class="insights-table__row-total-header">
+              <%= t("decidim.admin.extra_user_fields.insights.row_total") %>
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <% pivot_table.row_values.each do |row| %>
+            <tr>
+              <td class="insights-table__row-header">
+                <%= field_value_label(current_row_field, row) %>
+              </td>
+              <% pivot_table.col_values.each do |col| %>
+                <% value = pivot_table.cell(row, col) %>
+                <td class="insights-table__cell" style="<%= cell_style(value, pivot_table.max_value, row, col) %>">
+                  <%= number_with_delimiter(value) %>
+                </td>
+              <% end %>
+              <td class="insights-table__row-total">
+                <%= number_with_delimiter(pivot_table.row_total(row)) %>
+              </td>
+            </tr>
+          <% end %>
+        </tbody>
+        <tfoot>
+          <tr>
+            <td class="insights-table__footer-label">
+              <%= t("decidim.admin.extra_user_fields.insights.column_total") %>
+            </td>
+            <% pivot_table.col_values.each do |col| %>
+              <td class="insights-table__col-total">
+                <%= number_with_delimiter(pivot_table.col_total(col)) %>
+              </td>
+            <% end %>
+            <td class="insights-table__grand-total">
+              <%= number_with_delimiter(pivot_table.grand_total) %>
+            </td>
+          </tr>
+        </tfoot>
+      </table>
+    </div>
+  </div>
+
+  <%= render partial: "decidim/extra_user_fields/admin/insights/legend" %>
+<% end %>

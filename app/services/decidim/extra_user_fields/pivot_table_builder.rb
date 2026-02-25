@@ -7,8 +7,6 @@ module Decidim
     # 2. Loading those users and reading their extended_data for row/col fields
     # 3. Aggregating counts into a cross-tabulation matrix
     class PivotTableBuilder
-      NON_SPECIFIED = "non_specified"
-
       # @param participatory_space [Decidim::ParticipatoryProcess, Decidim::Assembly]
       # @param metric_name [String] key from InsightMetrics::REGISTRY
       # @param row_field [String] extra user field name for the Y axis
@@ -67,18 +65,16 @@ module Decidim
       end
 
       def extract_field(extended_data, field)
-        value = extended_data[field]
-        value = value.presence
-        value || NON_SPECIFIED
+        extended_data[field].presence
       end
 
       def empty_pivot_table
         PivotTable.new(row_values: [], col_values: [], cells: {})
       end
 
-      # Sort values alphabetically but push "non_specified" to the end.
+      # Sort values alphabetically, nil (non-specified) goes last.
       def sort_key(value)
-        value == NON_SPECIFIED ? [1, ""] : [0, value.to_s]
+        value.nil? ? [1, ""] : [0, value.to_s]
       end
     end
   end

@@ -26,9 +26,33 @@ en:
         export_as: Export %{export_format}
       extra_user_fields:
         insights:
+          column_total: Column Total
           description: Explore participant activity across profile dimensions. Select
             a metric and two profile fields to see how participation is distributed.
+          fields:
+            age_range: Age span
+            country: Country
+            gender: Gender
+            location: Location
+            postal_code: Postal code
+          legend:
+            fewer: Fewer
+            more: More
+            non_specified: Non specified
           menu_title: Insights
+          metrics:
+            budget_votes: Budget votes
+            comments: Comments
+            participants: Participants
+            proposals_created: Proposals created
+            proposals_supported: Proposals supported
+          no_data: No participation data found for this space with the selected criteria.
+          non_specified: Non specified
+          row_total: Row Total
+          selectors:
+            cols: Columns (X axis)
+            metric: Metric
+            rows: Rows (Y axis)
           title: Participatory Space Insights
         menu:
           title: Manage extra user fields
