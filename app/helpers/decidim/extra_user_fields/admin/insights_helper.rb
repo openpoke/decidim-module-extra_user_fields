@@ -42,13 +42,24 @@ module Decidim
         end
 
         # Inline style for a data cell's heatmap coloring.
-        # Uses gray gradient for rows/columns where the field value is missing.
-        def cell_style(value, max_value, row, col)
+        # Colored cells normalize against max of specified (non-nil) cells.
+        # Gray cells normalize against the overall max.
+        def cell_style(value, pivot_table, row, col)
           if row.nil? || col.nil?
-            heatmap_color(value, max_value, gray: true)
+            heatmap_color(value, pivot_table.max_value, gray: true)
           else
-            heatmap_color(value, max_value)
+            heatmap_color(value, pivot_table.max_specified_value)
           end
+        end
+
+        # Heatmap style for Row Total cells (normalized among row totals).
+        def row_total_style(value, pivot_table)
+          heatmap_color(value, pivot_table.max_row_total)
+        end
+
+        # Heatmap style for Column Total cells (normalized among col totals).
+        def col_total_style(value, pivot_table)
+          heatmap_color(value, pivot_table.max_col_total)
         end
 
         private

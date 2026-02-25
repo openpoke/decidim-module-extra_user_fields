@@ -31,11 +31,11 @@
               </td>
               <% pivot_table.col_values.each do |col| %>
                 <% value = pivot_table.cell(row, col) %>
-                <td class="insights-table__cell" style="<%= cell_style(value, pivot_table.max_value, row, col) %>">
+                <td class="insights-table__cell" style="<%= cell_style(value, pivot_table, row, col) %>">
                   <%= number_with_delimiter(value) %>
                 </td>
               <% end %>
-              <td class="insights-table__row-total">
+              <td class="insights-table__row-total" style="<%= row_total_style(pivot_table.row_total(row), pivot_table) %>">
                 <%= number_with_delimiter(pivot_table.row_total(row)) %>
               </td>
             </tr>
@@ -47,7 +47,7 @@
               <%= t("decidim.admin.extra_user_fields.insights.column_total") %>
             </td>
             <% pivot_table.col_values.each do |col| %>
-              <td class="insights-table__col-total">
+              <td class="insights-table__col-total" style="<%= col_total_style(pivot_table.col_total(col), pivot_table) %>">
                 <%= number_with_delimiter(pivot_table.col_total(col)) %>
               </td>
             <% end %>

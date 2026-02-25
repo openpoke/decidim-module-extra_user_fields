@@ -48,6 +48,25 @@ module Decidim
         @max_value ||= cells.values.flat_map(&:values).max || 0
       end
 
+      # Max among cells where both row and col are non-nil.
+      # Used for heatmap normalization of colored (non-gray) cells.
+      def max_specified_value
+        @max_specified_value ||= begin
+          values = row_values.compact.flat_map do |row|
+            col_values.compact.map { |col| cell(row, col) }
+          end
+          values.max || 0
+        end
+      end
+
+      def max_row_total
+        @max_row_total ||= row_totals.values.max || 0
+      end
+
+      def max_col_total
+        @max_col_total ||= col_totals.values.max || 0
+      end
+
       def empty?
         grand_total.zero?
       end
