@@ -4,14 +4,7 @@ require "spec_helper"
 
 module Decidim::ExtraUserFields
   describe PivotTableBuilder do
-    subject do
-      described_class.new(
-        participatory_space: participatory_process,
-        metric_name: "participants",
-        row_field: "gender",
-        col_field: "age_range"
-      )
-    end
+    subject { described_class.new(participatory_space: participatory_process, metric_name: "participants", row_field: "gender", col_field: "age_range") }
 
     let(:organization) { create(:organization) }
     let(:participatory_process) { create(:participatory_process, :with_steps, organization:) }
@@ -25,18 +18,10 @@ module Decidim::ExtraUserFields
     end
 
     context "when there are participants with extended data" do
-      let(:user_female_young) do
-        create(:user, :confirmed, organization:, extended_data: { "gender" => "female", "age_range" => "17_to_30" })
-      end
-      let(:user_male_young) do
-        create(:user, :confirmed, organization:, extended_data: { "gender" => "male", "age_range" => "17_to_30" })
-      end
-      let(:user_female_old) do
-        create(:user, :confirmed, organization:, extended_data: { "gender" => "female", "age_range" => "61_or_more" })
-      end
-      let(:user_no_data) do
-        create(:user, :confirmed, organization:, extended_data: {})
-      end
+      let(:user_female_young) { create(:user, :confirmed, organization:, extended_data: { "gender" => "female", "age_range" => "17_to_30" }) }
+      let(:user_male_young) { create(:user, :confirmed, organization:, extended_data: { "gender" => "male", "age_range" => "17_to_30" }) }
+      let(:user_female_old) { create(:user, :confirmed, organization:, extended_data: { "gender" => "female", "age_range" => "61_or_more" }) }
+      let(:user_no_data) { create(:user, :confirmed, organization:, extended_data: {}) }
 
       before do
         create(:proposal, :published, component: proposal_component, users: [user_female_young])
@@ -68,14 +53,7 @@ module Decidim::ExtraUserFields
     end
 
     context "with an invalid metric name" do
-      subject do
-        described_class.new(
-          participatory_space: participatory_process,
-          metric_name: "invalid",
-          row_field: "gender",
-          col_field: "age_range"
-        )
-      end
+      subject { described_class.new(participatory_space: participatory_process, metric_name: "invalid", row_field: "gender", col_field: "age_range") }
 
       it "returns an empty pivot table" do
         result = subject.call
