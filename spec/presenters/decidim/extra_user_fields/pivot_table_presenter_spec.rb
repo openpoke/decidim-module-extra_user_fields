@@ -28,26 +28,30 @@ module Decidim::ExtraUserFields
         expect(presenter.cell_style(0, "female", "young")).to eq("")
       end
 
-      it "returns colored gradient for the max value cell" do
-        # min=2, max=10 -> value 10 is full intensity
+      it "returns CSS variables with intensity and text color" do
         result = presenter.cell_style(10, "female", "young")
-        expect(result).to include("background-color:")
-        expect(result).to include("hsl(0, 78%, 50%)")
+        expect(result).to include("--i:")
+        expect(result).to include("--tc:")
       end
 
-      it "returns baseline color for the min value cell" do
-        # min=2, max=10 -> value 2 has intensity 0 (baseline yellow)
+      it "returns full intensity for the max value" do
+        result = presenter.cell_style(10, "female", "young")
+        expect(result).to include("--i:1.0")
+        expect(result).to include("--tc:#fff")
+      end
+
+      it "returns zero intensity for the min value" do
         result = presenter.cell_style(2, "male", "old")
-        expect(result).to include("hsl(50, 90%, 86%)")
+        expect(result).to include("--i:0.0")
+        expect(result).to include("--tc:#1a1a1a")
       end
 
       context "when all specified cells have the same value" do
         let(:cells) { { "female" => { "young" => 5, "old" => 5 }, "male" => { "young" => 5, "old" => 5 } } }
 
-        it "shows baseline color for all cells (no hotspots)" do
+        it "returns zero intensity (no hotspots)" do
           result = presenter.cell_style(5, "female", "young")
-          # min=max=5, intensity=0 -> baseline yellow
-          expect(result).to include("hsl(50, 90%, 86%)")
+          expect(result).to include("--i:0.0")
         end
       end
 
@@ -56,20 +60,15 @@ module Decidim::ExtraUserFields
         let(:col_values) { ["young", nil] }
         let(:cells) { { "female" => { "young" => 10, nil => 5 }, nil => { "young" => 3, nil => 7 } } }
 
-        it "returns gray gradient when row is nil" do
+        it "returns CSS variables for gray cells" do
           result = presenter.cell_style(7, nil, nil)
-          expect(result).to include("hsl(0, 0%,")
+          expect(result).to include("--i:")
+          expect(result).to include("--tc:")
         end
 
-        it "returns gray gradient when col is nil" do
-          result = presenter.cell_style(5, "female", nil)
-          expect(result).to include("hsl(0, 0%,")
-        end
-
-        it "normalizes colored cells only against specified cells" do
-          # Only specified cell is female/young=10 -> min=max=10, intensity=0
-          result = presenter.cell_style(10, "female", "young")
-          expect(result).to include("hsl(50, 90%, 86%)")
+        it "uses all_cell_range for nil cells" do
+          result = presenter.cell_style(10, "female", nil)
+          expect(result).to include("--i:")
         end
       end
     end
@@ -79,17 +78,16 @@ module Decidim::ExtraUserFields
         expect(presenter.row_total_style(0)).to eq("")
       end
 
-      it "returns blue gradient for the max row total" do
-        # female total=15 (max), intensity=1.0
+      it "returns full intensity for the max row total" do
         result = presenter.row_total_style(15)
-        expect(result).to include("background-color:")
-        expect(result).to include("hsl(215,")
+        expect(result).to include("--i:1.0")
+        expect(result).to include("--tc:#fff")
       end
 
-      it "returns lighter blue for smaller totals" do
-        # male total=5, max=15, intensity=0.33
+      it "returns proportional intensity for smaller totals" do
         result = presenter.row_total_style(5)
-        expect(result).to include("hsl(215,")
+        expect(result).to include("--i:")
+        expect(result).to include("--tc:#1a1a1a")
       end
     end
 
@@ -98,29 +96,28 @@ module Decidim::ExtraUserFields
         expect(presenter.col_total_style(0)).to eq("")
       end
 
-      it "returns blue gradient for the max column total" do
-        # young total=13 (max), intensity=1.0
+      it "returns full intensity for the max column total" do
         result = presenter.col_total_style(13)
-        expect(result).to include("background-color:")
-        expect(result).to include("hsl(215,")
+        expect(result).to include("--i:1.0")
+        expect(result).to include("--tc:#fff")
       end
 
-      it "returns lighter blue for smaller totals" do
-        # old total=7, max=13, intensity=0.54
+      it "returns proportional intensity for smaller totals" do
         result = presenter.col_total_style(7)
-        expect(result).to include("hsl(215,")
+        expect(result).to include("--i:")
+        expect(result).to include("--tc:#1a1a1a")
       end
     end
 
-    describe "min-max normalization" do
+    describe "edge cases" do
       context "when there are no non-nil combinations" do
         let(:row_values) { [nil] }
         let(:col_values) { [nil] }
         let(:cells) { { nil => { nil => 10 } } }
 
-        it "returns gray style for the only cell" do
+        it "returns CSS variables for the only cell" do
           result = presenter.cell_style(10, nil, nil)
-          expect(result).to include("hsl(0, 0%,")
+          expect(result).to include("--i:")
         end
       end
 

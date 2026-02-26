@@ -35,7 +35,8 @@
                   </th>
                   <% pivot_table_presenter.col_values.each do |col| %>
                     <% value = pivot_table_presenter.cell(row, col) %>
-                    <td class="insights-table__cell" style="<%= pivot_table_presenter.cell_style(value, row, col) %>">
+                    <% cell_type = (row.nil? || col.nil?) ? "gray" : "colored" %>
+                    <td class="insights-table__cell insights-table__cell--<%= cell_type %>" style="<%= pivot_table_presenter.cell_style(value, row, col) %>">
                       <%= number_with_delimiter(value) %>
                     </td>
                   <% end %>

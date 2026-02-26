@@ -52,6 +52,40 @@ module Decidim::ExtraUserFields
       end
     end
 
+    describe "#specified_cell_range" do
+      it "returns min and max among all non-zero cells" do
+        expect(pivot_table.specified_cell_range).to eq([5, 20])
+      end
+
+      context "with nil rows/cols" do
+        let(:row_values) { ["18_to_25", nil] }
+        let(:col_values) { ["female", nil] }
+        let(:cells) { { "18_to_25" => { "female" => 10, nil => 3 }, nil => { "female" => 7, nil => 1 } } }
+
+        it "excludes cells where row or col is nil" do
+          expect(pivot_table.specified_cell_range).to eq([10, 10])
+        end
+      end
+    end
+
+    describe "#all_cell_range" do
+      it "returns min and max among all cells" do
+        expect(pivot_table.all_cell_range).to eq([5, 20])
+      end
+    end
+
+    describe "#row_total_max" do
+      it "returns the highest row total" do
+        expect(pivot_table.row_total_max).to eq(35)
+      end
+    end
+
+    describe "#col_total_max" do
+      it "returns the highest column total" do
+        expect(pivot_table.col_total_max).to eq(30)
+      end
+    end
+
     describe "#empty?" do
       it "returns false when there is data" do
         expect(pivot_table.empty?).to be(false)

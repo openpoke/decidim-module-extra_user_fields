@@ -92,6 +92,26 @@
 
   &__cell {
     @apply text-center;
+
+    &--colored {
+      background-color: hsl(
+        calc(50 * (1 - var(--i))),
+        calc(90% - var(--i) * 12%),
+        calc(86% - var(--i) * 36%)
+      );
+      color: var(--tc);
+    }
+
+    &--gray {
+      background-color: hsl(0, 0%, calc(95% - var(--i) * 35%));
+      color: var(--tc, #1a1a1a);
+    }
+  }
+
+  &__row-total,
+  &__col-total {
+    background-color: hsl(215, calc(50% + var(--i) * 15%), calc(90% - var(--i) * 40%));
+    color: var(--tc);
   }
 
   &__row-total {

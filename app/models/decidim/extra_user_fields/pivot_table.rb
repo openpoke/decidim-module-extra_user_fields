@@ -51,6 +51,33 @@ module Decidim
       def empty?
         grand_total.zero?
       end
+
+      # Min-max among cells where both row and col are non-nil (specified).
+      def specified_cell_range
+        @specified_cell_range ||= positive_minmax(
+          row_values.compact.flat_map { |row| col_values.compact.map { |col| cell(row, col) } }
+        )
+      end
+
+      # Min-max among all cells (including nil row/col).
+      def all_cell_range
+        @all_cell_range ||= positive_minmax(cells.values.flat_map(&:values))
+      end
+
+      def row_total_max
+        @row_total_max ||= row_values.map { |row| row_total(row) }.max || 0
+      end
+
+      def col_total_max
+        @col_total_max ||= col_values.map { |col| col_total(col) }.max || 0
+      end
+
+      private
+
+      def positive_minmax(values)
+        non_zero = values.select(&:positive?)
+        non_zero.empty? ? [0, 0] : non_zero.minmax
+      end
     end
   end
 end
