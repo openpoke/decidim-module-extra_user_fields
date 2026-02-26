@@ -1,23 +1,19 @@
 <div class="insights-legend">
   <span><%= t("decidim.admin.extra_user_fields.insights.legend.fewer") %></span>
-  <div class="insights-legend__gradient">
-    <div class="insights-legend__gradient-step" style="background-color: hsl(50, 90%, 86%);"></div>
-    <div class="insights-legend__gradient-step" style="background-color: hsl(38, 87%, 77%);"></div>
-    <div class="insights-legend__gradient-step" style="background-color: hsl(25, 84%, 68%);"></div>
-    <div class="insights-legend__gradient-step" style="background-color: hsl(12, 81%, 59%);"></div>
-    <div class="insights-legend__gradient-step" style="background-color: hsl(0, 78%, 50%);"></div>
+  <div class="insights-legend__gradient insights-legend__gradient--heat">
+    <% 5.times do %>
+      <div class="insights-legend__gradient-step"></div>
+    <% end %>
   </div>
   <span><%= t("decidim.admin.extra_user_fields.insights.legend.more") %></span>
 
   <span class="insights-legend__separator"></span>
 
   <span><%= t("decidim.admin.extra_user_fields.insights.legend.lower_total") %></span>
-  <div class="insights-legend__gradient">
-    <div class="insights-legend__gradient-step" style="background-color: hsl(215, 53%, 87%);"></div>
-    <div class="insights-legend__gradient-step" style="background-color: hsl(215, 57%, 77%);"></div>
-    <div class="insights-legend__gradient-step" style="background-color: hsl(215, 61%, 67%);"></div>
-    <div class="insights-legend__gradient-step" style="background-color: hsl(215, 63%, 57%);"></div>
-    <div class="insights-legend__gradient-step" style="background-color: hsl(215, 65%, 50%);"></div>
+  <div class="insights-legend__gradient insights-legend__gradient--total">
+    <% 5.times do %>
+      <div class="insights-legend__gradient-step"></div>
+    <% end %>
   </div>
   <span><%= t("decidim.admin.extra_user_fields.insights.legend.higher_total") %></span>
 

@@ -25,11 +25,18 @@
       @apply text-gray-4;
     }
   }
+
+}
+
+// Required for nested flex containers in admin layout:
+// without this, wide tables force page-level horizontal scroll.
+.layout-content:has(.insights-page),
+.sidebar-menu__container:has(.insights-page),
+.item_show__wrapper:has(.insights-page) {
+  min-width: 0;
 }
 
 // Pivot table scroll: table grows by content, table-scroll handles overflow.
-// min-width:0 on .layout-content is set via <style> tag in show.html.erb
-// because PostCSS strips :has() selectors.
 .insights-pivot-wrapper .table-scroll {
   @apply overflow-x-auto;
   max-width: 100%;
@@ -40,74 +47,73 @@
   min-width: 100%;
 }
 
-// Override table-list responsive alignment (text-left md:text-center)
-// and tfoot padding (p-2) that the framework applies.
 .table-list.insights-table {
-  th:not(:first-child),
-  td:not(:first-child) {
-    @apply text-right;
+  thead th {
+    @apply text-center;
   }
 
-  tfoot td {
-    @apply px-3 py-1.5;
+  tbody th:first-child,
+  tbody td:first-child,
+  tfoot th:first-child,
+  tfoot td:first-child {
+    @apply text-left;
+    padding-left: 0.5rem;
+  }
+
+  tbody th:last-child,
+  tbody td:last-child,
+  tfoot th:last-child,
+  tfoot td:last-child {
+    @apply text-center;
+  }
+
+  tbody td:not(:first-child):not(:last-child),
+  tfoot td:not(:first-child):not(:last-child) {
+    @apply text-center;
   }
 }
 
 .insights-table {
-  @apply border-collapse;
-
-  th,
-  td {
-    @apply px-3 py-1.5 whitespace-nowrap;
-  }
-
-  // Header
-  &__corner-header,
-  &__col-header,
-  &__row-total-header {
-    @apply border-b-2 border-neutral-200;
-  }
-
   &__corner-header {
-    @apply text-left;
+    @apply text-center;
   }
 
-  &__col-header,
+  &__col-header {
+    @apply text-center;
+  }
+
   &__row-total-header {
-    @apply text-right;
+    @apply text-center text-xs font-bold;
   }
 
-  &__row-total-header {
-    @apply font-bold;
-  }
-
-  // Body
   &__row-header {
-    @apply font-semibold border-b border-neutral-100;
+    @apply text-left text-xs font-semibold;
   }
 
   &__cell {
-    @apply text-right border-b border-neutral-100;
+    @apply text-center;
   }
 
   &__row-total {
-    @apply text-right font-bold border-b border-neutral-100;
+    @apply text-center text-xs font-bold;
   }
 
-  // Footer
   &__footer-label,
   &__col-total,
   &__grand-total {
-    @apply font-bold border-t-2 border-neutral-200;
+    @apply text-xs font-bold;
   }
 
-  &__col-total,
+  &__footer-label {
+    @apply text-left;
+  }
+
+  &__col-total {
+    @apply text-center;
+  }
+
   &__grand-total {
     @apply text-right;
-  }
-
-  &__grand-total {
-    @apply bg-neutral-100;
   }
 }
 
@@ -122,6 +128,50 @@
     &-step {
       @apply flex-1;
     }
+
+    &--heat {
+      .insights-legend__gradient-step:nth-child(1) {
+        background-color: hsl(50, 90%, 86%);
+      }
+
+      .insights-legend__gradient-step:nth-child(2) {
+        background-color: hsl(38, 87%, 77%);
+      }
+
+      .insights-legend__gradient-step:nth-child(3) {
+        background-color: hsl(25, 84%, 68%);
+      }
+
+      .insights-legend__gradient-step:nth-child(4) {
+        background-color: hsl(12, 81%, 59%);
+      }
+
+      .insights-legend__gradient-step:nth-child(5) {
+        background-color: hsl(0, 78%, 50%);
+      }
+    }
+
+    &--total {
+      .insights-legend__gradient-step:nth-child(1) {
+        background-color: hsl(215, 53%, 87%);
+      }
+
+      .insights-legend__gradient-step:nth-child(2) {
+        background-color: hsl(215, 57%, 77%);
+      }
+
+      .insights-legend__gradient-step:nth-child(3) {
+        background-color: hsl(215, 61%, 67%);
+      }
+
+      .insights-legend__gradient-step:nth-child(4) {
+        background-color: hsl(215, 63%, 57%);
+      }
+
+      .insights-legend__gradient-step:nth-child(5) {
+        background-color: hsl(215, 65%, 50%);
+      }
+    }
   }
 
   &__separator {
@@ -129,8 +179,7 @@
   }
 
   &__non-specified {
-    @apply ml-4;
-    color: #636363;
+    @apply ml-4 text-gray-2;
   }
 
   &__non-specified-swatch {
