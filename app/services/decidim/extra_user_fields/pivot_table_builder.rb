@@ -6,9 +6,9 @@ module Decidim
     # against two user-profile dimensions within a single participatory space.
     class PivotTableBuilder
       # @param participatory_space [Decidim::ParticipatoryProcess, Decidim::Assembly]
-      # @param metric_name [String] key from InsightMetrics::REGISTRY
-      # @param row_field [String] extra user field name for the Y axis
-      # @param col_field [String] extra user field name for the X axis
+      # @param metric_name [String] registered metric name (see InsightMetrics)
+      # @param row_field [String] extra user field for the Y axis
+      # @param col_field [String] extra user field for the X axis
       def initialize(participatory_space:, metric_name:, row_field:, col_field:)
         @participatory_space = participatory_space
         @metric_name = metric_name

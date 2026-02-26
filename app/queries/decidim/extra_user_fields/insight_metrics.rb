@@ -2,8 +2,8 @@
 
 module Decidim
   module ExtraUserFields
-    # Facade for the insight metrics registry.
-    # Reads from Decidim::ExtraUserFields.insight_metrics config.
+    # Registry of available insight metrics.
+    # Resolves metric names to their implementation classes.
     module InsightMetrics
       def self.available_metrics
         Decidim::ExtraUserFields.insight_metrics.keys

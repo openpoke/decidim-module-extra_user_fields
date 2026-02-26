@@ -5,14 +5,12 @@ module Decidim
     module Metrics
       # Counts checked-out budget orders (votes) by each user within the participatory space.
       class BudgetVotesMetric < BaseMetric
+        include Concerns::BudgetQueries
+
         def call
           return {} if budget_ids.empty?
 
-          Decidim::Budgets::Order
-            .where(decidim_budgets_budget_id: budget_ids)
-            .where.not(checked_out_at: nil)
-            .group(:decidim_user_id)
-            .count
+          budget_orders_scope.group(:decidim_user_id).count
         end
       end
     end

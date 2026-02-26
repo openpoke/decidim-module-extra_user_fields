@@ -4,7 +4,7 @@ module Decidim
   module ExtraUserFields
     module Admin
       module InsightsHelper
-        # Render a compact selector: bordered frame with "Label: [value ▾]".
+        # Renders a labeled <select> that auto-submits on change.
         # Yields each option to the block for label generation.
         def insight_selector_field(param_name, options, selected_value, &block)
           label_text = t("decidim.admin.extra_user_fields.insights.selectors.#{param_name}")
@@ -20,19 +20,16 @@ module Decidim
           end
         end
 
-        # Translate a metric name for display.
         def metric_label(metric_name)
           t("decidim.admin.extra_user_fields.insights.metrics.#{metric_name}",
             default: metric_name.humanize)
         end
 
-        # Translate a field name for display.
         def field_label(field_name)
           t("decidim.admin.extra_user_fields.insights.fields.#{field_name}",
             default: field_name.humanize)
         end
 
-        # Translate a field value for display.
         # Tries field-specific i18n keys first (e.g., genders.female), falls back to humanize.
         def field_value_label(field_name, value)
           return t("decidim.admin.extra_user_fields.insights.non_specified") if value.nil?

@@ -44,5 +44,34 @@ module Decidim::ExtraUserFields::Metrics
         expect(subject.call).to eq({})
       end
     end
+
+    context "when the component is unpublished" do
+      let(:unpublished_component) { create(:budgets_component, :unpublished, participatory_space: participatory_process) }
+      let(:unpublished_budget) { create(:budget, component: unpublished_component) }
+
+      before do
+        order = create(:order, :with_projects, budget: unpublished_budget, user: user1)
+        order.update!(checked_out_at: Time.current)
+      end
+
+      it "does not count votes from unpublished components" do
+        expect(subject.call).to eq({})
+      end
+    end
+
+    context "when votes belong to another space" do
+      let(:other_process) { create(:participatory_process, :with_steps, organization:) }
+      let(:other_component) { create(:budgets_component, :published, participatory_space: other_process) }
+      let(:other_budget) { create(:budget, component: other_component) }
+
+      before do
+        order = create(:order, :with_projects, budget: other_budget, user: user1)
+        order.update!(checked_out_at: Time.current)
+      end
+
+      it "does not count them" do
+        expect(subject.call).to eq({})
+      end
+    end
   end
 end

@@ -7,50 +7,19 @@ module Decidim
       # Includes: proposal authors, proposal supporters, commenters, budget voters.
       # Each user is counted once regardless of how many activities they have.
       class ParticipantsMetric < BaseMetric
+        include Concerns::ProposalQueries
+        include Concerns::BudgetQueries
+        include Concerns::CommentQueries
+
         def call
           user_ids = Set.new
 
-          user_ids.merge(proposal_author_ids)
-          user_ids.merge(proposal_supporter_ids)
-          user_ids.merge(comment_author_ids)
-          user_ids.merge(budget_voter_ids)
+          user_ids.merge(coauthorships_scope.distinct.pluck(:decidim_author_id)) if proposal_ids.any?
+          user_ids.merge(proposal_votes_scope.distinct.pluck(:decidim_author_id)) if proposal_ids.any?
+          user_ids.merge(comments_scope.where(decidim_author_type: "Decidim::UserBaseEntity").distinct.pluck(:decidim_author_id))
+          user_ids.merge(budget_orders_scope.distinct.pluck(:decidim_user_id)) if budget_ids.any?
 
           user_ids.index_with { 1 }
-        end
-
-        private
-
-        def proposal_author_ids
-          return [] if proposal_ids.empty?
-
-          Decidim::Coauthorship
-            .where(coauthorable_type: "Decidim::Proposals::Proposal", coauthorable_id: proposal_ids)
-            .where(decidim_author_type: "Decidim::UserBaseEntity")
-            .where.not(decidim_author_id: nil)
-            .distinct.pluck(:decidim_author_id)
-        end
-
-        def proposal_supporter_ids
-          return [] if proposal_ids.empty?
-
-          Decidim::Proposals::ProposalVote
-            .where(decidim_proposal_id: proposal_ids)
-            .distinct.pluck(:decidim_author_id)
-        end
-
-        def comment_author_ids
-          comments_in_space
-            .where(decidim_author_type: "Decidim::UserBaseEntity")
-            .distinct.pluck(:decidim_author_id)
-        end
-
-        def budget_voter_ids
-          return [] if budget_ids.empty?
-
-          Decidim::Budgets::Order
-            .where(decidim_budgets_budget_id: budget_ids)
-            .where.not(checked_out_at: nil)
-            .distinct.pluck(:decidim_user_id)
         end
       end
     end

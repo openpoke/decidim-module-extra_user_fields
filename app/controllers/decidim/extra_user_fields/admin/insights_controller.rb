@@ -31,18 +31,15 @@ module Decidim
         end
 
         def current_metric
-          @current_metric ||= begin
-            metric = params[:metric].to_s
-            metric if InsightMetrics.valid_metric?(metric)
-          end || available_metrics.first
+          @current_metric ||= detect_metric(params[:metric]) || available_metrics.first
         end
 
         def current_row_field
-          @current_row_field ||= validated_field(params[:rows]) || available_fields.first
+          @current_row_field ||= detect_field(params[:rows]) || available_fields.first
         end
 
         def current_col_field
-          @current_col_field ||= validated_field(params[:cols]) || available_fields.second
+          @current_col_field ||= detect_field(params[:cols]) || available_fields.second
         end
 
         def available_metrics
@@ -53,9 +50,14 @@ module Decidim
           @available_fields ||= Decidim::ExtraUserFields.insight_fields
         end
 
-        def validated_field(value)
-          field = value.to_s
-          field if available_fields.include?(field)
+        def detect_metric(name)
+          name = name.to_s
+          name if InsightMetrics.valid_metric?(name)
+        end
+
+        def detect_field(name)
+          name = name.to_s
+          name if available_fields.include?(name)
         end
 
         def permission_class_chain

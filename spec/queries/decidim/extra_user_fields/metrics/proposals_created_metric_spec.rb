@@ -43,5 +43,27 @@ module Decidim::ExtraUserFields::Metrics
         expect(subject.call).to eq({})
       end
     end
+
+    context "when proposals are hidden" do
+      before do
+        create(:proposal, :published, :hidden, component: proposal_component, users: [user1])
+      end
+
+      it "does not count them" do
+        expect(subject.call).to eq({})
+      end
+    end
+
+    context "when the component is unpublished" do
+      let(:unpublished_component) { create(:proposal_component, :unpublished, participatory_space: participatory_process) }
+
+      before do
+        create(:proposal, :published, component: unpublished_component, users: [user1])
+      end
+
+      it "does not count proposals from unpublished components" do
+        expect(subject.call).to eq({})
+      end
+    end
   end
 end
