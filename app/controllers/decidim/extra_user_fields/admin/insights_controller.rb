@@ -8,7 +8,7 @@ module Decidim
         helper InsightsHelper
         layout :layout
 
-        helper_method :pivot_table, :current_metric, :current_row_field, :current_col_field,
+        helper_method :pivot_table_presenter, :current_metric, :current_row_field, :current_col_field,
                       :available_metrics, :available_fields
 
         before_action :set_breadcrumbs
@@ -19,13 +19,15 @@ module Decidim
 
         private
 
-        def pivot_table
-          @pivot_table ||= PivotTableBuilder.new(
-            participatory_space: current_participatory_space,
-            metric_name: current_metric,
-            row_field: current_row_field,
-            col_field: current_col_field
-          ).call
+        def pivot_table_presenter
+          @pivot_table_presenter ||= PivotTablePresenter.new(
+            PivotTableBuilder.new(
+              participatory_space: current_participatory_space,
+              metric_name: current_metric,
+              row_field: current_row_field,
+              col_field: current_col_field
+            ).call
+          )
         end
 
         def current_metric

@@ -41,27 +41,6 @@ module Decidim
           t(key, default: value.humanize)
         end
 
-        # Inline style for a data cell's heatmap coloring.
-        # Colored cells normalize against max of specified (non-nil) cells.
-        # Gray cells normalize against the overall max.
-        def cell_style(value, pivot_table, row, col)
-          if row.nil? || col.nil?
-            heatmap_color(value, pivot_table.max_value, gray: true)
-          else
-            heatmap_color(value, pivot_table.max_specified_value)
-          end
-        end
-
-        # Heatmap style for Row Total cells (normalized among row totals).
-        def row_total_style(value, pivot_table)
-          heatmap_color(value, pivot_table.max_row_total)
-        end
-
-        # Heatmap style for Column Total cells (normalized among col totals).
-        def col_total_style(value, pivot_table)
-          heatmap_color(value, pivot_table.max_col_total)
-        end
-
         private
 
         def i18n_key_for_field_value(field_name, value)
@@ -73,28 +52,6 @@ module Decidim
           else
             "decidim.admin.extra_user_fields.insights.field_values.#{field_name}.#{value}"
           end
-        end
-
-        # Compute inline heatmap color for a cell value.
-        # When gray: true, uses a neutral gray gradient (for non-specified values).
-        # Otherwise uses a yellow → red gradient.
-        def heatmap_color(value, max_value, gray: false)
-          return "" if max_value.zero? || value.zero?
-
-          intensity = value.to_f / max_value
-          text_color = intensity > 0.65 ? "#fff" : "#1a1a1a"
-
-          bg = if gray
-                 lightness = (95 - (intensity * 35)).round
-                 "hsl(0, 0%, #{lightness}%)"
-               else
-                 hue = (50 * (1 - intensity)).round
-                 saturation = (90 + (intensity * 10)).round
-                 lightness = (90 - (intensity * 45)).round
-                 "hsl(#{hue}, #{saturation}%, #{lightness}%)"
-               end
-
-          "background-color: #{bg}; color: #{text_color};"
         end
       end
     end
