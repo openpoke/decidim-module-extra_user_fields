@@ -23,8 +23,6 @@ module Decidim::ExtraUserFields::Admin
         expect(helper.field_label("gender")).to eq("Gender")
         expect(helper.field_label("age_range")).to eq("Age span")
         expect(helper.field_label("country")).to eq("Country")
-        expect(helper.field_label("postal_code")).to eq("Postal code")
-        expect(helper.field_label("location")).to eq("Location")
       end
 
       it "humanizes unknown field names" do
@@ -50,8 +48,15 @@ module Decidim::ExtraUserFields::Admin
       end
 
       it "falls back to humanized value for other fields" do
-        expect(helper.field_value_label("country", "spain")).to eq("Spain")
-        expect(helper.field_value_label("location", "some_place")).to eq("Some place")
+        expect(helper.field_value_label("custom_field", "some_place")).to eq("Some place")
+      end
+
+      it "translates country codes to country names" do
+        expect(helper.field_value_label("country", "DE")).to eq("Germany")
+      end
+
+      it "falls back to humanized value for unknown country codes" do
+        expect(helper.field_value_label("country", "unknown_code")).to eq("Unknown code")
       end
     end
 

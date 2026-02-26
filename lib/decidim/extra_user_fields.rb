@@ -83,7 +83,7 @@ module Decidim
     # Override via initializer:
     #   Decidim::ExtraUserFields.config.insight_fields = %w(gender age_range country)
     config_accessor :insight_fields do
-      %w(gender age_range country postal_code location)
+      %w(gender age_range country)
     end
 
     # Registry of insight metrics available for pivot tables.

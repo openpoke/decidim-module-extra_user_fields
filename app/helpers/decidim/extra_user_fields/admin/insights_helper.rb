@@ -36,6 +36,7 @@ module Decidim
         # Tries field-specific i18n keys first (e.g., genders.female), falls back to humanize.
         def field_value_label(field_name, value)
           return t("decidim.admin.extra_user_fields.insights.non_specified") if value.nil?
+          return country_name_from_code(value) if field_name.to_s == "country"
 
           key = i18n_key_for_field_value(field_name, value)
           t(key, default: value.humanize)
@@ -52,6 +53,13 @@ module Decidim
           else
             "decidim.admin.extra_user_fields.insights.field_values.#{field_name}.#{value}"
           end
+        end
+
+        def country_name_from_code(value)
+          country = ISO3166::Country[value.to_s.strip.upcase]
+          return value.to_s.humanize unless country
+
+          country.translations[I18n.locale.to_s] || country.common_name || country.iso_short_name
         end
       end
     end
