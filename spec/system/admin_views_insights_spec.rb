@@ -133,7 +133,7 @@ describe "Admin views insights" do
       )
 
       within("thead") do
-        expect(page).to have_content("france")
+        expect(page).to have_content("France")
       end
 
       within("tbody") do
@@ -186,22 +186,19 @@ describe "Admin views insights" do
       )
     end
 
-    it "applies inline background-color style to data cells" do
+    it "applies inline heatmap style to data cells" do
       cell = find("td.insights-table__cell", match: :first)
-      style = cell[:style] || ""
-      expect(style).to include("background-color")
+      expect(cell[:style]).to match(/--i:/)
     end
 
-    it "applies inline style to row total cells" do
+    it "applies inline heatmap style to row total cells" do
       cell = find("td.insights-table__row-total", match: :first)
-      style = cell[:style] || ""
-      expect(style).to include("background-color")
+      expect(cell[:style]).to match(/--i:/)
     end
 
-    it "applies inline style to column total cells" do
+    it "applies inline heatmap style to column total cells" do
       cell = find("td.insights-table__col-total", match: :first)
-      style = cell[:style] || ""
-      expect(style).to include("background-color")
+      expect(cell[:style]).to match(/--i:/)
     end
   end
 
