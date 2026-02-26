@@ -60,6 +60,8 @@ module Decidim::ExtraUserFields::Admin
         result = helper.insight_selector_field(:rows, %w(gender age_range), "gender", &:humanize)
 
         expect(result).to include('class="insights-selectors__field"')
+        expect(result).to include("<label")
+        expect(result).to include('for="rows"')
         expect(result).to include("Rows (Y axis)")
         expect(result).to include("<select")
         expect(result).to include("Gender")

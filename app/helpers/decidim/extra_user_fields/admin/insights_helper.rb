@@ -7,10 +7,10 @@ module Decidim
         # Render a compact selector: bordered frame with "Label: [value ▾]".
         # Yields each option to the block for label generation.
         def insight_selector_field(param_name, options, selected_value, &block)
-          label_key = "decidim.admin.extra_user_fields.insights.selectors.#{param_name}"
+          label_text = t("decidim.admin.extra_user_fields.insights.selectors.#{param_name}")
 
           content_tag(:div, class: "insights-selectors__field") do
-            content_tag(:span, t(label_key), class: "insights-selectors__label") +
+            label_tag(param_name, label_text, class: "insights-selectors__label") +
               select_tag(
                 param_name,
                 options_for_select(options.map { |opt| [block.call(opt), opt] }, selected_value),

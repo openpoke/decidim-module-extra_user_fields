@@ -28,14 +28,14 @@ module Decidim
         end
       end
 
-      # Heatmap style for Row Total cells.
+      # Inline style for Row Total cells (blue gradient).
       def row_total_style(value)
-        heatmap_color(value, *row_total_range)
+        total_heatmap_color(value, row_total_max)
       end
 
-      # Heatmap style for Column Total cells.
+      # Inline style for Column Total cells (blue gradient).
       def col_total_style(value)
-        heatmap_color(value, *col_total_range)
+        total_heatmap_color(value, col_total_max)
       end
 
       private
@@ -57,19 +57,31 @@ module Decidim
         @all_cell_range ||= min_max(pivot_table.cells.values.flat_map(&:values))
       end
 
-      def row_total_range
-        @row_total_range ||= min_max(row_values.map { |row| row_total(row) })
+      def row_total_max
+        @row_total_max ||= row_values.map { |row| row_total(row) }.max || 0
       end
 
-      def col_total_range
-        @col_total_range ||= min_max(col_values.map { |col| col_total(col) })
+      def col_total_max
+        @col_total_max ||= col_values.map { |col| col_total(col) }.max || 0
       end
 
       def min_max(values)
         non_zero = values.select(&:positive?)
         return [0, 0] if non_zero.empty?
 
-        [non_zero.min, non_zero.max]
+        non_zero.minmax
+      end
+
+      # Blue gradient for total cells, proportional to group max.
+      def total_heatmap_color(value, max)
+        return "" if value.zero? || max.zero?
+
+        intensity = value.to_f / max
+        text_color = intensity > 0.6 ? "#fff" : "#1a1a1a"
+        saturation = (50 + (intensity * 15)).round
+        lightness = (90 - (intensity * 40)).round
+        bg = "hsl(215, #{saturation}%, #{lightness}%)"
+        "background-color: #{bg}; color: #{text_color};"
       end
 
       # Compute inline heatmap color using min-max normalization.
@@ -81,7 +93,7 @@ module Decidim
 
         range = max - min
         intensity = range.zero? ? 0.0 : (value - min).to_f / range
-        text_color = intensity > 0.75 ? "#fff" : "#1a1a1a"
+        text_color = gray ? "#1a1a1a" : (intensity > 0.6 ? "#fff" : "#1a1a1a")
 
         bg = if gray
                lightness = (95 - (intensity * 35)).round
@@ -89,7 +101,7 @@ module Decidim
              else
                hue = (50 * (1 - intensity)).round
                saturation = (90 - (intensity * 12)).round
-               lightness = (86 - (intensity * 28)).round
+               lightness = (86 - (intensity * 36)).round
                "hsl(#{hue}, #{saturation}%, #{lightness}%)"
              end
 

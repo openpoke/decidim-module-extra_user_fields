@@ -39,6 +39,8 @@ fr:
             postal_code: Code postal
           legend:
             fewer: Moins
+            higher_total: Total élevé
+            lower_total: Total faible
             more: Plus
             non_specified: Non spécifié
           menu_title: Aperçus
@@ -51,6 +53,7 @@ fr:
           no_data: Aucune donnée de participation trouvée pour cet espace avec les
             critères sélectionnés.
           non_specified: Non spécifié
+          pivot_table_label: Tableau des données de participation
           row_total: Total ligne
           selectors:
             cols: Colonnes (axe X)

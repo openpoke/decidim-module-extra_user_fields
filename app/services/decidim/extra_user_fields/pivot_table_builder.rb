@@ -86,7 +86,7 @@ module Decidim
 
       def ordered_values_for(field)
         @ordered_values ||= {}
-        return @ordered_values[field] if @ordered_values.key?(field)
+        return @ordered_values[field] if @ordered_values.has_key?(field)
 
         @ordered_values[field] = case field.to_s
                                  when "gender" then Decidim::ExtraUserFields.genders

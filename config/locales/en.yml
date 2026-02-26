@@ -37,6 +37,8 @@ en:
             postal_code: Postal code
           legend:
             fewer: Fewer
+            higher_total: Higher total
+            lower_total: Lower total
             more: More
             non_specified: Non specified
           menu_title: Insights
@@ -48,6 +50,7 @@ en:
             proposals_supported: Proposals supported
           no_data: No participation data found for this space with the selected criteria.
           non_specified: Non specified
+          pivot_table_label: Participation data table
           row_total: Row Total
           selectors:
             cols: Columns (X axis)

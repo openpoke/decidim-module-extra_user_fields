@@ -29,14 +29,14 @@ module Decidim::ExtraUserFields
       end
 
       it "returns colored gradient for the max value cell" do
-        # min=2, max=10 → value 10 is full intensity
+        # min=2, max=10 -> value 10 is full intensity
         result = presenter.cell_style(10, "female", "young")
         expect(result).to include("background-color:")
-        expect(result).to include("hsl(0, 78%, 58%)")
+        expect(result).to include("hsl(0, 78%, 50%)")
       end
 
       it "returns baseline color for the min value cell" do
-        # min=2, max=10 → value 2 has intensity 0 (baseline yellow)
+        # min=2, max=10 -> value 2 has intensity 0 (baseline yellow)
         result = presenter.cell_style(2, "male", "old")
         expect(result).to include("hsl(50, 90%, 86%)")
       end
@@ -46,7 +46,7 @@ module Decidim::ExtraUserFields
 
         it "shows baseline color for all cells (no hotspots)" do
           result = presenter.cell_style(5, "female", "young")
-          # min=max=5, intensity=0 → baseline yellow
+          # min=max=5, intensity=0 -> baseline yellow
           expect(result).to include("hsl(50, 90%, 86%)")
         end
       end
@@ -67,7 +67,7 @@ module Decidim::ExtraUserFields
         end
 
         it "normalizes colored cells only against specified cells" do
-          # Only specified cell is female/young=10 → min=max=10, intensity=0
+          # Only specified cell is female/young=10 -> min=max=10, intensity=0
           result = presenter.cell_style(10, "female", "young")
           expect(result).to include("hsl(50, 90%, 86%)")
         end
@@ -79,9 +79,17 @@ module Decidim::ExtraUserFields
         expect(presenter.row_total_style(0)).to eq("")
       end
 
-      it "returns hsl gradient for non-zero values" do
+      it "returns blue gradient for the max row total" do
+        # female total=15 (max), intensity=1.0
         result = presenter.row_total_style(15)
-        expect(result).to include("background-color: hsl(")
+        expect(result).to include("background-color:")
+        expect(result).to include("hsl(215,")
+      end
+
+      it "returns lighter blue for smaller totals" do
+        # male total=5, max=15, intensity=0.33
+        result = presenter.row_total_style(5)
+        expect(result).to include("hsl(215,")
       end
     end
 
@@ -90,9 +98,17 @@ module Decidim::ExtraUserFields
         expect(presenter.col_total_style(0)).to eq("")
       end
 
-      it "returns hsl gradient for non-zero values" do
+      it "returns blue gradient for the max column total" do
+        # young total=13 (max), intensity=1.0
         result = presenter.col_total_style(13)
-        expect(result).to include("background-color: hsl(")
+        expect(result).to include("background-color:")
+        expect(result).to include("hsl(215,")
+      end
+
+      it "returns lighter blue for smaller totals" do
+        # old total=7, max=13, intensity=0.54
+        result = presenter.col_total_style(7)
+        expect(result).to include("hsl(215,")
       end
     end
 
@@ -113,11 +129,11 @@ module Decidim::ExtraUserFields
         let(:col_values) { [] }
         let(:cells) { {} }
 
-        it "returns empty string for row total" do
+        it "returns empty string for row total style" do
           expect(presenter.row_total_style(0)).to eq("")
         end
 
-        it "returns empty string for col total" do
+        it "returns empty string for col total style" do
           expect(presenter.col_total_style(0)).to eq("")
         end
       end
