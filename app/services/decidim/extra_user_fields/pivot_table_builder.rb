@@ -2,10 +2,8 @@
 
 module Decidim
   module ExtraUserFields
-    # Builds a PivotTable by:
-    # 1. Running a metric query to get { user_id => count }
-    # 2. Loading those users and reading their extended_data for row/col fields
-    # 3. Aggregating counts into a cross-tabulation matrix
+    # Produces a PivotTable that cross-tabulates a participation metric
+    # against two user-profile dimensions within a single participatory space.
     class PivotTableBuilder
       # @param participatory_space [Decidim::ParticipatoryProcess, Decidim::Assembly]
       # @param metric_name [String] key from InsightMetrics::REGISTRY
@@ -26,8 +24,8 @@ module Decidim
         users = load_users(metric_data.keys)
         cells = build_cells(metric_data, users)
 
-        row_vals = cells.keys.sort_by { |v| sort_key(v) }
-        col_vals = cells.values.flat_map(&:keys).uniq.sort_by { |v| sort_key(v) }
+        row_vals = cells.keys.sort_by { |v| sort_key(v, row_field) }
+        col_vals = cells.values.flat_map(&:keys).uniq.sort_by { |v| sort_key(v, col_field) }
 
         PivotTable.new(row_values: row_vals, col_values: col_vals, cells: cells)
       end
@@ -72,9 +70,28 @@ module Decidim
         PivotTable.new(row_values: [], col_values: [], cells: {})
       end
 
-      # Sort values alphabetically, nil (non-specified) goes last.
-      def sort_key(value)
-        value.nil? ? [1, ""] : [0, value.to_s]
+      # Sort values using domain order when available (e.g. age_ranges, genders),
+      # falling back to alphabetical. Nil (non-specified) always goes last.
+      def sort_key(value, field)
+        return [1, 0] if value.nil?
+
+        ordered = ordered_values_for(field)
+        if ordered
+          index = ordered.index(value.to_s)
+          index ? [0, index] : [0, ordered.size, value.to_s]
+        else
+          [0, 0, value.to_s]
+        end
+      end
+
+      def ordered_values_for(field)
+        @ordered_values ||= {}
+        return @ordered_values[field] if @ordered_values.key?(field)
+
+        @ordered_values[field] = case field.to_s
+                                 when "gender" then Decidim::ExtraUserFields.genders
+                                 when "age_range" then Decidim::ExtraUserFields.age_ranges
+                                 end
       end
     end
   end
