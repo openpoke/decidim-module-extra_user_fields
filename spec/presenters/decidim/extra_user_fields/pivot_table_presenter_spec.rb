@@ -28,10 +28,27 @@ module Decidim::ExtraUserFields
         expect(presenter.cell_style(0, "female", "young")).to eq("")
       end
 
-      it "returns colored gradient for specified cells" do
+      it "returns colored gradient for the max value cell" do
+        # min=2, max=10 → value 10 is full intensity
         result = presenter.cell_style(10, "female", "young")
         expect(result).to include("background-color:")
-        expect(result).to include("hsl(0, 100%, 45%)")
+        expect(result).to include("hsl(0, 78%, 58%)")
+      end
+
+      it "returns baseline color for the min value cell" do
+        # min=2, max=10 → value 2 has intensity 0 (baseline yellow)
+        result = presenter.cell_style(2, "male", "old")
+        expect(result).to include("hsl(50, 90%, 86%)")
+      end
+
+      context "when all specified cells have the same value" do
+        let(:cells) { { "female" => { "young" => 5, "old" => 5 }, "male" => { "young" => 5, "old" => 5 } } }
+
+        it "shows baseline color for all cells (no hotspots)" do
+          result = presenter.cell_style(5, "female", "young")
+          # min=max=5, intensity=0 → baseline yellow
+          expect(result).to include("hsl(50, 90%, 86%)")
+        end
       end
 
       context "when row or col is nil" do
@@ -49,11 +66,10 @@ module Decidim::ExtraUserFields
           expect(result).to include("hsl(0, 0%,")
         end
 
-        it "uses max_specified_value for colored cells, not overall max" do
-          # max_specified_value = 10 (only female/young), not 10 (overall max)
+        it "normalizes colored cells only against specified cells" do
+          # Only specified cell is female/young=10 → min=max=10, intensity=0
           result = presenter.cell_style(10, "female", "young")
-          # At full intensity: hue=0, saturation=100%, lightness=45%
-          expect(result).to include("hsl(0, 100%, 45%)")
+          expect(result).to include("hsl(50, 90%, 86%)")
         end
       end
     end
@@ -80,25 +96,7 @@ module Decidim::ExtraUserFields
       end
     end
 
-    describe "max value calculations" do
-      context "when some rows or cols are nil" do
-        let(:row_values) { ["female", nil] }
-        let(:col_values) { ["young", nil] }
-        let(:cells) { { "female" => { "young" => 5, nil => 99 }, nil => { "young" => 88, nil => 77 } } }
-
-        it "normalizes colored cells against specified-only max" do
-          # max_specified_value = 5, so value 5 is full intensity
-          result = presenter.cell_style(5, "female", "young")
-          expect(result).to include("hsl(0, 100%, 45%)")
-        end
-
-        it "normalizes gray cells against overall max" do
-          # max_value = 99, so value 99 is full intensity
-          result = presenter.cell_style(99, "female", nil)
-          expect(result).to include("hsl(0, 0%,")
-        end
-      end
-
+    describe "min-max normalization" do
       context "when there are no non-nil combinations" do
         let(:row_values) { [nil] }
         let(:col_values) { [nil] }
