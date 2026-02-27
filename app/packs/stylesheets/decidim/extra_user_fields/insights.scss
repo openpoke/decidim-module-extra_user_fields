@@ -92,26 +92,6 @@
 
   &__cell {
     @apply text-center;
-
-    &--colored {
-      background-color: hsl(
-        calc(50 * (1 - var(--i))),
-        calc(90% - var(--i) * 12%),
-        calc(86% - var(--i) * 36%)
-      );
-      color: var(--tc);
-    }
-
-    &--gray {
-      background-color: hsl(0, 0%, calc(95% - var(--i) * 35%));
-      color: var(--tc, #1a1a1a);
-    }
-  }
-
-  &__row-total,
-  &__col-total {
-    background-color: hsl(215, calc(50% + var(--i) * 15%), calc(90% - var(--i) * 40%));
-    color: var(--tc);
   }
 
   &__row-total {
@@ -134,88 +114,5 @@
 
   &__grand-total {
     @apply text-right;
-  }
-}
-
-// Legend
-.insights-legend {
-  --insights-heat-1: hsl(50, 90%, 86%);
-  --insights-heat-2: hsl(38, 87%, 77%);
-  --insights-heat-3: hsl(25, 84%, 68%);
-  --insights-heat-4: hsl(12, 81%, 59%);
-  --insights-heat-5: hsl(0, 78%, 50%);
-  --insights-total-1: hsl(215, 53%, 87%);
-  --insights-total-2: hsl(215, 57%, 77%);
-  --insights-total-3: hsl(215, 61%, 67%);
-  --insights-total-4: hsl(215, 63%, 57%);
-  --insights-total-5: hsl(215, 65%, 50%);
-  --insights-non-specified: hsl(0, 0%, 80%);
-
-  @apply flex items-center gap-3 mt-3 text-sm text-gray-2;
-
-  &__gradient {
-    @apply flex h-4 rounded overflow-hidden;
-    width: 160px;
-
-    &-step {
-      @apply flex-1;
-    }
-
-    &--heat {
-      .insights-legend__gradient-step:nth-child(1) {
-        background-color: var(--insights-heat-1);
-      }
-
-      .insights-legend__gradient-step:nth-child(2) {
-        background-color: var(--insights-heat-2);
-      }
-
-      .insights-legend__gradient-step:nth-child(3) {
-        background-color: var(--insights-heat-3);
-      }
-
-      .insights-legend__gradient-step:nth-child(4) {
-        background-color: var(--insights-heat-4);
-      }
-
-      .insights-legend__gradient-step:nth-child(5) {
-        background-color: var(--insights-heat-5);
-      }
-    }
-
-    &--total {
-      .insights-legend__gradient-step:nth-child(1) {
-        background-color: var(--insights-total-1);
-      }
-
-      .insights-legend__gradient-step:nth-child(2) {
-        background-color: var(--insights-total-2);
-      }
-
-      .insights-legend__gradient-step:nth-child(3) {
-        background-color: var(--insights-total-3);
-      }
-
-      .insights-legend__gradient-step:nth-child(4) {
-        background-color: var(--insights-total-4);
-      }
-
-      .insights-legend__gradient-step:nth-child(5) {
-        background-color: var(--insights-total-5);
-      }
-    }
-  }
-
-  &__separator {
-    @apply h-4 w-px bg-gray-6;
-  }
-
-  &__non-specified {
-    @apply ml-4 text-gray-2;
-  }
-
-  &__non-specified-swatch {
-    @apply inline-block w-4 h-4 rounded align-middle;
-    background-color: var(--insights-non-specified);
   }
 }

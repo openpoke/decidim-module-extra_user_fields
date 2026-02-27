@@ -5,8 +5,8 @@ module Decidim
     module Admin
       class InsightsController < Decidim::Admin::ApplicationController
         include Decidim::Admin::ParticipatorySpaceAdminContext
+        participatory_space_admin_layout
         helper InsightsHelper
-        layout :layout
 
         helper_method :pivot_table_presenter, :current_metric, :current_row_field, :current_col_field,
                       :available_metrics, :available_fields
@@ -61,7 +61,11 @@ module Decidim
         end
 
         def permission_class_chain
-          [::Decidim::ExtraUserFields::Admin::Permissions] + super
+          [
+            ::Decidim::ExtraUserFields::Admin::Permissions,
+            current_participatory_space.manifest.permissions_class,
+            ::Decidim::Admin::Permissions
+          ]
         end
 
         def current_participatory_space

@@ -14,18 +14,18 @@ describe "Admin views insights" do
   context "with a participatory process" do
     let!(:participatory_process) { create(:participatory_process, organization:) }
 
-    it "shows Insights in the sidebar menu" do
-      visit decidim_admin_participatory_processes.edit_participatory_process_path(participatory_process)
-      within(".sidebar-menu") do
-        expect(page).to have_content("Insights")
-      end
-    end
-
     context "when visiting the insights page" do
       before do
         visit decidim_admin_participatory_process_insights.root_path(
           participatory_process_slug: participatory_process.slug
         )
+      end
+
+      it "renders the sidebar menu with participatory space items" do
+        within(".sidebar-menu") do
+          expect(page).to have_content("Components")
+          expect(page).to have_content("Insights")
+        end
       end
 
       it "displays the page title" do
@@ -93,7 +93,7 @@ describe "Admin views insights" do
     end
 
     it "shows the legend" do
-      within(".insights-legend") do
+      within(".heatmap-legend") do
         expect(page).to have_content("Fewer")
         expect(page).to have_content("More")
       end
@@ -186,18 +186,26 @@ describe "Admin views insights" do
       )
     end
 
+    it "adds data-heatmap attribute to the table" do
+      expect(page).to have_css("table.insights-table[data-heatmap]")
+    end
+
+    it "applies heatmap classes to data cells" do
+      expect(page).to have_css("td.heatmap-cell--colored, td.heatmap-cell--gray")
+    end
+
     it "applies inline heatmap style to data cells" do
       cell = find("td.insights-table__cell", match: :first)
       expect(cell[:style]).to match(/--i:/)
     end
 
     it "applies inline heatmap style to row total cells" do
-      cell = find("td.insights-table__row-total", match: :first)
+      cell = find("td.heatmap-total.insights-table__row-total", match: :first)
       expect(cell[:style]).to match(/--i:/)
     end
 
     it "applies inline heatmap style to column total cells" do
-      cell = find("td.insights-table__col-total", match: :first)
+      cell = find("td.heatmap-total.insights-table__col-total", match: :first)
       expect(cell[:style]).to match(/--i:/)
     end
   end
@@ -239,15 +247,14 @@ describe "Admin views insights" do
   context "with an assembly" do
     let!(:assembly) { create(:assembly, organization:) }
 
-    it "shows Insights in the sidebar menu" do
-      visit decidim_admin_assemblies.edit_assembly_path(assembly)
+    it "renders the sidebar menu with assembly items" do
+      visit decidim_admin_assembly_insights.root_path(assembly_slug: assembly.slug)
+
       within(".sidebar-menu") do
+        expect(page).to have_content("Components")
         expect(page).to have_content("Insights")
       end
-    end
 
-    it "loads the insights page with correct layout" do
-      visit decidim_admin_assembly_insights.root_path(assembly_slug: assembly.slug)
       expect(page).to have_content("Participatory Space Insights")
     end
   end

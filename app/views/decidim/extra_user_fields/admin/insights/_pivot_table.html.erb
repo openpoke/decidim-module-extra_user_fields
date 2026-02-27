@@ -9,7 +9,7 @@
     <div class="card">
       <div class="card-section p-0">
         <div class="table-scroll" tabindex="0" role="region" aria-label="<%= t("decidim.admin.extra_user_fields.insights.pivot_table_label") %>">
-          <table class="table-list insights-table">
+          <table class="table-list insights-table" data-heatmap>
             <caption class="sr-only"><%= t("decidim.admin.extra_user_fields.insights.pivot_table_label") %></caption>
             <thead>
               <tr>
@@ -36,11 +36,11 @@
                   <% pivot_table_presenter.col_values.each do |col| %>
                     <% value = pivot_table_presenter.cell(row, col) %>
                     <% cell_type = (row.nil? || col.nil?) ? "gray" : "colored" %>
-                    <td class="insights-table__cell insights-table__cell--<%= cell_type %>" style="<%= pivot_table_presenter.cell_style(value, row, col) %>">
+                    <td class="insights-table__cell heatmap-cell--<%= cell_type %>" style="<%= pivot_table_presenter.cell_style(value, row, col) %>">
                       <%= number_with_delimiter(value) %>
                     </td>
                   <% end %>
-                  <td class="insights-table__row-total" style="<%= pivot_table_presenter.row_total_style(row_total_value) %>">
+                  <td class="insights-table__row-total heatmap-total" style="<%= pivot_table_presenter.row_total_style(row_total_value) %>">
                     <%= number_with_delimiter(row_total_value) %>
                   </td>
                 </tr>
@@ -53,7 +53,7 @@
                 </th>
                 <% pivot_table_presenter.col_values.each do |col| %>
                   <% col_total_value = pivot_table_presenter.col_total(col) %>
-                  <td class="insights-table__col-total" style="<%= pivot_table_presenter.col_total_style(col_total_value) %>">
+                  <td class="insights-table__col-total heatmap-total" style="<%= pivot_table_presenter.col_total_style(col_total_value) %>">
                     <%= number_with_delimiter(col_total_value) %>
                   </td>
                 <% end %>
