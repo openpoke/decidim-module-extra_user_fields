@@ -39,7 +39,7 @@ module Decidim
         end
 
         def current_col_field
-          @current_col_field ||= detect_field(params[:cols]) || available_fields.second
+          @current_col_field ||= detect_field(params[:cols]) || available_fields.second || available_fields.first
         end
 
         def available_metrics
