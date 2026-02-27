@@ -25,7 +25,6 @@
       @apply text-gray-4;
     }
   }
-
 }
 
 // Required for nested flex containers in admin layout:
@@ -47,72 +46,30 @@
   min-width: 100%;
 }
 
-.table-list.insights-table {
-  thead th {
-    @apply text-center;
-  }
-
-  tbody th:first-child,
-  tbody td:first-child,
-  tfoot th:first-child,
-  tfoot td:first-child {
-    @apply text-left;
-    padding-left: 0.5rem;
-  }
-
-  tbody th:last-child,
-  tbody td:last-child,
-  tfoot th:last-child,
-  tfoot td:last-child {
-    @apply text-center;
-  }
-
-  tbody td:not(:first-child):not(:last-child),
-  tfoot td:not(:first-child):not(:last-child) {
-    @apply text-center;
-  }
-}
-
+// Pivot table alignment and typography.
 .insights-table {
-  &__corner-header {
+  th, td {
     @apply text-center;
   }
 
-  &__col-header {
-    @apply text-center;
-  }
-
-  &__row-total-header {
-    @apply text-center text-xs font-bold;
-  }
-
-  &__row-header {
-    @apply text-left text-xs font-semibold;
-  }
-
-  &__cell {
-    @apply text-center;
-  }
-
-  &__row-total {
-    @apply text-center text-xs font-bold;
-  }
-
-  &__footer-label,
-  &__col-total,
-  &__grand-total {
-    @apply text-xs font-bold;
-  }
-
+  &__row-header,
   &__footer-label {
-    @apply text-left;
-  }
-
-  &__col-total {
-    @apply text-center;
+    @apply text-left pl-2;
   }
 
   &__grand-total {
     @apply text-right;
+  }
+
+  &__row-header {
+    @apply text-xs font-semibold;
+  }
+
+  &__row-total-header,
+  &__row-total,
+  &__footer-label,
+  &__col-total,
+  &__grand-total {
+    @apply text-xs font-bold;
   }
 }

@@ -48,46 +48,18 @@
     }
 
     &--heat {
-      .heatmap-legend__gradient-step:nth-child(1) {
-        background-color: var(--heatmap-heat-1);
-      }
-
-      .heatmap-legend__gradient-step:nth-child(2) {
-        background-color: var(--heatmap-heat-2);
-      }
-
-      .heatmap-legend__gradient-step:nth-child(3) {
-        background-color: var(--heatmap-heat-3);
-      }
-
-      .heatmap-legend__gradient-step:nth-child(4) {
-        background-color: var(--heatmap-heat-4);
-      }
-
-      .heatmap-legend__gradient-step:nth-child(5) {
-        background-color: var(--heatmap-heat-5);
+      @for $i from 1 through 5 {
+        .heatmap-legend__gradient-step:nth-child(#{$i}) {
+          background-color: var(--heatmap-heat-#{$i});
+        }
       }
     }
 
     &--total {
-      .heatmap-legend__gradient-step:nth-child(1) {
-        background-color: var(--heatmap-total-1);
-      }
-
-      .heatmap-legend__gradient-step:nth-child(2) {
-        background-color: var(--heatmap-total-2);
-      }
-
-      .heatmap-legend__gradient-step:nth-child(3) {
-        background-color: var(--heatmap-total-3);
-      }
-
-      .heatmap-legend__gradient-step:nth-child(4) {
-        background-color: var(--heatmap-total-4);
-      }
-
-      .heatmap-legend__gradient-step:nth-child(5) {
-        background-color: var(--heatmap-total-5);
+      @for $i from 1 through 5 {
+        .heatmap-legend__gradient-step:nth-child(#{$i}) {
+          background-color: var(--heatmap-total-#{$i});
+        }
       }
     }
   }
