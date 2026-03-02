@@ -26,6 +26,40 @@ fr:
       exports:
         export_as: Exporter au format %{export_format}
       extra_user_fields:
+        insights:
+          column_total: Total colonne
+          description: Explorez l'activité des participants selon les dimensions de
+            profil. Sélectionnez une métrique et deux champs de profil pour voir comment
+            la participation est répartie.
+          fields:
+            age_range: Tranche d'âge
+            country: Pays
+            gender: Genre
+            location: Localisation
+            postal_code: Code postal
+          legend:
+            fewer: Moins
+            higher_total: Total élevé
+            lower_total: Total faible
+            more: Plus
+            non_specified: Non spécifié
+          menu_title: Aperçus
+          metrics:
+            budget_votes: Votes budgétaires
+            comments: Commentaires
+            participants: Participants
+            proposals_created: Propositions créées
+            proposals_supported: Propositions soutenues
+          no_data: Aucune donnée de participation trouvée pour cet espace avec les
+            critères sélectionnés.
+          non_specified: Non spécifié
+          pivot_table_label: Tableau des données de participation
+          row_total: Total ligne
+          selectors:
+            cols: Colonnes (axe X)
+            metric: Métrique
+            rows: Lignes (axe Y)
+          title: Aperçus de l'espace participatif
         menu:
           title: Gérer les champs d'inscription personnalisés
     components:
@@ -111,7 +145,7 @@ fr:
               label: Activer le champ slogan
           update:
             failure: Une erreur est survenue lors de la mise à jour
-            success: Les champs d'inscription ont été mis à jour avec succ§s
+            success: Les champs d'inscription ont été mis à jour avec succès
       age_ranges:
         17_to_30: 17 à 30
         31_to_60: 31 à 60
