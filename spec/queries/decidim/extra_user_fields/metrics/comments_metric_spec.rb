@@ -71,8 +71,8 @@ module Decidim::ExtraUserFields::Metrics
         create(:comment, commentable: proposal, author: user1)
       end
 
-      it "does not count comments on hidden proposals" do
-        expect(subject.call).to eq({})
+      it "still counts comments (user participated in the space)" do
+        expect(subject.call[user1.id]).to eq(1)
       end
     end
 
@@ -84,8 +84,8 @@ module Decidim::ExtraUserFields::Metrics
         create(:comment, commentable: proposal, author: user1)
       end
 
-      it "does not count comments from unpublished components" do
-        expect(subject.call).to eq({})
+      it "still counts comments (user participated in the space)" do
+        expect(subject.call[user1.id]).to eq(1)
       end
     end
 

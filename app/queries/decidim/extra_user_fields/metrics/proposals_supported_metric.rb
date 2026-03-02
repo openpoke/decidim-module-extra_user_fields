@@ -8,7 +8,7 @@ module Decidim
         include Concerns::ProposalQueries
 
         def call
-          return {} if proposal_ids.empty?
+          return {} unless has_proposals?
 
           proposal_votes_scope.group(:decidim_author_id).count
         end

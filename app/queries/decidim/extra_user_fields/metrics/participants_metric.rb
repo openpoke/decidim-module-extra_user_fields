@@ -14,10 +14,12 @@ module Decidim
         def call
           user_ids = Set.new
 
-          user_ids.merge(coauthorships_scope.distinct.pluck(:decidim_author_id)) if proposal_ids.any?
-          user_ids.merge(proposal_votes_scope.distinct.pluck(:decidim_author_id)) if proposal_ids.any?
+          if has_proposals?
+            user_ids.merge(coauthorships_scope.distinct.pluck(:decidim_author_id))
+            user_ids.merge(proposal_votes_scope.distinct.pluck(:decidim_author_id))
+          end
           user_ids.merge(comments_scope.where(decidim_author_type: "Decidim::UserBaseEntity").distinct.pluck(:decidim_author_id))
-          user_ids.merge(budget_orders_scope.distinct.pluck(:decidim_user_id)) if budget_ids.any?
+          user_ids.merge(budget_orders_scope.distinct.pluck(:decidim_user_id)) if has_budgets?
 
           user_ids.index_with { 1 }
         end

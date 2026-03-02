@@ -8,7 +8,7 @@ module Decidim
         include Concerns::BudgetQueries
 
         def call
-          return {} if budget_ids.empty?
+          return {} unless has_budgets?
 
           budget_orders_scope.group(:decidim_user_id).count
         end

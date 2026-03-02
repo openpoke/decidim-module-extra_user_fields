@@ -10,8 +10,16 @@ module Decidim
 
           private
 
+          def has_proposals?
+            component_ids_for("proposals").any?
+          end
+
           def proposal_ids
-            @proposal_ids ||= fetch_proposal_ids
+            Decidim::Proposals::Proposal
+              .where(decidim_component_id: component_ids_for("proposals"))
+              .published
+              .not_hidden
+              .select(:id)
           end
 
           def coauthorships_scope
@@ -24,17 +32,6 @@ module Decidim
           def proposal_votes_scope
             Decidim::Proposals::ProposalVote
               .where(decidim_proposal_id: proposal_ids)
-          end
-
-          def fetch_proposal_ids
-            ids = component_ids_for("proposals")
-            return [] if ids.empty?
-
-            Decidim::Proposals::Proposal
-              .where(decidim_component_id: ids)
-              .published
-              .not_hidden
-              .pluck(:id)
           end
         end
       end

@@ -5,8 +5,6 @@ module Decidim
     module Metrics
       # Counts comments made by each user on resources within the participatory space.
       class CommentsMetric < BaseMetric
-        include Concerns::ProposalQueries
-        include Concerns::BudgetQueries
         include Concerns::CommentQueries
 
         def call
