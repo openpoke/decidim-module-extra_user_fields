@@ -30,7 +30,7 @@ module Decidim
         def self.compute_age(date_string)
           birth = Date.parse(date_string.to_s)
           today = Date.current
-          today.year - birth.year - ([today.month, today.day] >= [birth.month, birth.day] ? 0 : 1)
+          today.year - birth.year - (([today.month, today.day] <=> [birth.month, birth.day]) >= 0 ? 0 : 1)
         rescue Date::Error
           nil
         end
