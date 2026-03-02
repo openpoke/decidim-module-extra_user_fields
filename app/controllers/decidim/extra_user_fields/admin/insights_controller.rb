@@ -69,18 +69,28 @@ module Decidim
         end
 
         def current_participatory_space
-          @current_participatory_space ||= if params[:participatory_process_slug]
-                                             Decidim::ParticipatoryProcess.find_by!(organization: current_organization, slug: params[:participatory_process_slug])
-                                           else
-                                             Decidim::Assembly.find_by!(organization: current_organization, slug: params[:assembly_slug])
-                                           end
+          @current_participatory_space ||= find_participatory_space_from_params
+        end
+
+        def find_participatory_space_from_params
+          Decidim.participatory_space_manifests.each do |manifest|
+            model_name = manifest.model_class_name.demodulize.underscore
+            slug = params["#{model_name}_slug"]
+            next if slug.blank?
+
+            return manifest.model_class_name.constantize.find_by!(organization: current_organization, slug:)
+          end
+
+          raise ActiveRecord::RecordNotFound, "No participatory space found"
         end
 
         def set_breadcrumbs
-          if params[:participatory_process_slug]
-            secondary_breadcrumb_menus << :admin_participatory_process_menu
-          elsif params[:assembly_slug]
-            secondary_breadcrumb_menus << :admin_assembly_menu
+          Decidim.participatory_space_manifests.each do |manifest|
+            model_name = manifest.model_class_name.demodulize.underscore
+            next if params["#{model_name}_slug"].blank?
+
+            secondary_breadcrumb_menus << :"admin_#{model_name}_menu"
+            break
           end
         end
       end

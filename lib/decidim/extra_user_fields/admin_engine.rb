@@ -48,39 +48,33 @@ module Decidim
 
       initializer "decidim_extra_user_fields.insights_routes" do
         Decidim::Core::Engine.routes do
-          scope "/admin/participatory_processes/:participatory_process_slug" do
-            mount Decidim::ExtraUserFields::InsightsEngine,
-                  at: "/insights",
-                  as: "decidim_admin_participatory_process_insights"
-          end
+          Decidim.participatory_space_manifests.each do |manifest|
+            model_name = manifest.model_class_name.demodulize.underscore
+            slug_param = "#{model_name}_slug"
 
-          scope "/admin/assemblies/:assembly_slug" do
-            mount Decidim::ExtraUserFields::InsightsEngine,
-                  at: "/insights",
-                  as: "decidim_admin_assembly_insights"
+            scope "/admin/#{manifest.name}/:#{slug_param}" do
+              mount Decidim::ExtraUserFields::InsightsEngine,
+                    at: "/insights",
+                    as: "decidim_admin_#{model_name}_insights"
+            end
           end
         end
       end
 
       initializer "decidim_extra_user_fields.insights_menu" do
-        Decidim.menu :admin_participatory_process_menu do |menu|
-          menu.add_item :insights,
-                        I18n.t("decidim.admin.extra_user_fields.insights.menu_title"),
-                        decidim_admin_participatory_process_insights.root_path(
-                          participatory_process_slug: current_participatory_space.slug
-                        ),
-                        icon_name: "bar-chart-2-line",
-                        position: 9
-        end
+        Decidim.participatory_space_manifests.each do |manifest|
+          model_name = manifest.model_class_name.demodulize.underscore
+          slug_param = "#{model_name}_slug"
+          menu_name = :"admin_#{model_name}_menu"
+          route_helper = "decidim_admin_#{model_name}_insights"
 
-        Decidim.menu :admin_assembly_menu do |menu|
-          menu.add_item :insights,
-                        I18n.t("decidim.admin.extra_user_fields.insights.menu_title"),
-                        decidim_admin_assembly_insights.root_path(
-                          assembly_slug: current_participatory_space.slug
-                        ),
-                        icon_name: "bar-chart-2-line",
-                        position: 9
+          Decidim.menu menu_name do |menu|
+            menu.add_item :insights,
+                          I18n.t("decidim.admin.extra_user_fields.insights.menu_title"),
+                          send(route_helper).root_path(slug_param => current_participatory_space.slug),
+                          icon_name: "bar-chart-2-line",
+                          position: 9
+          end
         end
       end
 

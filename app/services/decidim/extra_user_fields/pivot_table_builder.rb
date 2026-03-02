@@ -63,7 +63,12 @@ module Decidim
       end
 
       def extract_field(extended_data, field)
-        extended_data[field].presence
+        processor_class = Decidim::ExtraUserFields.insight_field_processors[field]
+        if processor_class
+          processor_class.constantize.call(extended_data)
+        else
+          extended_data[field].presence
+        end
       end
 
       def empty_pivot_table
