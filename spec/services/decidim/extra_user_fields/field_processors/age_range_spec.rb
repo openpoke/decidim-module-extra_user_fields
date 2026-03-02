@@ -73,6 +73,12 @@ module Decidim::ExtraUserFields
 
           it { is_expected.to be_nil }
         end
+
+        context "with a future date_of_birth" do
+          let(:extended_data) { { "date_of_birth" => 5.years.from_now.to_date.to_s } }
+
+          it { is_expected.to be_nil }
+        end
       end
 
       describe "age boundary precision" do
