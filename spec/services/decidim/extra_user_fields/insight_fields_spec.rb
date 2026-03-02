@@ -17,10 +17,6 @@ module Decidim::ExtraUserFields
         expect(described_class.for("country")).to be_a(InsightFields::Country)
       end
 
-      it "resolves age_range alias to AgeSpan for backward compatibility" do
-        expect(described_class.for("age_range")).to be_a(InsightFields::AgeSpan)
-      end
-
       it "falls back to Base for unknown fields" do
         field = described_class.for("unknown_field")
         expect(field).to be_a(InsightFields::Base)

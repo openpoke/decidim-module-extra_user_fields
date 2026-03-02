@@ -17,11 +17,11 @@
                   <%= field_label(current_row_field) %> \ <%= field_label(current_col_field) %>
                 </th>
                 <% pivot_table_presenter.col_values.each do |col| %>
-                  <th class="insights-table__col-header">
+                  <th scope="col" class="insights-table__col-header">
                     <%= field_value_label(current_col_field, col) %>
                   </th>
                 <% end %>
-                <th class="insights-table__row-total-header">
+                <th scope="col" class="insights-table__row-total-header">
                   <%= t("decidim.admin.extra_user_fields.insights.row_total") %>
                 </th>
               </tr>
