@@ -11,6 +11,7 @@ ignore_unused:
   - decidim.admin.extra_user_fields.insights.*
   - decidim.extra_user_fields.genders.*
   - decidim.extra_user_fields.age_ranges.*
+  - decidim.extra_user_fields.insight_age_spans.*
 
 ignore_missing:
   - decidim.participatory_processes.scopes.global

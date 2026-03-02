@@ -81,16 +81,13 @@ module Decidim
     # Extra user fields allowed as pivot table axes in the Insights page.
     # Only categorical fields with limited unique values make sense here.
     config_accessor :insight_fields do
-      ENV.fetch("EXTRA_USER_FIELDS_INSIGHT_FIELDS", "gender age_range country").split
+      ENV.fetch("EXTRA_USER_FIELDS_INSIGHT_FIELDS", "gender age_span country").split
     end
 
-    # If insight fields require pre-processing, a field processor can be registered here.
-    # The key is the field name and the value is a fully-qualified class name.
-    # Each class must implement `.call(extended_data)` returning the derived field value.
-    config_accessor :insight_field_processors do
-      {
-        "age_range" => "Decidim::ExtraUserFields::FieldProcessors::AgeRange"
-      }
+    # Age spans used by InsightFields::AgeSpan to bucket computed ages from date_of_birth.
+    # These are distinct from `age_ranges` (the form dropdown values).
+    config_accessor :insight_age_spans do
+      ENV.fetch("EXTRA_USER_FIELDS_INSIGHT_AGE_SPANS", "up_to_20 21_to_30 31_to_40 41_to_50 51_to_60 61_or_more").split
     end
 
     # If extra insight metrics are needed, they can be added as a Hash here.

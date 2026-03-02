@@ -30,7 +30,7 @@ en:
           description: Explore participant activity across profile dimensions. Select
             a metric and two profile fields to see how participation is distributed.
           fields:
-            age_range: Age span
+            age_span: Age span
             country: Country
             gender: Gender
             location: Location
@@ -40,7 +40,7 @@ en:
             higher_total: Higher total
             lower_total: Lower total
             more: More
-            non_specified: Non specified
+            non_specified: Not specified / Prefer not to say
           menu_title: Insights
           metrics:
             budget_votes: Budget votes
@@ -49,7 +49,7 @@ en:
             proposals_created: Proposals created
             proposals_supported: Proposals supported
           no_data: No participation data found for this space with the selected criteria.
-          non_specified: Non specified
+          non_specified: Not specified / Prefer not to say
           pivot_table_label: Participation data table
           row_total: Row Total
           selectors:
@@ -158,6 +158,13 @@ en:
         male: Male
         other: Other
         prefer_not_to_say: Prefer not to say
+      insight_age_spans:
+        21_to_30: 21 to 30
+        31_to_40: 31 to 40
+        41_to_50: 41 to 50
+        51_to_60: 51 to 60
+        61_or_more: More than 60
+        up_to_20: Less than 20
       registration_form:
         signup:
           legend: More information

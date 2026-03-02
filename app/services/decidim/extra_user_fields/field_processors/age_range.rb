@@ -3,13 +3,8 @@
 module Decidim
   module ExtraUserFields
     module FieldProcessors
-      # Derives age_range from date_of_birth when age_range is not stored directly.
-      # Falls back to the stored age_range value if present.
-      #
-      # Range names are parsed dynamically from Decidim::ExtraUserFields.age_ranges:
-      #   "up_to_N"   → ..N
-      #   "N_to_M"    → N..M
-      #   "N_or_more" → N..
+      # Computes age from date_of_birth and matches it to an insight_age_span.
+      # Ignores the stored age_range field; users without date_of_birth get nil.
       class AgeRange
         RANGE_PATTERNS = {
           /\Aup_to_(?<max>\d+)\z/ => ->(m) { ..m[:max].to_i },
@@ -18,26 +13,23 @@ module Decidim
         }.freeze
 
         def self.call(extended_data)
-          extended_data["age_range"].presence || from_birth_date(extended_data["date_of_birth"])
-        end
+          return if extended_data["date_of_birth"].blank?
 
-        def self.from_birth_date(value)
-          return if value.blank?
-
-          compute_age(value)&.then { |age| match_range(age) }
+          compute_age(extended_data["date_of_birth"])&.then { |age| match_range(age) }
         end
 
         def self.compute_age(date_string)
           birth = Date.parse(date_string.to_s)
           today = Date.current
-          age = today.year - birth.year - (([today.month, today.day] <=> [birth.month, birth.day]) >= 0 ? 0 : 1)
+          age = today.year - birth.year
+          age -= 1 if today.month < birth.month || (today.month == birth.month && today.day < birth.day)
           age if age >= 0
         rescue Date::Error
           nil
         end
 
         def self.match_range(age)
-          Decidim::ExtraUserFields.age_ranges.find { |name| parse_range(name)&.cover?(age) }
+          Decidim::ExtraUserFields.insight_age_spans.find { |name| parse_range(name)&.cover?(age) }
         end
 
         def self.parse_range(name)
@@ -48,7 +40,7 @@ module Decidim
           nil
         end
 
-        private_class_method :from_birth_date, :compute_age, :match_range, :parse_range
+        private_class_method :compute_age, :match_range, :parse_range
       end
     end
   end

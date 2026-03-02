@@ -12,8 +12,8 @@ module Decidim
       def initialize(participatory_space:, metric_name:, row_field:, col_field:)
         @participatory_space = participatory_space
         @metric_name = metric_name
-        @row_field = row_field
-        @col_field = col_field
+        @row_field_obj = InsightFields.for(row_field)
+        @col_field_obj = InsightFields.for(col_field)
       end
 
       # @return [Decidim::ExtraUserFields::PivotTable]
@@ -24,15 +24,15 @@ module Decidim
         users = load_users(metric_data.keys)
         cells = build_cells(metric_data, users)
 
-        row_vals = cells.keys.sort_by { |v| sort_key(v, row_field) }
-        col_vals = cells.values.flat_map(&:keys).uniq.sort_by { |v| sort_key(v, col_field) }
+        row_vals = merge_ordered_values(cells.keys, row_field_obj)
+        col_vals = merge_ordered_values(cells.values.flat_map(&:keys).uniq, col_field_obj)
 
         PivotTable.new(row_values: row_vals, col_values: col_vals, cells: cells)
       end
 
       private
 
-      attr_reader :participatory_space, :metric_name, :row_field, :col_field
+      attr_reader :participatory_space, :metric_name, :row_field_obj, :col_field_obj
 
       def run_metric
         klass = InsightMetrics.metric_class(metric_name)
@@ -53,8 +53,8 @@ module Decidim
 
         metric_data.each do |user_id, count|
           extended_data = (users[user_id] || {}).with_indifferent_access
-          row_val = extract_field(extended_data, row_field)
-          col_val = extract_field(extended_data, col_field)
+          row_val = row_field_obj.extract(extended_data)
+          col_val = col_field_obj.extract(extended_data)
 
           cells[row_val][col_val] += count
         end
@@ -62,41 +62,33 @@ module Decidim
         cells
       end
 
-      def extract_field(extended_data, field)
-        processor_class = Decidim::ExtraUserFields.insight_field_processors[field]
-        if processor_class
-          processor_class.constantize.call(extended_data)
-        else
-          extended_data[field].presence
-        end
-      end
-
       def empty_pivot_table
         PivotTable.new(row_values: [], col_values: [], cells: {})
       end
 
-      # Sort values using domain order when available (e.g. age_ranges, genders),
-      # falling back to alphabetical. Nil (non-specified) always goes last.
-      def sort_key(value, field)
-        return [1, 0] if value.nil?
+      # Merges configured ordered values into the data values so categories
+      # without data still appear in the pivot table axes.
+      def merge_ordered_values(data_values, field_obj)
+        ordered = field_obj.ordered_values
+        all = if ordered
+                (ordered | data_values).compact.uniq
+              else
+                data_values.compact.uniq
+              end
+        has_nil = data_values.include?(nil)
+        sorted = all.sort_by { |v| sort_index(v, ordered) }
+        has_nil ? sorted + [nil] : sorted
+      end
 
-        ordered = ordered_values_for(field)
+      # Returns a sort key for a value given an optional ordered list.
+      # Values in the list sort by index; unknown values sort after all known ones alphabetically.
+      def sort_index(value, ordered)
         if ordered
           index = ordered.index(value.to_s)
           index ? [0, index] : [0, ordered.size, value.to_s]
         else
           [0, 0, value.to_s]
         end
-      end
-
-      def ordered_values_for(field)
-        @ordered_values ||= {}
-        return @ordered_values[field] if @ordered_values.has_key?(field)
-
-        @ordered_values[field] = case field.to_s
-                                 when "gender" then Decidim::ExtraUserFields.genders
-                                 when "age_range" then Decidim::ExtraUserFields.age_ranges
-                                 end
       end
     end
   end

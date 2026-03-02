@@ -57,8 +57,8 @@ describe "Admin views insights" do
     let!(:participatory_process) { create(:participatory_process, :with_steps, organization:) }
     let!(:proposal_component) { create(:proposal_component, :published, participatory_space: participatory_process) }
 
-    let(:user_female_young) { create(:user, :confirmed, organization:, extended_data: { "gender" => "female", "age_range" => "17_to_30" }) }
-    let(:user_male_young) { create(:user, :confirmed, organization:, extended_data: { "gender" => "male", "age_range" => "17_to_30" }) }
+    let(:user_female_young) { create(:user, :confirmed, organization:, extended_data: { "gender" => "female", "date_of_birth" => 25.years.ago.to_date.to_s }) }
+    let(:user_male_young) { create(:user, :confirmed, organization:, extended_data: { "gender" => "male", "date_of_birth" => 28.years.ago.to_date.to_s }) }
     let(:user_no_data) { create(:user, :confirmed, organization:, extended_data: {}) }
 
     before do
@@ -71,17 +71,19 @@ describe "Admin views insights" do
     end
 
     it "renders the pivot table headers" do
+      # Default: rows=age_span, cols=gender
       within("thead") do
-        expect(page).to have_content("17 to 30")
+        expect(page).to have_content("Female")
+        expect(page).to have_content("Male")
         expect(page).to have_content("Row Total")
       end
     end
 
     it "renders row labels in the pivot table" do
+      # Default: rows=age_span, cols=gender
       within("tbody") do
-        expect(page).to have_content("Female")
-        expect(page).to have_content("Male")
-        expect(page).to have_content("Non specified")
+        expect(page).to have_content("21 to 30")
+        expect(page).to have_content("Not specified / Prefer not to say")
       end
     end
 
@@ -103,7 +105,7 @@ describe "Admin views insights" do
   context "when switching axes via query params" do
     let!(:participatory_process) { create(:participatory_process, :with_steps, organization:) }
     let!(:proposal_component) { create(:proposal_component, :published, participatory_space: participatory_process) }
-    let(:user_with_data) { create(:user, :confirmed, organization:, extended_data: { "gender" => "female", "age_range" => "17_to_30", "country" => "france" }) }
+    let(:user_with_data) { create(:user, :confirmed, organization:, extended_data: { "gender" => "female", "date_of_birth" => 25.years.ago.to_date.to_s, "country" => "france" }) }
 
     before do
       create(:proposal, :published, component: proposal_component, users: [user_with_data])
@@ -112,16 +114,16 @@ describe "Admin views insights" do
     it "swaps rows and columns when params change" do
       visit decidim_admin_participatory_process_insights.root_path(
         participatory_process_slug: participatory_process.slug,
-        rows: "age_range",
-        cols: "gender"
+        rows: "gender",
+        cols: "age_span"
       )
 
       within("thead") do
-        expect(page).to have_content("Female")
+        expect(page).to have_content("21 to 30")
       end
 
       within("tbody") do
-        expect(page).to have_content("17 to 30")
+        expect(page).to have_content("Female")
       end
     end
 
@@ -145,7 +147,7 @@ describe "Admin views insights" do
   context "when switching metrics" do
     let!(:participatory_process) { create(:participatory_process, :with_steps, organization:) }
     let!(:proposal_component) { create(:proposal_component, :published, participatory_space: participatory_process) }
-    let(:author) { create(:user, :confirmed, organization:, extended_data: { "gender" => "female", "age_range" => "17_to_30" }) }
+    let(:author) { create(:user, :confirmed, organization:, extended_data: { "gender" => "female", "date_of_birth" => 25.years.ago.to_date.to_s }) }
     let!(:proposal) { create(:proposal, :published, component: proposal_component, users: [author]) }
 
     before do
@@ -177,7 +179,7 @@ describe "Admin views insights" do
   context "when cells have heatmap styling" do
     let!(:participatory_process) { create(:participatory_process, :with_steps, organization:) }
     let!(:proposal_component) { create(:proposal_component, :published, participatory_space: participatory_process) }
-    let(:user_with_data) { create(:user, :confirmed, organization:, extended_data: { "gender" => "female", "age_range" => "17_to_30" }) }
+    let(:user_with_data) { create(:user, :confirmed, organization:, extended_data: { "gender" => "female", "date_of_birth" => 25.years.ago.to_date.to_s }) }
 
     before do
       create(:proposal, :published, component: proposal_component, users: [user_with_data])
@@ -195,12 +197,12 @@ describe "Admin views insights" do
     end
 
     it "applies inline heatmap style to data cells" do
-      cell = find("td.insights-table__cell", match: :first)
+      cell = find("td.insights-table__cell", text: /[1-9]/, match: :first)
       expect(cell[:style]).to match(/--i:/)
     end
 
     it "applies inline heatmap style to row total cells" do
-      cell = find("td.heatmap-total.insights-table__row-total", match: :first)
+      cell = find("td.heatmap-total.insights-table__row-total", text: /[1-9]/, match: :first)
       expect(cell[:style]).to match(/--i:/)
     end
 
@@ -213,7 +215,7 @@ describe "Admin views insights" do
   context "when query params are invalid" do
     let!(:participatory_process) { create(:participatory_process, :with_steps, organization:) }
     let!(:proposal_component) { create(:proposal_component, :published, participatory_space: participatory_process) }
-    let(:user_with_data) { create(:user, :confirmed, organization:, extended_data: { "gender" => "female", "age_range" => "17_to_30" }) }
+    let(:user_with_data) { create(:user, :confirmed, organization:, extended_data: { "gender" => "female", "date_of_birth" => 25.years.ago.to_date.to_s }) }
 
     before do
       create(:proposal, :published, component: proposal_component, users: [user_with_data])
@@ -226,8 +228,9 @@ describe "Admin views insights" do
       )
 
       expect(page).to have_content("Participatory Space Insights")
+      # Default rows=age_span, so we see age span labels in tbody
       within("tbody") do
-        expect(page).to have_content("Female")
+        expect(page).to have_content("21 to 30")
       end
     end
 

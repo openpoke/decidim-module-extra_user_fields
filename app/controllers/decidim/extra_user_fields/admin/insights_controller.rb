@@ -56,7 +56,7 @@ module Decidim
         end
 
         def detect_field(name)
-          name = name.to_s
+          name = InsightFields::ALIASES.fetch(name.to_s, name.to_s)
           name if available_fields.include?(name)
         end
 

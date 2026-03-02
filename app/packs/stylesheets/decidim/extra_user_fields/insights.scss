@@ -54,9 +54,12 @@
     @apply text-center;
   }
 
-  &__row-header,
-  &__footer-label {
-    @apply text-left pl-2;
+  &__col-header {
+    @apply text-xs;
+
+    min-width: 4rem;
+    max-width: 8rem;
+    white-space: normal;
   }
 
   &__grand-total {
@@ -65,6 +68,7 @@
 
   &__row-header {
     @apply text-xs font-semibold;
+    white-space: nowrap;
   }
 
   &__row-total-header,
@@ -74,4 +78,10 @@
   &__grand-total {
     @apply text-xs font-bold;
   }
+}
+
+th.insights-table__corner-header,
+th.insights-table__row-header,
+th.insights-table__footer-label {
+  @apply text-left pl-2;
 }

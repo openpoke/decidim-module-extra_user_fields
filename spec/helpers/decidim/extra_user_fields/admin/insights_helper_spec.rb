@@ -21,7 +21,7 @@ module Decidim::ExtraUserFields::Admin
     describe "#field_label" do
       it "translates known field names" do
         expect(helper.field_label("gender")).to eq("Gender")
-        expect(helper.field_label("age_range")).to eq("Age span")
+        expect(helper.field_label("age_span")).to eq("Age span")
         expect(helper.field_label("country")).to eq("Country")
       end
 
@@ -31,8 +31,8 @@ module Decidim::ExtraUserFields::Admin
     end
 
     describe "#field_value_label" do
-      it "returns 'Non specified' for nil values" do
-        expect(helper.field_value_label("gender", nil)).to eq("Non specified")
+      it "returns 'Not specified / Prefer not to say' for nil values" do
+        expect(helper.field_value_label("gender", nil)).to eq("Not specified / Prefer not to say")
       end
 
       it "translates gender values via genders namespace" do
@@ -41,10 +41,10 @@ module Decidim::ExtraUserFields::Admin
         expect(helper.field_value_label("gender", "other")).to eq("Other")
       end
 
-      it "translates age_range values via age_ranges namespace" do
-        expect(helper.field_value_label("age_range", "17_to_30")).to eq("17 to 30")
-        expect(helper.field_value_label("age_range", "61_or_more")).to eq("61 or older")
-        expect(helper.field_value_label("age_range", "up_to_16")).to eq("16 or younger")
+      it "translates age_span values via insight_age_spans namespace" do
+        expect(helper.field_value_label("age_span", "21_to_30")).to eq("21 to 30")
+        expect(helper.field_value_label("age_span", "61_or_more")).to eq("More than 60")
+        expect(helper.field_value_label("age_span", "up_to_20")).to eq("Less than 20")
       end
 
       it "falls back to humanized value for other fields" do
@@ -62,7 +62,7 @@ module Decidim::ExtraUserFields::Admin
 
     describe "#insight_selector_field" do
       it "renders a selector with label and select tag" do
-        result = helper.insight_selector_field(:rows, %w(gender age_range), "gender", &:humanize)
+        result = helper.insight_selector_field(:rows, %w(gender age_span), "gender", &:humanize)
 
         expect(result).to include('class="insights-selectors__field"')
         expect(result).to include("<label")
@@ -70,12 +70,12 @@ module Decidim::ExtraUserFields::Admin
         expect(result).to include("Rows (Y axis)")
         expect(result).to include("<select")
         expect(result).to include("Gender")
-        expect(result).to include("Age range")
+        expect(result).to include("Age span")
         expect(result).to include("onchange")
       end
 
       it "marks the selected option" do
-        result = helper.insight_selector_field(:rows, %w(gender age_range), "age_range", &:humanize)
+        result = helper.insight_selector_field(:rows, %w(gender age_span), "age_span", &:humanize)
 
         expect(result).to include("selected")
       end
