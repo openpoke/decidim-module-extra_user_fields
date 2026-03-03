@@ -3,6 +3,7 @@
 require "decidim/extra_user_fields/admin"
 require "decidim/extra_user_fields/engine"
 require "decidim/extra_user_fields/admin_engine"
+require "decidim/extra_user_fields/insights_engine"
 require "decidim/extra_user_fields/form_builder_methods"
 
 module Decidim
@@ -80,6 +81,31 @@ module Decidim
     config_accessor :text_fields do
       {
         motto: false
+      }
+    end
+
+    # Extra user fields allowed as pivot table axes in the Insights page.
+    # Only categorical fields with limited unique values make sense here.
+    config_accessor :insight_fields do
+      ENV.fetch("EXTRA_USER_FIELDS_INSIGHT_FIELDS", "gender age_span country").split
+    end
+
+    # Age spans used by InsightFields::AgeSpan to bucket computed ages from date_of_birth.
+    # These are distinct from `age_ranges` (the form dropdown values).
+    config_accessor :insight_age_spans do
+      ENV.fetch("EXTRA_USER_FIELDS_INSIGHT_AGE_SPANS", "up_to_20 21_to_30 31_to_40 41_to_50 51_to_60 61_or_more").split
+    end
+
+    # If extra insight metrics are needed, they can be added as a Hash here.
+    # The key is the metric identifier and the value is a fully-qualified class name.
+    # Each class must implement `initialize(participatory_space)` and `call` returning { user_id => count }.
+    config_accessor :insight_metrics do
+      {
+        "participants" => "Decidim::ExtraUserFields::Metrics::ParticipantsMetric",
+        "proposals_created" => "Decidim::ExtraUserFields::Metrics::ProposalsCreatedMetric",
+        "proposals_supported" => "Decidim::ExtraUserFields::Metrics::ProposalsSupportedMetric",
+        "comments" => "Decidim::ExtraUserFields::Metrics::CommentsMetric",
+        "budget_votes" => "Decidim::ExtraUserFields::Metrics::BudgetVotesMetric"
       }
     end
   end

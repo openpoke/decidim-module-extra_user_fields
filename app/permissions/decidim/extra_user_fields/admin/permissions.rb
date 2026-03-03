@@ -10,8 +10,16 @@ module Decidim
 
           allow! if access_extra_user_fields?
           allow! if update_extra_user_fields?
+          allow! if read_insights?
 
           permission_action
+        end
+
+        private
+
+        def read_insights?
+          permission_action.subject == :insights &&
+            permission_action.action == :read
         end
 
         def access_extra_user_fields?
