@@ -133,6 +133,29 @@ describe "Force extra user fields completion" do
     end
   end
 
+  context "when user has not accepted ToS and has incomplete extra fields" do
+    let(:extended_data) { {} }
+    let(:user) { create(:user, :confirmed, :tos_not_accepted, organization:, password:, extended_data:) }
+
+    it "redirects to ToS page first, then to account page after accepting ToS" do
+      login_as user, scope: :user
+      visit decidim.root_path
+
+      tos_page = Decidim::StaticPage.find_by(slug: "terms-of-service", organization:)
+
+      # Should be redirected to the ToS page, not to account
+      expect(page).to have_current_path(decidim.page_path(tos_page))
+      expect(page).to have_content("Review updates to our terms of service")
+
+      # Accept ToS
+      click_on "I agree with these terms"
+
+      # After accepting ToS, should be redirected to account for extra fields
+      expect(page).to have_current_path(decidim.account_path)
+      expect(page).to have_content("Please complete your profile information before continuing.")
+    end
+  end
+
   context "when user is not logged in" do
     let(:extended_data) { {} }
 

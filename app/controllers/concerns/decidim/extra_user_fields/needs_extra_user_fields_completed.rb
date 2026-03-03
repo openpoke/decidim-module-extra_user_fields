@@ -16,6 +16,7 @@ module Decidim
       def extra_user_fields_completed_by_user
         return unless request.format.html?
         return unless current_user
+        return unless current_user.tos_accepted?
         return unless current_organization.respond_to?(:force_extra_user_fields?)
         return unless current_organization.force_extra_user_fields?
         return if current_organization.extra_user_fields_complete?(current_user)
