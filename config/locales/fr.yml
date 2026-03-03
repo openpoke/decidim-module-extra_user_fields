@@ -26,6 +26,40 @@ fr:
       exports:
         export_as: Exporter au format %{export_format}
       extra_user_fields:
+        insights:
+          column_total: Total colonne
+          description: Explorez l'activité des participants selon les dimensions de
+            profil. Sélectionnez une métrique et deux champs de profil pour voir comment
+            la participation est répartie.
+          fields:
+            age_span: Tranche d'âge
+            country: Pays
+            gender: Genre
+            location: Localisation
+            postal_code: Code postal
+          legend:
+            fewer: Moins
+            higher_total: Total élevé
+            lower_total: Total faible
+            more: Plus
+            non_specified: Non spécifié / Préfère ne pas dire
+          menu_title: Aperçus
+          metrics:
+            budget_votes: Votes budgétaires
+            comments: Commentaires
+            participants: Participants
+            proposals_created: Propositions créées
+            proposals_supported: Propositions soutenues
+          no_data: Aucune donnée de participation trouvée pour cet espace avec les
+            critères sélectionnés.
+          non_specified: Non spécifié / Préfère ne pas dire
+          pivot_table_label: Tableau des données de participation
+          row_total: Total ligne
+          selectors:
+            cols: Colonnes (axe X)
+            metric: Métrique
+            rows: Lignes (axe Y)
+          title: Aperçus de l'espace participatif
         menu:
           title: Gérer les champs d'inscription personnalisés
     components:
@@ -111,7 +145,7 @@ fr:
               label: Activer le champ slogan
           update:
             failure: Une erreur est survenue lors de la mise à jour
-            success: Les champs d'inscription ont été mis à jour avec succ§s
+            success: Les champs d'inscription ont été mis à jour avec succès
       age_ranges:
         17_to_30: 17 à 30
         31_to_60: 31 à 60
@@ -128,6 +162,13 @@ fr:
         male: Homme
         other: Autre
         prefer_not_to_say: Préfère ne pas dire
+      insight_age_spans:
+        21_to_30: 21 à 30
+        31_to_40: 31 à 40
+        41_to_50: 41 à 50
+        51_to_60: 51 à 60
+        61_or_more: Plus de 60
+        up_to_20: Moins de 20
       registration_form:
         signup:
           legend: Plus d'information
