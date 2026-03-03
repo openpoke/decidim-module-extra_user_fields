@@ -11,11 +11,13 @@
 
     <div id="panel-global" class="card-section">
       <div class="row column">
-        <%= form.check_box :enabled, label: t(".extra_user_fields.extra_user_fields_enabled"), data: { controller: "toggle", toggle_target: "accordion-setup" } %>
+        <%= form.check_box :enabled, label: t(".extra_user_fields.extra_user_fields_enabled"), data: { controller: :toggle, "toggle-toggle-value": "force-extra-user-fields-wrapper accordion-setup" } %>
       </div>
-      <div class="row column">
-        <%= form.check_box :force_extra_user_fields, label: t(".extra_user_fields.force_extra_user_fields") %>
-        <p class="help-text"><%= t(".extra_user_fields.force_extra_user_fields_help") %></p>
+      <div id="force-extra-user-fields-wrapper" <%= "hidden" unless form.object.enabled %>>
+        <div class="row column">
+          <%= form.check_box :force_extra_user_fields, label: t(".extra_user_fields.force_extra_user_fields") %>
+          <p class="help-text"><%= t(".extra_user_fields.force_extra_user_fields_help") %></p>
+        </div>
       </div>
     </div>
   </div>

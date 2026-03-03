@@ -38,15 +38,25 @@ describe "Admin manages organization extra user fields" do
       end
     end
 
-    it "displays the force extra user fields checkbox" do
+    it "hides the force extra user fields checkbox when extra user fields are disabled" do
       within "#accordion-global" do
+        expect(page).to have_content("Force existing users to update their profile if missing mandatory extra user fields")
+
+        uncheck("extra_user_fields[enabled]")
+
+        expect(page).to have_no_content("Force existing users to update their profile if missing mandatory extra user fields")
+
+        check("extra_user_fields[enabled]")
+
         expect(page).to have_content("Force existing users to update their profile if missing mandatory extra user fields")
       end
     end
 
     it "saves the force extra user fields setting" do
+      check("extra_user_fields[enabled]")
+
       within "#accordion-global" do
-        page.check("extra_user_fields[force_extra_user_fields]")
+        check("extra_user_fields[force_extra_user_fields]")
       end
 
       find("*[type=submit]", text: "Save configuration").click
@@ -59,7 +69,7 @@ describe "Admin manages organization extra user fields" do
 
     context "when form is valid" do
       it "flashes a success message" do
-        page.check("extra_user_fields[enabled]")
+        check("extra_user_fields[enabled]")
 
         find("*[type=submit]", text: "Save configuration").click
         expect(page).to have_content("Extra user fields correctly updated in organization")
@@ -73,7 +83,7 @@ describe "Admin manages organization extra user fields" do
           expect(page).to have_content("Enable participant type")
           expect(page).to have_content("This field is a list of participant types")
 
-          page.check("Enable participant type field")
+          check("Enable participant type field")
         end
 
         find("*[type=submit]", text: "Save configuration").click
@@ -88,7 +98,7 @@ describe "Admin manages organization extra user fields" do
           expect(page).to have_content("Enable NGO field")
           expect(page).to have_content("This field is a Boolean field. User will be able to check if is a NGO")
 
-          page.check("Enable NGO field")
+          check("Enable NGO field")
         end
 
         find("*[type=submit]", text: "Save configuration").click
@@ -103,7 +113,7 @@ describe "Admin manages organization extra user fields" do
           expect(page).to have_content("Enable \"My Motto\" field")
           expect(page).to have_content("This field is a String field. If checked, user can fill in a personal phrase or motto")
 
-          page.check("Enable \"My Motto\" field")
+          check("Enable \"My Motto\" field")
         end
 
         find("*[type=submit]", text: "Save configuration").click
@@ -142,7 +152,7 @@ describe "Admin manages organization extra user fields" do
         expect(page).to have_content("Additional custom fields")
         expect(page).to have_content("Animal type")
 
-        page.check("Animal type")
+        check("Animal type")
       end
 
       find("*[type=submit]", text: "Save configuration").click
@@ -154,7 +164,7 @@ describe "Admin manages organization extra user fields" do
         expect(page).to have_content("Additional custom fields")
         expect(page).to have_content("Dog person")
 
-        page.check("Dog person")
+        check("Dog person")
       end
 
       find("*[type=submit]", text: "Save configuration").click
@@ -166,7 +176,7 @@ describe "Admin manages organization extra user fields" do
         expect(page).to have_content("Additional custom fields")
         expect(page).to have_content("Pet name")
 
-        page.check("Pet name")
+        check("Pet name")
       end
 
       find("*[type=submit]", text: "Save configuration").click

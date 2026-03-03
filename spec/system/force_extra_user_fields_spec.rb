@@ -41,7 +41,8 @@ describe "Force extra user fields completion" do
       visit decidim.account_path
 
       expect(page).to have_current_path(decidim.account_path)
-      expect(page).to have_css("form.edit_user")
+      expect(page).to have_content("Country")
+      expect(page).to have_content("Which gender do you identify with?")
       expect(page).to have_css("label[for='user_country'].is-invalid-label")
       expect(page).to have_css("label[for='user_gender'].is-invalid-label")
     end
@@ -66,6 +67,12 @@ describe "Force extra user fields completion" do
 
       # Should be redirected to account page
       expect(page).to have_current_path(decidim.account_path)
+
+      # Required fields should be highlighted as invalid
+      expect(page).to have_content("Country")
+      expect(page).to have_content("Which gender do you identify with?")
+      expect(page).to have_css("label[for='user_country'].is-invalid-label")
+      expect(page).to have_css("label[for='user_gender'].is-invalid-label")
 
       # Fill in the required fields and submit
       within "form.edit_user" do
