@@ -20,7 +20,7 @@ module Decidim
       def extra_user_fields_complete?(user)
         extended_data = user.extended_data
 
-        Decidim::ExtraUserFields.completable_fields.each do |field|
+        Decidim::ExtraUserFields.enforceable_fields.each do |field|
           next unless activated_extra_field?(field)
 
           return false if extended_data[field.to_s].blank?

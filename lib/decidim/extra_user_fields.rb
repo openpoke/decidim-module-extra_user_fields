@@ -11,9 +11,10 @@ module Decidim
   module ExtraUserFields
     include ActiveSupport::Configurable
 
-    # Fields that users must complete when force_extra_user_fields is enabled.
-    # Boolean and underage fields are excluded as they don't require text input.
-    config_accessor :completable_fields do
+    # Fields that are enforced when force_extra_user_fields is enabled.
+    # Underage is excluded because it is a hidden field that cannot be changed on the profile page.
+    # Boolean fields are excluded because an unchecked state is a valid default.
+    config_accessor :enforceable_fields do
       %w(country postal_code date_of_birth gender age_range phone_number location)
     end
 
