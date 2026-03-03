@@ -16,6 +16,7 @@ module Decidim
         attribute :location, Boolean
         attribute :underage, Boolean
         attribute :underage_limit, Integer
+        attribute :force_extra_user_fields, Boolean
 
         attribute :phone_number_pattern, String
         translatable_attribute :phone_number_placeholder, String
@@ -37,6 +38,7 @@ module Decidim
           self.underage_limit = model.extra_user_fields.fetch("underage_limit", Decidim::ExtraUserFields.underage_limit)
           self.phone_number_pattern = model.extra_user_fields.dig("phone_number", "pattern")
           self.phone_number_placeholder = model.extra_user_fields.dig("phone_number", "placeholder")
+          self.force_extra_user_fields = model.extra_user_fields["force_extra_user_fields"]
           self.select_fields = model.extra_user_fields["select_fields"] || []
           self.boolean_fields = model.extra_user_fields["boolean_fields"] || []
           self.text_fields = model.extra_user_fields["text_fields"] || []

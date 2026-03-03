@@ -38,6 +38,25 @@ describe "Admin manages organization extra user fields" do # rubocop:disable RSp
       end
     end
 
+    it "displays the force extra user fields checkbox" do
+      within "#accordion-global" do
+        expect(page).to have_content("Force existing users to update their profile if missing mandatory extra user fields")
+      end
+    end
+
+    it "saves the force extra user fields setting" do
+      within "#accordion-global" do
+        page.check("extra_user_fields[force_extra_user_fields]")
+      end
+
+      find("*[type=submit]", text: "Save configuration").click
+      expect(page).to have_content("Extra user fields correctly updated in organization")
+
+      visit decidim_extra_user_fields.root_path
+
+      expect(page).to have_checked_field("extra_user_fields[force_extra_user_fields]")
+    end
+
     context "when form is valid" do
       it "flashes a success message" do
         page.check("extra_user_fields[enabled]")

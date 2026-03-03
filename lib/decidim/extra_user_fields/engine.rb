@@ -48,6 +48,14 @@ module Decidim
             prepend Decidim::ExtraUserFields::OrganizationOverrides
           end
 
+          Decidim::ApplicationController.class_eval do
+            include Decidim::ExtraUserFields::NeedsExtraUserFieldsCompleted
+          end
+
+          Decidim::AccountController.class_eval do
+            prepend Decidim::ExtraUserFields::AccountControllerOverrides
+          end
+
           Decidim::FormBuilder.class_eval do
             include Decidim::ExtraUserFields::FormBuilderMethods
           end

@@ -13,6 +13,10 @@
       <div class="row column">
         <%= form.check_box :enabled, label: t(".extra_user_fields.extra_user_fields_enabled"), data: { controller: "toggle", toggle_target: "accordion-setup" } %>
       </div>
+      <div class="row column">
+        <%= form.check_box :force_extra_user_fields, label: t(".extra_user_fields.force_extra_user_fields") %>
+        <p class="help-text"><%= t(".extra_user_fields.force_extra_user_fields_help") %></p>
+      </div>
     </div>
   </div>
 

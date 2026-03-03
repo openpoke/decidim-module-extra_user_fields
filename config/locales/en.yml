@@ -87,6 +87,11 @@ en:
                 form will be updated only if there is at least one extra field enabled
             extra_user_fields:
               extra_user_fields_enabled: Enable extra user fields
+              force_extra_user_fields: Force existing users to update their profile
+                if missing mandatory extra user fields
+              force_extra_user_fields_help: When enabled, existing users who have
+                not filled in the required extra fields will be redirected to their
+                profile page until all fields are completed.
               section: Available extra fields for signup form
               section_extras: Additional custom fields
               section_extras_description: If you have configured any extra user fields,
@@ -121,6 +126,8 @@ en:
           label: I am a member of a non-governmental organization (NGO)
       errors:
         select_fields: The field "%{field}" is not valid.
+      force_extra_user_fields:
+        redirect_message: Please complete your profile information before continuing.
       genders:
         female: Female
         male: Male

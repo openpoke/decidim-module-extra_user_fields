@@ -89,6 +89,13 @@ fr:
                 ne sera mis à jour que si au moins un champ supplémentaire est activé.
             extra_user_fields:
               extra_user_fields_enabled: Activer les champs d'inscription personnalisés
+              force_extra_user_fields: Obliger les utilisateurs existants à mettre
+                à jour leur profil si des champs supplémentaires obligatoires sont
+                manquants
+              force_extra_user_fields_help: Lorsque cette option est activée, les
+                utilisateurs existants qui n'ont pas rempli les champs supplémentaires
+                obligatoires seront redirigés vers leur profil jusqu'à ce que tous
+                les champs soient complétés.
               section: Champs d'inscription disponibles pour le formulaire d'inscription
               section_extras: Champs supplémentaires personnalisés
               section_extras_description: Si vous avez configuré des champs d'utilisateur
@@ -123,6 +130,9 @@ fr:
           label: Activer le champ ONG
       errors:
         select_fields: Le champ "%{field}" n'est pas valide.
+      force_extra_user_fields:
+        redirect_message: Veuillez compléter les informations de votre profil avant
+          de continuer.
       genders:
         female: Femme
         male: Homme
