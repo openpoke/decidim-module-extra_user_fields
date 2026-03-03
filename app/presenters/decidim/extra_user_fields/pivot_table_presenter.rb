@@ -7,6 +7,8 @@ module Decidim
     #   --i  = intensity (0.0–1.0), drives the color gradient
     #   --tc = text color (#fff or #1a1a1a), ensures contrast on colored backgrounds
     class PivotTablePresenter
+      include HeatmapIntensity
+
       delegate :row_values, :col_values, :cell, :row_total, :col_total,
                :grand_total, :empty?, :max_value, to: :pivot_table
 
@@ -35,25 +37,6 @@ module Decidim
       private
 
       attr_reader :pivot_table
-
-      def intensity_vars(value, min, max)
-        return "" if value.zero? || max.zero?
-
-        range = max - min
-        intensity = range.zero? ? 0.0 : (value - min).to_f / range
-        text_color = intensity > 0.6 ? "#fff" : "#1a1a1a"
-
-        "--i:#{intensity.round(3)};--tc:#{text_color};"
-      end
-
-      def total_intensity_vars(value, max)
-        return "" if value.zero? || max.zero?
-
-        intensity = (value.to_f / max).round(3)
-        text_color = intensity > 0.6 ? "#fff" : "#1a1a1a"
-
-        "--i:#{intensity};--tc:#{text_color};"
-      end
     end
   end
 end

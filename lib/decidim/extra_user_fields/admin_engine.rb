@@ -19,6 +19,8 @@ module Decidim
         resources :extra_user_fields, only: [:index]
         match "/extra_user_fields" => "extra_user_fields#update", :via => :patch, :as => "update"
 
+        get "benchmarking", to: "benchmarking#show"
+
         root to: "extra_user_fields#index"
       end
 
@@ -43,6 +45,17 @@ module Decidim
                         decidim_extra_user_fields.root_path,
                         position: 5,
                         icon_name: "list-check"
+        end
+      end
+
+      initializer "decidim_extra_user_fields.admin_insights_menu" do
+        Decidim.menu :admin_insights_menu do |menu|
+          menu.add_item :benchmarking,
+                        t("decidim.admin.extra_user_fields.benchmarking.menu_title"),
+                        decidim_extra_user_fields.benchmarking_path,
+                        position: 2,
+                        icon_name: "bar-chart-box-line",
+                        active: is_active_link?(decidim_extra_user_fields.benchmarking_path)
         end
       end
 
