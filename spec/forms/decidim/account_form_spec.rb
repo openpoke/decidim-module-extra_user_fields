@@ -41,17 +41,16 @@ module Decidim
     let(:extra_user_fields) do
       {
         "enabled" => true,
-        "country" => { "enabled" => true },
-        "postal_code" => { "enabled" => true },
-        "date_of_birth" => { "enabled" => true },
-        "gender" => { "enabled" => true },
-        "phone_number" => { "enabled" => true, "pattern" => phone_number_pattern, "placeholder" => nil },
-        "location" => { "enabled" => true },
-        "underage" => { "enabled" => true },
-        "underage_limit" => 18,
-        "select_fields" => ["participant_type"],
-        "boolean_fields" => ["ngo"],
-        "text_fields" => ["motto"]
+        "country" => { "enabled" => true, "required" => false },
+        "postal_code" => { "enabled" => true, "required" => false },
+        "date_of_birth" => { "enabled" => true, "required" => false },
+        "gender" => { "enabled" => true, "required" => false },
+        "phone_number" => { "enabled" => true, "required" => false, "pattern" => phone_number_pattern, "placeholder" => nil },
+        "location" => { "enabled" => true, "required" => false },
+        "underage" => { "enabled" => true, "required" => false, "limit" => 18 },
+        "select_fields" => { "participant_type" => { "enabled" => true, "required" => false } },
+        "boolean_fields" => { "ngo" => { "enabled" => true, "required" => false } },
+        "text_fields" => { "motto" => { "enabled" => true, "required" => false } }
       }
     end
     let(:phone_number_pattern) { "^(\\+34)?[0-9 ]{9,12}$" }
@@ -74,19 +73,9 @@ module Decidim
     let(:phone_number) { "0123456789" }
     let(:postal_code) { "75001" }
     let(:underage) { "0" }
-    let(:select_fields) do
-      {
-        participant_type: "individual"
-      }
-    end
-    let(:boolean_fields) do
-      ["ngo"]
-    end
-    let(:text_fields) do
-      {
-        motto: false
-      }
-    end
+    let(:select_fields) { { participant_type: "individual" } }
+    let(:boolean_fields) { ["ngo"] }
+    let(:text_fields) { { motto: false } }
     let(:statutory_representative_email) { nil }
 
     context "with correct data" do
@@ -112,12 +101,7 @@ module Decidim
     end
 
     context "with non configured select fields" do
-      let(:select_fields) do
-        {
-          participant_type: "individual",
-          foo: "bar"
-        }
-      end
+      let(:select_fields) { { participant_type: "individual", foo: "bar" } }
 
       it "is valid" do
         expect(subject).to be_valid
@@ -125,21 +109,44 @@ module Decidim
     end
 
     context "with incorrect select fields" do
-      let(:select_fields) do
-        {
-          participant_type: "i_dont_exist"
-        }
-      end
+      let(:select_fields) { { participant_type: "i_dont_exist" } }
 
       it "is invalid" do
         expect(subject).not_to be_valid
       end
     end
 
-    context "with non configured boolean fields" do
-      let(:boolean_fields) do
-        [:ngo, :foo]
+    context "when a select field is required and blank" do
+      let(:extra_user_fields) { { "enabled" => true, "country" => { "enabled" => true, "required" => false }, "select_fields" => { "participant_type" => { "enabled" => true, "required" => true } } } }
+      let(:select_fields) { { participant_type: "" } }
+
+      it "is invalid" do
+        expect(subject).not_to be_valid
+        expect(subject.errors[:select_fields_participant_type]).to be_present
       end
+    end
+
+    context "when a text field is required and blank" do
+      let(:extra_user_fields) { { "enabled" => true, "country" => { "enabled" => true, "required" => false }, "text_fields" => { "motto" => { "enabled" => true, "required" => true } } } }
+      let(:text_fields) { { motto: "" } }
+
+      it "is invalid" do
+        expect(subject).not_to be_valid
+        expect(subject.errors[:text_fields_motto]).to be_present
+      end
+    end
+
+    context "when a text field is optional and blank" do
+      let(:extra_user_fields) { { "enabled" => true, "country" => { "enabled" => true, "required" => false }, "text_fields" => { "motto" => { "enabled" => true, "required" => false } } } }
+      let(:text_fields) { { motto: "" } }
+
+      it "is valid" do
+        expect(subject).to be_valid
+      end
+    end
+
+    context "with non configured boolean fields" do
+      let(:boolean_fields) { [:ngo, :foo] }
 
       it "is valid" do
         expect(subject).to be_valid
@@ -147,12 +154,7 @@ module Decidim
     end
 
     context "with non configured text fields" do
-      let(:text_fields) do
-        {
-          motto: false,
-          foo: true
-        }
-      end
+      let(:text_fields) { { motto: false, foo: true } }
 
       it "is valid" do
         expect(subject).to be_valid
@@ -281,6 +283,36 @@ module Decidim
 
           it { is_expected.not_to be_valid }
         end
+      end
+    end
+
+    context "when country is required and blank" do
+      let(:extra_user_fields) { { "enabled" => true, "country" => { "enabled" => true, "required" => true } } }
+      let(:country) { "" }
+
+      it "is invalid" do
+        expect(subject).not_to be_valid
+        expect(subject.errors[:country]).to be_present
+      end
+    end
+
+    context "when gender is required and blank" do
+      let(:extra_user_fields) { { "enabled" => true, "gender" => { "enabled" => true, "required" => true } } }
+      let(:gender) { "" }
+
+      it "is invalid" do
+        expect(subject).not_to be_valid
+        expect(subject.errors[:gender]).to be_present
+      end
+    end
+
+    context "when extra user fields module is disabled" do
+      let(:extra_user_fields) { { "enabled" => false, "country" => { "enabled" => true, "required" => true }, "gender" => { "enabled" => true, "required" => true } } }
+      let(:country) { "" }
+      let(:gender) { "" }
+
+      it "bypasses extra field validations and is valid" do
+        expect(subject).to be_valid
       end
     end
 

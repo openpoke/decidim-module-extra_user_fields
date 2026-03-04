@@ -18,30 +18,6 @@ module Decidim
             end.join.html_safe
           end
         end
-
-        def custom_select_fields(form)
-          return {} unless Decidim::ExtraUserFields.select_fields.is_a?(Hash)
-
-          Decidim::ExtraUserFields.select_fields.keys.index_with do |field|
-            form.object.select_fields.include?(field.to_s)
-          end
-        end
-
-        def custom_boolean_fields(form)
-          return {} unless Decidim::ExtraUserFields.boolean_fields.is_a?(Array)
-
-          Decidim::ExtraUserFields.boolean_fields.index_with do |field|
-            form.object.boolean_fields.include?(field.to_s)
-          end
-        end
-
-        def custom_text_fields(form)
-          return {} unless Decidim::ExtraUserFields.text_fields.is_a?(Hash)
-
-          Decidim::ExtraUserFields.text_fields.keys.index_with do |field|
-            form.object.text_fields.include?(field.to_s)
-          end
-        end
       end
     end
   end

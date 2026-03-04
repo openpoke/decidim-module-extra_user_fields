@@ -28,9 +28,11 @@ module Decidim
       def custom_select_fields_options
         return {} unless Decidim::ExtraUserFields.select_fields.is_a?(Hash)
 
+        active = current_organization.extra_user_field_configuration(:select_fields)
+
         Decidim::ExtraUserFields.select_fields.filter_map do |field, options|
           next if options.blank?
-          next unless current_organization.extra_user_field_configuration(:select_fields).include?(field.to_s)
+          next unless active_collection_field?(active, field)
 
           [
             field,
@@ -49,19 +51,38 @@ module Decidim
       def custom_boolean_fields
         return [] unless Decidim::ExtraUserFields.boolean_fields.is_a?(Array)
 
+        active = current_organization.extra_user_field_configuration(:boolean_fields)
+
         Decidim::ExtraUserFields.boolean_fields.filter do |field|
-          current_organization.extra_user_field_configuration(:boolean_fields).include?(field.to_s)
+          active_collection_field?(active, field)
         end
       end
 
       def custom_text_fields
-        return [] unless Decidim::ExtraUserFields.text_fields.is_a?(Hash)
+        return {} unless Decidim::ExtraUserFields.text_fields.is_a?(Array)
 
-        Decidim::ExtraUserFields.text_fields.filter_map do |field, mandatory|
-          current_organization.extra_user_field_configuration(:text_fields).include?(field.to_s)
+        active = current_organization.extra_user_field_configuration(:text_fields)
 
-          [field, mandatory.present?]
+        Decidim::ExtraUserFields.text_fields.filter_map do |field|
+          next unless active_collection_field?(active, field)
+
+          [field, current_organization.collection_field_required?(:text_fields, field)]
         end.to_h
+      end
+
+      def custom_select_field_required?(field)
+        current_organization.collection_field_required?(:select_fields, field)
+      end
+
+      private
+
+      def active_collection_field?(active, field)
+        return false unless active.is_a?(Hash)
+
+        field_data = active[field.to_s]
+        return false unless field_data.is_a?(Hash)
+
+        field_data["enabled"] == true
       end
     end
   end
