@@ -98,7 +98,7 @@ module Decidim
           return {} unless data.is_a?(Hash)
 
           data.transform_values do |field_data|
-            next { "enabled" => false, "required" => false } if field_data.blank? || !field_data.is_a?(Hash)
+            next({ "enabled" => false, "required" => false }) if field_data.blank? || !field_data.is_a?(Hash)
 
             enabled = field_data["enabled"] == "true"
             required = allow_required && field_data["required"] == "true"
