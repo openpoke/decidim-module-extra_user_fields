@@ -31,7 +31,7 @@ en:
           select_spaces: Choose participatory spaces for comparison
           select_spaces_prompt: Select one or more participatory spaces to compare.
           table_label: Benchmarking comparison table
-          title: Benchmarking
+          title: Comparative stats across spaces
         insights:
           column_total: Column Total
           description: Explore participant activity across profile dimensions. Select

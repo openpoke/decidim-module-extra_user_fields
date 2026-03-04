@@ -11,14 +11,13 @@ module Decidim
           "[#{type}] #{title}"
         end
 
-        # Value encoding for form params: "Decidim::ParticipatoryProcess:42"
         def space_option_value(space)
           "#{space.class.name}:#{space.id}"
         end
 
         def benchmarking_data_cell(space, row, col, space_index:, col_index:)
           value = comparative_pivot_presenter.cell(space, row, col)
-          cell_type = (row.nil? || col.nil?) ? "gray" : "colored"
+          cell_type = row.nil? || col.nil? ? "gray" : "colored"
           css = "insights-table__cell heatmap-cell--#{cell_type}"
           css += " insights-table__space-divider" if col_index.zero? && space_index.positive?
 
@@ -42,6 +41,13 @@ module Decidim
           content_tag(:td, number_with_delimiter(value),
                       class: css,
                       style: comparative_pivot_presenter.col_total_style(value))
+        end
+
+        def space_name(space, limit: 40)
+          full = comparative_pivot_presenter.space_label(space)
+          return full if full.length <= limit
+
+          content_tag(:span, truncate(full, length: limit), title: full, style: "cursor: help")
         end
 
         def benchmarking_grand_total_cell

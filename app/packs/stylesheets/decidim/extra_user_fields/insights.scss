@@ -86,11 +86,18 @@ th.insights-table__footer-label {
   @apply text-left pl-2;
 }
 
+.table-list thead th.insights-table__col-header,
+.table-list thead th.insights-table__space-header {
+  text-align: center;
+}
+
 // Benchmarking comparison table — space header and dividers.
 .insights-table__space-header {
   @apply text-center text-sm font-bold py-2;
 
   border-bottom: 2px solid theme("colors.gray.4");
+  white-space: normal;
+
 }
 
 .insights-table__space-divider {
@@ -99,8 +106,6 @@ th.insights-table__footer-label {
 
 // Benchmarking space multi-select — constrain width and add spacing.
 .benchmarking-space-select {
-  @apply mb-5;
-
-  max-width: 28rem;
+  @apply mb-5 w-full;
 }
 

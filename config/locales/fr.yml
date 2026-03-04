@@ -32,7 +32,7 @@ fr:
           select_spaces: Choisissez des espaces participatifs à comparer
           select_spaces_prompt: Sélectionnez un ou plusieurs espaces participatifs à comparer.
           table_label: Tableau de comparaison benchmarking
-          title: Benchmarking
+          title: Statistiques comparatives entre espaces
         insights:
           column_total: Total colonne
           description: Explorez l'activité des participants selon les dimensions de

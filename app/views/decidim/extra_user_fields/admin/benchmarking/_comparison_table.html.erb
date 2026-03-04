@@ -12,7 +12,7 @@
               </th>
               <% comparative_pivot_presenter.spaces.each do |space| %>
                 <th class="insights-table__space-header" colspan="<%= comparative_pivot_presenter.unified_col_values.size %>">
-                  <%= comparative_pivot_presenter.space_label(space) %>
+                  <%= space_name(space) %>
                 </th>
               <% end %>
               <th class="insights-table__row-total-header" rowspan="2">
