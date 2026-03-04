@@ -13,7 +13,7 @@ module Decidim
     let(:organization) { create(:organization, extra_user_fields:) }
     let(:user) { create(:user, :confirmed, organization:, extended_data:) }
     let(:extended_data) { {} }
-    let(:extra_user_fields) { { "enabled" => true, "country" => { "enabled" => "required" } } }
+    let(:extra_user_fields) { { "enabled" => true, "country" => { "enabled" => true, "required" => true } } }
 
     before do
       request.env["decidim.current_organization"] = organization
@@ -45,7 +45,7 @@ module Decidim
     end
 
     context "when no fields are required (all optional)" do
-      let(:extra_user_fields) { { "enabled" => true, "country" => { "enabled" => "optional" } } }
+      let(:extra_user_fields) { { "enabled" => true, "country" => { "enabled" => true, "required" => false } } }
 
       it "does not redirect" do
         get :index

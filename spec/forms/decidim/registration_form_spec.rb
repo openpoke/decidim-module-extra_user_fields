@@ -18,13 +18,13 @@ module Decidim
     let(:extra_user_fields) do
       {
         "enabled" => true,
-        "country" => { "enabled" => true },
-        "postal_code" => { "enabled" => true },
-        "date_of_birth" => { "enabled" => true },
-        "gender" => { "enabled" => true },
-        "age_range" => { "enabled" => true },
-        "phone_number" => { "enabled" => true, "pattern" => phone_number_pattern, "placeholder" => nil },
-        "location" => { "enabled" => true }
+        "country" => { "enabled" => true, "required" => false },
+        "postal_code" => { "enabled" => true, "required" => false },
+        "date_of_birth" => { "enabled" => true, "required" => false },
+        "gender" => { "enabled" => true, "required" => false },
+        "age_range" => { "enabled" => true, "required" => false },
+        "phone_number" => { "enabled" => true, "required" => false, "pattern" => phone_number_pattern, "placeholder" => nil },
+        "location" => { "enabled" => true, "required" => false }
       }
     end
     let(:phone_number_pattern) { "^(\\+34)?[0-9 ]{9,12}$" }

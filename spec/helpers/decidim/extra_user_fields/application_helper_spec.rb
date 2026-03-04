@@ -9,7 +9,7 @@ module Decidim
       let(:org_extra_user_fields) do
         {
           "enabled" => true,
-          "phone_number" => { "enabled" => "optional", "pattern" => "^\\+33", "placeholder" => "+33..." },
+          "phone_number" => { "enabled" => true, "required" => false, "pattern" => "^\\+33", "placeholder" => "+33..." },
           "select_fields" => { "participant_type" => "required" },
           "boolean_fields" => ["ngo"],
           "text_fields" => { "motto" => "optional" }
@@ -52,7 +52,7 @@ module Decidim
         end
 
         context "when no pattern is configured" do
-          let(:org_extra_user_fields) { { "enabled" => true, "phone_number" => { "enabled" => "optional" } } }
+          let(:org_extra_user_fields) { { "enabled" => true, "phone_number" => { "enabled" => true, "required" => false } } }
 
           it "returns nil" do
             expect(helper.phone_number_extra_user_field_pattern).to be_nil
@@ -121,7 +121,7 @@ module Decidim
         end
 
         context "when text field is required" do
-          let(:org_extra_user_fields) { { "enabled" => true, "text_fields" => { "motto" => "required" } } }
+          let(:org_extra_user_fields) { { "enabled" => true, "text_fields" => { "motto" => { "enabled" => true, "required" => true } } } }
 
           it "returns true for required flag" do
             result = helper.custom_text_fields
@@ -144,7 +144,7 @@ module Decidim
         end
 
         context "when field is optional" do
-          let(:org_extra_user_fields) { { "enabled" => true, "select_fields" => { "participant_type" => "optional" } } }
+          let(:org_extra_user_fields) { { "enabled" => true, "select_fields" => { "participant_type" => { "enabled" => true, "required" => false } } } }
 
           it "returns false" do
             expect(helper.custom_select_field_required?("participant_type")).to be false

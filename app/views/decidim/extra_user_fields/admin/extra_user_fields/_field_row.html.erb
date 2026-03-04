@@ -1,18 +1,12 @@
-<%# locals: (label:, help_text: nil, state:, input_name:, input_id:, has_required: true, stimulus_values: {}) %>
-<tr data-controller="field-state" data-field-state-target="row" class="<%= field_row_class(state) %>"
-    <% stimulus_values.each do |key, val| %>
-      data-field-state-<%= key %>-value="<%= val %>"
-    <% end %>>
+<%# locals: (label:, help_text: nil, field_name:, form:) %>
+<tr data-controller="field-state" data-field-state-enabled-state-value="optional" data-field-state-disabled-state-value="disabled">
   <td>
     <%= label %><% if help_text.present? %><br><span class="help-text"><%= help_text %></span><% end %>
   </td>
   <td class="text-center">
-    <input type="hidden" name="<%= input_name %>" value="<%= state %>" data-field-state-target="state" id="<%= input_id %>">
-    <input type="checkbox" data-field-state-target="enabled" data-action="change->field-state#toggleEnabled" <%= "checked" if field_enabled?(state) %>>
+    <%= form.check_box :"#{field_name}_enabled", label: "", data: { action: "field-state#toggleEnabled", "field-state-target": "enabled" } %>
   </td>
   <td class="text-center">
-    <% if has_required %>
-      <input type="checkbox" data-field-state-target="required" data-action="change->field-state#toggleRequired" <%= "checked" if field_required?(state) %> <%= "disabled" unless field_enabled?(state) %>>
-    <% end %>
+    <%= form.check_box :"#{field_name}_required", label: "", data: { action: "field-state#toggleRequired", "field-state-target": "required" } %>
   </td>
 </tr>

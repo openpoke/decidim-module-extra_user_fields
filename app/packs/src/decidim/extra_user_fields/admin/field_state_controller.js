@@ -1,7 +1,7 @@
 import { Controller } from "@hotwired/stimulus"
 
 export default class extends Controller {
-  static targets = ["enabled", "required", "state", "subfields", "row"]
+  static targets = ["enabled", "required", "subfields", "row"]
   static values = {
     enabledState: { type: String, default: "optional" },
     disabledState: { type: String, default: "disabled" }
@@ -17,12 +17,10 @@ export default class extends Controller {
         this.requiredTarget.checked = false
         this.requiredTarget.disabled = true
       }
-      this.stateTarget.value = this.disabledStateValue
     } else {
       if (this.hasRequiredTarget) {
         this.requiredTarget.disabled = false
       }
-      this.stateTarget.value = this.enabledStateValue
     }
 
     this.updateRow()
@@ -30,23 +28,13 @@ export default class extends Controller {
   }
 
   toggleRequired() {
-    if (this.requiredTarget.checked) {
-      this.stateTarget.value = "required"
-    } else {
-      this.stateTarget.value = this.enabledStateValue
-    }
-
     this.updateRow()
   }
 
   sync() {
-    const state = this.stateTarget.value
-    const enabled = state !== this.disabledStateValue && state !== ""
-
-    this.enabledTarget.checked = enabled
+    const enabled = this.enabledTarget.checked
 
     if (this.hasRequiredTarget) {
-      this.requiredTarget.checked = state === "required"
       this.requiredTarget.disabled = !enabled
     }
 
@@ -60,8 +48,8 @@ export default class extends Controller {
     const row = this.rowTarget
     row.classList.remove("field-row--disabled", "field-row--required")
 
-    const state = this.stateTarget.value
-    if (state === this.disabledStateValue || state === "") {
+    const state = this.getState()
+    if (state === this.disabledStateValue) {
       row.classList.add("field-row--disabled")
     } else if (state === "required") {
       row.classList.add("field-row--required")
@@ -73,5 +61,19 @@ export default class extends Controller {
     this.subfieldsTargets.forEach((el) => {
       el.hidden = !enabled
     })
+  }
+
+  getState() {
+    const enabled = this.enabledTarget.checked
+    
+    if (!enabled) {
+      return this.disabledStateValue
+    }
+
+    if (this.hasRequiredTarget && this.requiredTarget.checked) {
+      return "required"
+    }
+
+    return this.enabledStateValue
   }
 }

@@ -75,18 +75,18 @@ module Decidim
         end
       end
 
-      Decidim::ExtraUserFields.text_fields.each_key do |field_name|
+      Decidim::ExtraUserFields.text_fields.each do |field_name|
         define_method(:"text_fields_#{field_name}") do
           (text_fields || {})[field_name.to_s] || (text_fields || {})[field_name.to_sym]
         end
       end
 
-      private
-
       Decidim::ExtraUserFields::PROFILE_FIELDS.map(&:to_sym).each do |field|
         define_method(:"#{field}?") { extra_user_fields_enabled && current_organization.activated_extra_field?(field) }
         define_method(:"#{field}_required?") { extra_user_fields_enabled && current_organization.required_extra_field?(field) }
       end
+
+      private
 
       def phone_number_format?
         return false unless phone_number?
@@ -135,7 +135,7 @@ module Decidim
       end
 
       def underage_limit
-        current_organization.extra_user_fields["underage_limit"]
+        current_organization.extra_user_fields.dig("underage", "limit")
       end
 
       def select_fields_configured

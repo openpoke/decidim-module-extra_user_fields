@@ -6,7 +6,7 @@
                   { label: t("decidim.extra_user_fields.select_fields.#{field}.label", default: field.to_s.humanize),
                     help_text: t("decidim.extra_user_fields.select_fields.#{field}.description", default: nil),
                     required: required,
-                    include_blank: true },
+                    include_blank: "" },
                   { name: "user[select_fields][#{field}]" } %>
   </div>
 <% end %>

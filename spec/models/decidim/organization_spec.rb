@@ -8,7 +8,7 @@ module Decidim
 
     let(:extra_user_fields) { { "enabled" => extra_user_field, "date_of_birth" => date_of_birth } }
     let(:extra_user_field) { true }
-    let(:date_of_birth) { { "enabled" => true } }
+    let(:date_of_birth) { { "enabled" => true, "required" => false } }
     let(:omniauth_secrets) do
       {
         facebook: {
@@ -147,7 +147,7 @@ module Decidim
         let(:extra_user_fields) do
           {
             "enabled" => true,
-            "date_of_birth" => { "enabled" => "required" }
+            "date_of_birth" => { "enabled" => true, "required" => true }
           }
         end
 
@@ -160,7 +160,7 @@ module Decidim
         let(:extra_user_fields) do
           {
             "enabled" => true,
-            "date_of_birth" => { "enabled" => "optional" }
+            "date_of_birth" => { "enabled" => true, "required" => false }
           }
         end
 
@@ -173,7 +173,7 @@ module Decidim
         let(:extra_user_fields) do
           {
             "enabled" => true,
-            "date_of_birth" => { "enabled" => "disabled" }
+            "date_of_birth" => { "enabled" => false, "required" => false }
           }
         end
 
@@ -186,7 +186,7 @@ module Decidim
         let(:extra_user_fields) do
           {
             "enabled" => false,
-            "date_of_birth" => { "enabled" => "required" }
+            "date_of_birth" => { "enabled" => true, "required" => true }
           }
         end
 
@@ -241,7 +241,7 @@ module Decidim
         let(:extra_user_fields) do
           {
             "enabled" => true,
-            "country" => { "enabled" => "required" }
+            "country" => { "enabled" => true, "required" => true }
           }
         end
 
@@ -254,7 +254,7 @@ module Decidim
         let(:extra_user_fields) do
           {
             "enabled" => true,
-            "country" => { "enabled" => "optional" }
+            "country" => { "enabled" => true, "required" => false }
           }
         end
 
@@ -269,9 +269,9 @@ module Decidim
       let(:extra_user_fields) do
         {
           "enabled" => true,
-          "date_of_birth" => { "enabled" => "required" },
-          "country" => { "enabled" => "required" },
-          "gender" => { "enabled" => "disabled" }
+          "date_of_birth" => { "enabled" => true, "required" => true },
+          "country" => { "enabled" => true, "required" => true },
+          "gender" => { "enabled" => false, "required" => false }
         }
       end
 
@@ -295,8 +295,8 @@ module Decidim
         let(:extra_user_fields) do
           {
             "enabled" => true,
-            "date_of_birth" => { "enabled" => "required" },
-            "country" => { "enabled" => "optional" }
+            "date_of_birth" => { "enabled" => true, "required" => true },
+            "country" => { "enabled" => true, "required" => false }
           }
         end
         let(:extended_data) { { "date_of_birth" => "2000-01-01" } }
@@ -318,8 +318,8 @@ module Decidim
         let(:extra_user_fields) do
           {
             "enabled" => true,
-            "date_of_birth" => { "enabled" => "disabled" },
-            "country" => { "enabled" => "optional" }
+            "date_of_birth" => { "enabled" => false, "required" => false },
+            "country" => { "enabled" => true, "required" => false }
           }
         end
         let(:extended_data) { {} }
@@ -333,7 +333,7 @@ module Decidim
         let(:extra_user_fields) do
           {
             "enabled" => true,
-            "date_of_birth" => { "enabled" => "disabled" },
+            "date_of_birth" => { "enabled" => false, "required" => false },
             "select_fields" => { "participant_type" => "required" }
           }
         end
@@ -368,7 +368,7 @@ module Decidim
           let(:extra_user_fields) do
             {
               "enabled" => true,
-              "date_of_birth" => { "enabled" => "disabled" },
+              "date_of_birth" => { "enabled" => false, "required" => false },
               "text_fields" => { "motto" => "required" }
             }
           end
@@ -402,7 +402,7 @@ module Decidim
           let(:extra_user_fields) do
             {
               "enabled" => true,
-              "date_of_birth" => { "enabled" => "disabled" },
+              "date_of_birth" => { "enabled" => false, "required" => false },
               "text_fields" => { "motto" => "optional" }
             }
           end
@@ -429,7 +429,7 @@ module Decidim
         let(:extra_user_fields) do
           {
             "enabled" => true,
-            "date_of_birth" => { "enabled" => "disabled" },
+            "date_of_birth" => { "enabled" => false, "required" => false },
             "boolean_fields" => ["ngo"]
           }
         end
@@ -444,8 +444,8 @@ module Decidim
         let(:extra_user_fields) do
           {
             "enabled" => true,
-            "country" => { "enabled" => "required" },
-            "date_of_birth" => { "enabled" => "disabled" },
+            "country" => { "enabled" => true, "required" => true },
+            "date_of_birth" => { "enabled" => false, "required" => false },
             "select_fields" => { "participant_type" => "required" },
             "text_fields" => { "motto" => "required" }
           }
@@ -510,8 +510,8 @@ module Decidim
           let(:extra_user_fields) do
             {
               "enabled" => true,
-              "country" => { "enabled" => "required" },
-              "date_of_birth" => { "enabled" => "disabled" },
+              "country" => { "enabled" => true, "required" => true },
+              "date_of_birth" => { "enabled" => false, "required" => false },
               "select_fields" => { "participant_type" => "required" },
               "text_fields" => { "motto" => "optional" }
             }
@@ -533,7 +533,7 @@ module Decidim
 
     describe "#collection_field_required?" do
       context "when collection field is required (Hash format)" do
-        let(:extra_user_fields) { { "enabled" => true, "select_fields" => { "participant_type" => "required" } } }
+        let(:extra_user_fields) { { "enabled" => true, "select_fields" => { "participant_type" => { "enabled" => true, "required" => true } } } }
 
         it "returns true" do
           expect(subject.collection_field_required?(:select_fields, :participant_type)).to be true
@@ -541,7 +541,7 @@ module Decidim
       end
 
       context "when collection field is optional (Hash format)" do
-        let(:extra_user_fields) { { "enabled" => true, "select_fields" => { "participant_type" => "optional" } } }
+        let(:extra_user_fields) { { "enabled" => true, "select_fields" => { "participant_type" => { "enabled" => true, "required" => false } } } }
 
         it "returns false" do
           expect(subject.collection_field_required?(:select_fields, :participant_type)).to be false
@@ -562,19 +562,20 @@ module Decidim
         let(:extra_user_fields) do
           {
             "enabled" => true,
-            "phone_number" => { "enabled" => "optional", "pattern" => "^\\+33", "placeholder" => "+33..." }
+            "phone_number" => { "enabled" => true, "required" => false, "pattern" => "^\\+33", "placeholder" => "+33..." }
           }
         end
 
-        it "returns config hash without the enabled key" do
+        it "returns config hash without the enabled/required keys" do
           config = subject.extra_user_field_configuration(:phone_number)
           expect(config).to eq({ "pattern" => "^\\+33", "placeholder" => "+33..." })
           expect(config).not_to have_key("enabled")
+          expect(config).not_to have_key("required")
         end
       end
 
       context "when field is disabled" do
-        let(:extra_user_fields) { { "enabled" => true, "country" => { "enabled" => "disabled" } } }
+        let(:extra_user_fields) { { "enabled" => true, "country" => { "enabled" => false, "required" => false } } }
 
         it "returns empty hash" do
           expect(subject.extra_user_field_configuration(:country)).to eq({})
@@ -582,10 +583,10 @@ module Decidim
       end
 
       context "when field is a collection (Hash format)" do
-        let(:extra_user_fields) { { "enabled" => true, "select_fields" => { "participant_type" => "required" } } }
+        let(:extra_user_fields) { { "enabled" => true, "select_fields" => { "participant_type" => { "enabled" => true, "required" => true } } } }
 
         it "returns the collection hash" do
-          expect(subject.extra_user_field_configuration(:select_fields)).to eq({ "participant_type" => "required" })
+          expect(subject.extra_user_field_configuration(:select_fields)).to eq({ "participant_type" => { "enabled" => true, "required" => true } })
         end
       end
 
@@ -600,7 +601,7 @@ module Decidim
 
     describe "#age_limit" do
       context "when underage_limit is set" do
-        let(:extra_user_fields) { { "enabled" => true, "underage_limit" => 16 } }
+        let(:extra_user_fields) { { "enabled" => true, "underage" => { "enabled" => true, "required" => false, "limit" => 16 } } }
 
         it "returns the integer value" do
           expect(subject.age_limit).to eq(16)
@@ -608,7 +609,7 @@ module Decidim
       end
 
       context "when underage_limit is not set" do
-        let(:extra_user_fields) { { "enabled" => true } }
+        let(:extra_user_fields) { { "enabled" => true, "underage" => { "enabled" => true, "required" => false } } }
 
         it "returns 0" do
           expect(subject.age_limit).to eq(0)
@@ -623,7 +624,7 @@ module Decidim
         let(:extra_user_fields) do
           {
             "enabled" => true,
-            "date_of_birth" => { "enabled" => "disabled" },
+            "date_of_birth" => { "enabled" => false, "required" => false },
             "select_fields" => { "participant_type" => "required" }
           }
         end
@@ -638,7 +639,7 @@ module Decidim
         let(:extra_user_fields) do
           {
             "enabled" => true,
-            "date_of_birth" => { "enabled" => "disabled" },
+            "date_of_birth" => { "enabled" => false, "required" => false },
             "select_fields" => { "participant_type" => "required" }
           }
         end
@@ -653,7 +654,7 @@ module Decidim
         let(:extra_user_fields) do
           {
             "enabled" => true,
-            "date_of_birth" => { "enabled" => "disabled" },
+            "date_of_birth" => { "enabled" => false, "required" => false },
             "text_fields" => { "motto" => "required" }
           }
         end
@@ -668,7 +669,7 @@ module Decidim
         let(:extra_user_fields) do
           {
             "enabled" => true,
-            "date_of_birth" => { "enabled" => "disabled" },
+            "date_of_birth" => { "enabled" => false, "required" => false },
             "text_fields" => { "motto" => "required" }
           }
         end
@@ -683,7 +684,7 @@ module Decidim
         let(:extra_user_fields) do
           {
             "enabled" => true,
-            "date_of_birth" => { "enabled" => "disabled" },
+            "date_of_birth" => { "enabled" => false, "required" => false },
             "select_fields" => { "participant_type" => "optional" }
           }
         end
@@ -715,7 +716,7 @@ module Decidim
       end
 
       context "when field is disabled" do
-        let(:date_of_birth) { { "enabled" => "disabled" } }
+        let(:date_of_birth) { { "enabled" => false, "required" => false } }
 
         it "returns false" do
           expect(subject).not_to be_activated_extra_field(:date_of_birth)
@@ -723,7 +724,7 @@ module Decidim
       end
 
       context "when field is optional" do
-        let(:date_of_birth) { { "enabled" => "optional" } }
+        let(:date_of_birth) { { "enabled" => true, "required" => false } }
 
         it "returns true" do
           expect(subject).to be_activated_extra_field(:date_of_birth)
@@ -731,7 +732,7 @@ module Decidim
       end
 
       context "when field is required" do
-        let(:date_of_birth) { { "enabled" => "required" } }
+        let(:date_of_birth) { { "enabled" => true, "required" => true } }
 
         it "returns true" do
           expect(subject).to be_activated_extra_field(:date_of_birth)

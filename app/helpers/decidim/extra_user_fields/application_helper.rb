@@ -59,11 +59,11 @@ module Decidim
       end
 
       def custom_text_fields
-        return {} unless Decidim::ExtraUserFields.text_fields.is_a?(Hash)
+        return {} unless Decidim::ExtraUserFields.text_fields.is_a?(Array)
 
         active = current_organization.extra_user_field_configuration(:text_fields)
 
-        Decidim::ExtraUserFields.text_fields.filter_map do |field, _config|
+        Decidim::ExtraUserFields.text_fields.filter_map do |field|
           next unless active_collection_field?(active, field)
 
           [field, current_organization.collection_field_required?(:text_fields, field)]
@@ -77,7 +77,12 @@ module Decidim
       private
 
       def active_collection_field?(active, field)
-        active.is_a?(Hash) ? active.has_key?(field.to_s) : Array(active).include?(field.to_s)
+        return false unless active.is_a?(Hash)
+
+        field_data = active[field.to_s]
+        return false unless field_data.is_a?(Hash)
+
+        field_data["enabled"] == true
       end
     end
   end

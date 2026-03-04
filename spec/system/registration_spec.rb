@@ -51,17 +51,17 @@ describe "Extra user fields" do
     }
   end
 
-  let(:date_of_birth) { { "enabled" => "required" } }
-  let(:postal_code) { { "enabled" => "required" } }
-  let(:country) { { "enabled" => "required" } }
-  let(:gender) { { "enabled" => "required" } }
-  let(:age_range) { { "enabled" => "required" } }
-  let(:phone_number) { { "enabled" => "required", "pattern" => phone_number_pattern, "placeholder" => nil } }
+  let(:date_of_birth) { { "enabled" => true, "required" => true } }
+  let(:postal_code) { { "enabled" => true, "required" => true } }
+  let(:country) { { "enabled" => true, "required" => true } }
+  let(:gender) { { "enabled" => true, "required" => true } }
+  let(:age_range) { { "enabled" => true, "required" => true } }
+  let(:phone_number) { { "enabled" => true, "required" => true, "pattern" => phone_number_pattern, "placeholder" => nil } }
   let(:phone_number_pattern) { "^(\\+34)?[0-9 ]{9,12}$" }
-  let(:location) { { "enabled" => "required" } }
-  let(:select_fields) { { "participant_type" => "optional" } }
-  let(:boolean_fields) { ["ngo"] }
-  let(:text_fields) { { "motto" => "optional" } }
+  let(:location) { { "enabled" => true, "required" => true } }
+  let(:select_fields) { { "participant_type" => { "enabled" => true, "required" => false } } }
+  let(:boolean_fields) { { "ngo" => { "enabled" => true, "required" => false } } }
+  let(:text_fields) { { "motto" => { "enabled" => true, "required" => false } } }
 
   before do
     switch_to_host(organization.host)

@@ -1,6 +1,6 @@
 <%= cell("decidim/announcement", t(".callout.help")) %>
 
-<div class="form__wrapper">
+<div class="form__wrapper" data-controller="collection-fields">
   <div class="card" data-controller="accordion" id="accordion-global">
     <div class="card-divider">
       <button class="card-divider-button" data-open="true" data-controls="panel-global" type="button">
@@ -28,53 +28,52 @@
       <%= render layout: "decidim/extra_user_fields/admin/extra_user_fields/field_table" do %>
         <tbody>
           <% (Decidim::ExtraUserFields::PROFILE_FIELDS - ["phone_number"]).each do |field_name| %>
-            <% state = form.object.public_send(field_name) %>
             <%= render "decidim/extra_user_fields/admin/extra_user_fields/field_row",
                        label: t("#{field_name}.label", scope: "decidim.extra_user_fields.admin.extra_user_fields.fields"),
                        help_text: t("#{field_name}.description", scope: "decidim.extra_user_fields.admin.extra_user_fields.fields"),
-                       state: state,
-                       input_name: "extra_user_fields[#{field_name}]",
-                       input_id: "extra_user_fields_#{field_name}" %>
+                       field_name: field_name,
+                       form: form %>
           <% end %>
         </tbody>
 
-        <% phone_state = form.object.phone_number %>
-        <tbody data-controller="field-state">
-          <tr data-field-state-target="row" class="<%= field_row_class(phone_state) %>">
+        <tbody data-controller="field-state" data-field-state-enabled-state-value="optional" data-field-state-disabled-state-value="disabled">
+          <% phone_enabled = form.object.phone_number_enabled %>
+          <tr>
             <td>
               <%= t("phone_number.label", scope: "decidim.extra_user_fields.admin.extra_user_fields.fields") %>
               <br><span class="help-text"><%= t("phone_number.description", scope: "decidim.extra_user_fields.admin.extra_user_fields.fields") %></span>
             </td>
             <td class="text-center">
-              <%= form.hidden_field :phone_number, data: { "field-state-target": "state" } %>
-              <input type="checkbox" data-field-state-target="enabled" data-action="change->field-state#toggleEnabled" <%= "checked" if field_enabled?(phone_state) %>>
+              <%= form.check_box :phone_number_enabled, label: "", data: { action: "field-state#toggleEnabled", "field-state-target": "enabled" } %>
             </td>
             <td class="text-center">
-              <input type="checkbox" data-field-state-target="required" data-action="change->field-state#toggleRequired" <%= "checked" if field_required?(phone_state) %> <%= "disabled" unless field_enabled?(phone_state) %>>
+              <%= form.check_box :phone_number_required, label: "", data: { action: "field-state#toggleRequired", "field-state-target": "required" } %>
             </td>
           </tr>
-          <tr data-field-state-target="subfields" <%= "hidden" unless field_enabled?(phone_state) %>>
+          <tr data-field-state-target="subfields" <%= "hidden" unless phone_enabled %>>
             <td colspan="3" class="pl-4">
               <%= form.text_field :phone_number_pattern, help_text: t("phone_number.pattern_help_html", scope: "decidim.extra_user_fields.admin.extra_user_fields.fields"), label: t("phone_number.pattern", scope: "decidim.extra_user_fields.admin.extra_user_fields.fields"), placeholder: "^(\\+34|0034|34)?[ -]*[6-9][ -]*([0-9][ -]*){8}$", data: { type: :phone_number } %>
               <%= form.translated :text_field, :phone_number_placeholder, label: t("phone_number.placeholder", scope: "decidim.extra_user_fields.admin.extra_user_fields.fields"), placeholder: "+34987654321" %>
             </td>
           </tr>
         </tbody>
-
-        <tbody data-controller="field-state" data-field-state-enabled-state-value="1" data-field-state-disabled-state-value="0">
-          <tr data-field-state-target="row">
-            <td>
+        <tbody data-controller="field-state" data-field-state-enabled-state-value="optional" data-field-state-disabled-state-value="disabled">
+          <% underage_enabled = form.object.underage_enabled %>
+          <tr>
+            <td rowspan="2">
               <%= t("underage.label", scope: "decidim.extra_user_fields.admin.extra_user_fields.fields") %>
               <br><span class="help-text"><%= t("underage.description", scope: "decidim.extra_user_fields.admin.extra_user_fields.fields") %></span>
             </td>
             <td class="text-center">
-              <%= form.hidden_field :underage, value: form.object.underage ? "1" : "0", data: { "field-state-target": "state" } %>
-              <input type="checkbox" data-field-state-target="enabled" data-action="change->field-state#toggleEnabled" <%= "checked" if form.object.underage %>>
+              <%= form.check_box :underage_enabled, label: "", data: { action: "field-state#toggleEnabled", "field-state-target": "enabled" } %>
             </td>
             <td class="text-center">
-              <div data-field-state-target="subfields" <%= "hidden" unless form.object.underage %>>
-                <%= form.select :underage_limit, Decidim::ExtraUserFields.underage_options.to_a, { selected: current_organization.extra_user_fields["underage_limit"] || Decidim::ExtraUserFields.underage_limit, label: false } %>
-              </div>
+              <%= form.check_box :underage_required, label: "", data: { action: "field-state#toggleRequired", "field-state-target": "required" } %>
+            </td>
+          </tr>
+          <tr data-field-state-target="subfields" <%= "hidden" unless underage_enabled %>>
+            <td colspan="2" class="text-center">
+              <%= form.select :underage_limit, Decidim::ExtraUserFields.underage_options.to_a, { selected: form.object.underage_limit || Decidim::ExtraUserFields.underage_limit, label: t("underage.limit_label", scope: "decidim.extra_user_fields.admin.extra_user_fields.fields", default: "Age limit") } %>
             </td>
           </tr>
         </tbody>
@@ -97,9 +96,9 @@
 
       <%= render layout: "decidim/extra_user_fields/admin/extra_user_fields/field_table" do %>
         <tbody>
-          <%= render partial: "decidim/extra_user_fields/admin/extra_user_fields/fields/custom_select_fields", locals: { form: form } %>
-          <%= render partial: "decidim/extra_user_fields/admin/extra_user_fields/fields/custom_boolean_fields", locals: { form: form } %>
-          <%= render partial: "decidim/extra_user_fields/admin/extra_user_fields/fields/custom_text_fields", locals: { form: form } %>
+          <%= render "decidim/extra_user_fields/admin/extra_user_fields/fields/custom_select_fields", form: form %>
+          <%= render "decidim/extra_user_fields/admin/extra_user_fields/fields/custom_boolean_fields", form: form %>
+          <%= render "decidim/extra_user_fields/admin/extra_user_fields/fields/custom_text_fields", form: form %>
         </tbody>
       <% end %>
     </div>

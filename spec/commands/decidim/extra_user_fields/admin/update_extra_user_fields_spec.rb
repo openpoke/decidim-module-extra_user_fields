@@ -80,19 +80,19 @@ module Decidim
 
               extra_user_fields = organization.extra_user_fields
               expect(extra_user_fields).to include("enabled" => true)
-              expect(extra_user_fields).to include("country" => { "enabled" => "required" })
-              expect(extra_user_fields).to include("date_of_birth" => { "enabled" => "required" })
-              expect(extra_user_fields).to include("postal_code" => { "enabled" => "optional" })
-              expect(extra_user_fields).to include("gender" => { "enabled" => "optional" })
-              expect(extra_user_fields).to include("age_range" => { "enabled" => "optional" })
-              expect(extra_user_fields).to include("phone_number" => { "enabled" => "optional", "pattern" => phone_number_pattern, "placeholder" => phone_number_placeholder })
-              expect(extra_user_fields).to include("location" => { "enabled" => "disabled" })
-              expect(extra_user_fields).to include("underage" => { "enabled" => true })
-              expect(extra_user_fields).to include("underage_limit" => 18)
-              expect(extra_user_fields).to include("select_fields" => { "participant_type" => "optional" })
-              expect(extra_user_fields).to include("boolean_fields" => ["ngo"])
-              expect(extra_user_fields).to include("text_fields" => { "motto" => "optional" })
+              expect(extra_user_fields).to include("country" => { "enabled" => true, "required" => true })
+              expect(extra_user_fields).to include("date_of_birth" => { "enabled" => true, "required" => true })
+              expect(extra_user_fields).to include("postal_code" => { "enabled" => true, "required" => false })
+              expect(extra_user_fields).to include("gender" => { "enabled" => true, "required" => false })
+              expect(extra_user_fields).to include("age_range" => { "enabled" => true, "required" => false })
+              expect(extra_user_fields).to include("phone_number" => { "enabled" => true, "required" => false, "pattern" => phone_number_pattern, "placeholder" => phone_number_placeholder })
+              expect(extra_user_fields).to include("location" => { "enabled" => false, "required" => false })
+              expect(extra_user_fields).to include("underage" => { "enabled" => true, "required" => false, "limit" => 18 })
+              expect(extra_user_fields).to include("select_fields" => { "participant_type" => { "enabled" => true, "required" => false } })
+              expect(extra_user_fields).to include("boolean_fields" => { "ngo" => { "enabled" => true, "required" => false } })
+              expect(extra_user_fields).to include("text_fields" => { "motto" => { "enabled" => true, "required" => false } })
               expect(extra_user_fields).not_to have_key("force_extra_user_fields")
+              expect(extra_user_fields).not_to have_key("underage_limit") # Now nested in underage
             end
           end
         end

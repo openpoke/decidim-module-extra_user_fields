@@ -18,7 +18,10 @@ module Decidim
       end
 
       def required_extra_field?(field)
-        field_state(field) == "required"
+        field_data = extra_user_fields[field.to_s]
+        return false unless field_data.is_a?(Hash)
+
+        field_data["required"] == true
       end
 
       def extra_user_fields_complete?(user)
@@ -43,31 +46,39 @@ module Decidim
       def activated_extra_field?(field)
         value = extra_user_fields[field.to_s]
         return false if value.blank?
-        return true unless value.is_a?(Hash) && value.has_key?("enabled")
+        return value["enabled"] == true if value.is_a?(Hash)
 
-        field_state(field) != "disabled"
+        # Fallback for non-hash values
+        false
       end
 
-      # Check if a field within a collection (select_fields, text_fields) is required.
-      # Returns false for legacy Array format (arrays have no required concept).
+      # Check if a field within a collection (select_fields, text_fields, boolean_fields) is required.
       def collection_field_required?(collection, field)
         fields = extra_user_fields[collection.to_s]
         return false unless fields.is_a?(Hash)
 
-        fields[field.to_s] == "required"
+        field_data = fields[field.to_s]
+        return false unless field_data.is_a?(Hash)
+
+        field_data["required"] == true
       end
 
       def age_limit
-        extra_user_fields["underage_limit"].to_i
+        extra_user_fields.dig("underage", "limit").to_i
       end
 
       def extra_user_field_configuration(field)
         return {} unless activated_extra_field?(field)
 
         value = extra_user_fields[field.to_s]
-        return value.except("enabled") if value.is_a?(Hash)
 
-        value
+        # For collection fields (select_fields, text_fields, boolean_fields), return the hash of all fields
+        # For other fields, return the configuration (excluding enabled/required for simple access)
+        if %w(select_fields text_fields boolean_fields).include?(field.to_s)
+          value.is_a?(Hash) ? value : {}
+        else
+          value.is_a?(Hash) ? value.except("enabled", "required") : {}
+        end
       end
 
       private
@@ -95,17 +106,6 @@ module Decidim
           return false if user_data[field_name.to_s].blank?
         end
         true
-      end
-
-      # Returns normalized state string for a profile field.
-      # Handles legacy `true` → "optional", missing/blank → "disabled".
-      def field_state(field)
-        value = extra_user_fields[field.to_s]
-        return "disabled" if value.blank?
-        return "optional" if value == true
-        return value["enabled"].presence || "disabled" if value.is_a?(Hash) && value.has_key?("enabled")
-
-        "disabled"
       end
     end
   end

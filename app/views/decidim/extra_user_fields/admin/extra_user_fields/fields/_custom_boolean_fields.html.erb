@@ -1,11 +1,13 @@
-<% custom_boolean_fields(form).each do |field, checked| %>
-  <% state_value = checked ? field.to_s : "" %>
-  <%= render "decidim/extra_user_fields/admin/extra_user_fields/field_row",
-             label: t("decidim.extra_user_fields.admin.extra_user_fields.boolean_fields.#{field}.label", default: field.to_s.humanize),
-             help_text: t("decidim.extra_user_fields.admin.extra_user_fields.boolean_fields.#{field}.description", default: ""),
-             state: state_value,
-             input_name: "extra_user_fields[boolean_fields][]",
-             input_id: "extra_user_fields_boolean_field_#{field}",
-             has_required: false,
-             stimulus_values: { "enabled-state": field.to_s, "disabled-state": "" } %>
+<% (form.object.boolean_fields || {}).each do |field, field_state| %>
+  <tr>
+    <td>
+      <%= t("decidim.extra_user_fields.admin.extra_user_fields.boolean_fields.#{field}.label", default: field.to_s.humanize) %>
+      <% description = t("decidim.extra_user_fields.admin.extra_user_fields.boolean_fields.#{field}.description", default: "") %>
+      <% if description.present? %><br><span class="help-text"><%= description %></span><% end %>
+    </td>
+    <td class="text-center">
+      <input type="checkbox" class="collection-field-enabled" name="extra_user_fields[boolean_fields][<%= field %>][enabled]" value="true" data-field="<%= field %>" data-type="boolean" <%= "checked" if field_state["enabled"] %>>
+    </td>
+    <td></td>
+  </tr>
 <% end %>

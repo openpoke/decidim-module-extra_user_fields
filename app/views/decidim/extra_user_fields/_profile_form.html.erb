@@ -1,14 +1,14 @@
 <% if current_organization.extra_user_fields_enabled? %>
-  <% if current_organization.activated_extra_field?(:date_of_birth) %>
-    <div><%= f.date_field :date_of_birth, data: { controller: "date-picker" } %></div>
-  <% end %>
+  <%= render "decidim/extra_user_fields/date_of_birth_field", f: f, current_organization: current_organization %>
 
   <% if current_organization.activated_extra_field?(:gender) %>
-    <%= f.collection_select :gender, f.object.gender_options_for_select, :first, :last %>
+    <%= f.collection_select :gender, f.object.gender_options_for_select, :first, :last, 
+                            { required: f.object.gender_required?, include_blank: "" } %>
   <% end %>
 
   <% if current_organization.activated_extra_field?(:age_range) %>
-    <%= f.collection_select :age_range, f.object.age_range_options_for_select, :first, :last %>
+    <%= f.collection_select :age_range, f.object.age_range_options_for_select, :first, :last,
+                            { required: f.object.age_range_required?, include_blank: "" } %>
   <% end %>
 
   <% if current_organization.activated_extra_field?(:country) %>

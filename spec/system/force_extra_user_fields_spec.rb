@@ -10,13 +10,13 @@ describe "Force extra user fields completion" do
   let(:extra_user_fields) do
     {
       "enabled" => true,
-      "country" => { "enabled" => "required" },
-      "gender" => { "enabled" => "required" },
-      "date_of_birth" => { "enabled" => "disabled" },
-      "postal_code" => { "enabled" => "disabled" },
-      "age_range" => { "enabled" => "disabled" },
-      "phone_number" => { "enabled" => "disabled" },
-      "location" => { "enabled" => "disabled" }
+      "country" => { "enabled" => true, "required" => true },
+      "gender" => { "enabled" => true, "required" => true },
+      "date_of_birth" => { "enabled" => false, "required" => false },
+      "postal_code" => { "enabled" => false, "required" => false },
+      "age_range" => { "enabled" => false, "required" => false },
+      "phone_number" => { "enabled" => false, "required" => false },
+      "location" => { "enabled" => false, "required" => false }
     }
   end
 
@@ -103,7 +103,7 @@ describe "Force extra user fields completion" do
   end
 
   context "when all fields are optional (none required)" do
-    let(:extra_user_fields) { { "enabled" => true, "country" => { "enabled" => "optional" }, "gender" => { "enabled" => "optional" } } }
+    let(:extra_user_fields) { { "enabled" => true, "country" => { "enabled" => true, "required" => false }, "gender" => { "enabled" => true, "required" => false } } }
     let(:extended_data) { {} }
 
     it "does not redirect" do
@@ -115,7 +115,7 @@ describe "Force extra user fields completion" do
   end
 
   context "when extra user fields module is disabled" do
-    let(:extra_user_fields) { { "enabled" => false, "country" => { "enabled" => "required" } } }
+    let(:extra_user_fields) { { "enabled" => false, "country" => { "enabled" => true, "required" => true } } }
     let(:extended_data) { {} }
 
     it "does not redirect" do
@@ -153,13 +153,13 @@ describe "Force extra user fields completion" do
     let(:extra_user_fields) do
       {
         "enabled" => true,
-        "country" => { "enabled" => "disabled" },
-        "gender" => { "enabled" => "disabled" },
-        "date_of_birth" => { "enabled" => "disabled" },
-        "postal_code" => { "enabled" => "disabled" },
-        "age_range" => { "enabled" => "disabled" },
-        "phone_number" => { "enabled" => "disabled" },
-        "location" => { "enabled" => "disabled" },
+        "country" => { "enabled" => false, "required" => false },
+        "gender" => { "enabled" => false, "required" => false },
+        "date_of_birth" => { "enabled" => false, "required" => false },
+        "postal_code" => { "enabled" => false, "required" => false },
+        "age_range" => { "enabled" => false, "required" => false },
+        "phone_number" => { "enabled" => false, "required" => false },
+        "location" => { "enabled" => false, "required" => false },
         "select_fields" => { "participant_type" => "required" }
       }
     end
@@ -179,13 +179,13 @@ describe "Force extra user fields completion" do
     let(:extra_user_fields) do
       {
         "enabled" => true,
-        "country" => { "enabled" => "disabled" },
-        "gender" => { "enabled" => "disabled" },
-        "date_of_birth" => { "enabled" => "disabled" },
-        "postal_code" => { "enabled" => "disabled" },
-        "age_range" => { "enabled" => "disabled" },
-        "phone_number" => { "enabled" => "disabled" },
-        "location" => { "enabled" => "disabled" },
+        "country" => { "enabled" => false, "required" => false },
+        "gender" => { "enabled" => false, "required" => false },
+        "date_of_birth" => { "enabled" => false, "required" => false },
+        "postal_code" => { "enabled" => false, "required" => false },
+        "age_range" => { "enabled" => false, "required" => false },
+        "phone_number" => { "enabled" => false, "required" => false },
+        "location" => { "enabled" => false, "required" => false },
         "text_fields" => { "motto" => "required" }
       }
     end
@@ -205,13 +205,13 @@ describe "Force extra user fields completion" do
     let(:extra_user_fields) do
       {
         "enabled" => true,
-        "country" => { "enabled" => "disabled" },
-        "gender" => { "enabled" => "disabled" },
-        "date_of_birth" => { "enabled" => "disabled" },
-        "postal_code" => { "enabled" => "disabled" },
-        "age_range" => { "enabled" => "disabled" },
-        "phone_number" => { "enabled" => "disabled" },
-        "location" => { "enabled" => "disabled" },
+        "country" => { "enabled" => false, "required" => false },
+        "gender" => { "enabled" => false, "required" => false },
+        "date_of_birth" => { "enabled" => false, "required" => false },
+        "postal_code" => { "enabled" => false, "required" => false },
+        "age_range" => { "enabled" => false, "required" => false },
+        "phone_number" => { "enabled" => false, "required" => false },
+        "location" => { "enabled" => false, "required" => false },
         "select_fields" => { "participant_type" => "required" }
       }
     end
@@ -301,13 +301,13 @@ describe "Force extra user fields completion" do
     let(:extra_user_fields) do
       {
         "enabled" => true,
-        "country" => { "enabled" => "disabled" },
-        "gender" => { "enabled" => "disabled" },
-        "date_of_birth" => { "enabled" => "disabled" },
-        "postal_code" => { "enabled" => "disabled" },
-        "age_range" => { "enabled" => "disabled" },
-        "phone_number" => { "enabled" => "disabled" },
-        "location" => { "enabled" => "disabled" },
+        "country" => { "enabled" => false, "required" => false },
+        "gender" => { "enabled" => false, "required" => false },
+        "date_of_birth" => { "enabled" => false, "required" => false },
+        "postal_code" => { "enabled" => false, "required" => false },
+        "age_range" => { "enabled" => false, "required" => false },
+        "phone_number" => { "enabled" => false, "required" => false },
+        "location" => { "enabled" => false, "required" => false },
         "select_fields" => { "participant_type" => "required" }
       }
     end

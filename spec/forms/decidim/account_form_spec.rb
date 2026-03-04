@@ -41,17 +41,16 @@ module Decidim
     let(:extra_user_fields) do
       {
         "enabled" => true,
-        "country" => { "enabled" => true },
-        "postal_code" => { "enabled" => true },
-        "date_of_birth" => { "enabled" => true },
-        "gender" => { "enabled" => true },
-        "phone_number" => { "enabled" => true, "pattern" => phone_number_pattern, "placeholder" => nil },
-        "location" => { "enabled" => true },
-        "underage" => { "enabled" => true },
-        "underage_limit" => 18,
-        "select_fields" => { "participant_type" => "optional" },
-        "boolean_fields" => ["ngo"],
-        "text_fields" => { "motto" => "optional" }
+        "country" => { "enabled" => true, "required" => false },
+        "postal_code" => { "enabled" => true, "required" => false },
+        "date_of_birth" => { "enabled" => true, "required" => false },
+        "gender" => { "enabled" => true, "required" => false },
+        "phone_number" => { "enabled" => true, "required" => false, "pattern" => phone_number_pattern, "placeholder" => nil },
+        "location" => { "enabled" => true, "required" => false },
+        "underage" => { "enabled" => true, "required" => false, "limit" => 18 },
+        "select_fields" => { "participant_type" => { "enabled" => true, "required" => false } },
+        "boolean_fields" => { "ngo" => { "enabled" => true, "required" => false } },
+        "text_fields" => { "motto" => { "enabled" => true, "required" => false } }
       }
     end
     let(:phone_number_pattern) { "^(\\+34)?[0-9 ]{9,12}$" }
@@ -118,7 +117,7 @@ module Decidim
     end
 
     context "when a select field is required and blank" do
-      let(:extra_user_fields) { { "enabled" => true, "country" => { "enabled" => true }, "select_fields" => { "participant_type" => "required" } } }
+      let(:extra_user_fields) { { "enabled" => true, "country" => { "enabled" => true, "required" => false }, "select_fields" => { "participant_type" => { "enabled" => true, "required" => true } } } }
       let(:select_fields) { { participant_type: "" } }
 
       it "is invalid" do
@@ -128,7 +127,7 @@ module Decidim
     end
 
     context "when a text field is required and blank" do
-      let(:extra_user_fields) { { "enabled" => true, "country" => { "enabled" => true }, "text_fields" => { "motto" => "required" } } }
+      let(:extra_user_fields) { { "enabled" => true, "country" => { "enabled" => true, "required" => false }, "text_fields" => { "motto" => { "enabled" => true, "required" => true } } } }
       let(:text_fields) { { motto: "" } }
 
       it "is invalid" do
@@ -138,7 +137,7 @@ module Decidim
     end
 
     context "when a text field is optional and blank" do
-      let(:extra_user_fields) { { "enabled" => true, "country" => { "enabled" => true }, "text_fields" => { "motto" => "optional" } } }
+      let(:extra_user_fields) { { "enabled" => true, "country" => { "enabled" => true, "required" => false }, "text_fields" => { "motto" => { "enabled" => true, "required" => false } } } }
       let(:text_fields) { { motto: "" } }
 
       it "is valid" do
@@ -288,7 +287,7 @@ module Decidim
     end
 
     context "when country is required and blank" do
-      let(:extra_user_fields) { { "enabled" => true, "country" => { "enabled" => "required" } } }
+      let(:extra_user_fields) { { "enabled" => true, "country" => { "enabled" => true, "required" => true } } }
       let(:country) { "" }
 
       it "is invalid" do
@@ -298,7 +297,7 @@ module Decidim
     end
 
     context "when gender is required and blank" do
-      let(:extra_user_fields) { { "enabled" => true, "gender" => { "enabled" => "required" } } }
+      let(:extra_user_fields) { { "enabled" => true, "gender" => { "enabled" => true, "required" => true } } }
       let(:gender) { "" }
 
       it "is invalid" do
@@ -308,7 +307,7 @@ module Decidim
     end
 
     context "when extra user fields module is disabled" do
-      let(:extra_user_fields) { { "enabled" => false, "country" => { "enabled" => "required" }, "gender" => { "enabled" => "required" } } }
+      let(:extra_user_fields) { { "enabled" => false, "country" => { "enabled" => true, "required" => true }, "gender" => { "enabled" => true, "required" => true } } }
       let(:country) { "" }
       let(:gender) { "" }
 
