@@ -74,7 +74,7 @@ describe "Admin views benchmarking" do
 
       within("tbody") do
         expect(page).to have_content("21 to 30")
-        expect(page).to have_content("41 to 50")
+        expect(page).to have_content("51 to 60")
       end
 
       within("tfoot") do
@@ -157,6 +157,23 @@ describe "Admin views benchmarking" do
     it "swaps rows and columns when params change" do
       space_value = "#{process.class.name}:#{process.id}"
       visit decidim_extra_user_fields.benchmarking_path(spaces: [space_value], rows: "gender", cols: "age_span")
+
+      within("thead") do
+        expect(page).to have_content("21 to 30")
+      end
+
+      within("tbody") do
+        expect(page).to have_content("Female")
+      end
+    end
+
+    it "uses a different field when specified" do
+      space_value = "#{process.class.name}:#{process.id}"
+      visit decidim_extra_user_fields.benchmarking_path(spaces: [space_value], rows: "gender", cols: "country")
+
+      within("thead") do
+        expect(page).to have_content("France")
+      end
 
       within("tbody") do
         expect(page).to have_content("Female")

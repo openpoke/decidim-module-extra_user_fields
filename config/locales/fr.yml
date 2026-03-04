@@ -30,7 +30,8 @@ fr:
           menu_title: Benchmarking
           no_data: Aucune donnée de participation trouvée pour les espaces sélectionnés.
           select_spaces: Choisissez des espaces participatifs à comparer
-          select_spaces_prompt: Sélectionnez un ou plusieurs espaces participatifs à comparer.
+          select_spaces_prompt: Sélectionnez un ou plusieurs espaces participatifs
+            à comparer.
           table_label: Tableau de comparaison benchmarking
           title: Statistiques comparatives entre espaces
         insights:
