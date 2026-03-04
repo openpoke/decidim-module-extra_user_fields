@@ -139,7 +139,10 @@ module Decidim
         end
 
         # Ensure nil is always last
-        unified << nil if unified.delete(nil)
+        if unified.include?(nil)
+          unified.delete(nil)
+          unified << nil
+        end
 
         unified
       end

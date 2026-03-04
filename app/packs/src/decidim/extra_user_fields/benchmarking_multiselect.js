@@ -8,7 +8,10 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     ts.on("change", () => {
-      select.closest("form").submit();
+      const form = select.closest("form");
+      if (form) {
+        form.requestSubmit();
+      }
     });
   });
 });
