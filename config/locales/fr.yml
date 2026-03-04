@@ -88,8 +88,8 @@ fr:
                 choisir un pays
               label: Pays
             date_of_birth:
-              description: Ce champ est un champ date de naissance. L'utilisateur devra
-                saisir une date de naissance
+              description: Ce champ est un champ date de naissance. L'utilisateur
+                devra saisir une date de naissance
               label: Date de naissance
             gender:
               description: Ce champ contient une liste de genres. L'utilisateur devra
@@ -110,14 +110,15 @@ fr:
                 <a href="https://rubular.com/r/dJZGjlLIadxElo" target="_blank">ici</a>.
               placeholder: Placeholder pour le numéro de téléphone
             postal_code:
-              description: Ce champ est un champ code postal. L'utilisateur devra saisir
-                un code postal
+              description: Ce champ est un champ code postal. L'utilisateur devra
+                saisir un code postal
               label: Code postal
             underage:
               description: Ce champ est un champ booléen. L'utilisateur pourra cocher
                 s'il est mineur
               label: Activer le champ d'autorisation parentale
               limit: Cela définit la limite d'âge (ex. 18 ans)
+              limit_label: Limite d'âge
           form:
             callout:
               help: Activez la fonctionnalité des champs d'inscription personnalisés
@@ -168,7 +169,6 @@ fr:
         ngo:
           label: Activer le champ ONG
       errors:
-        required_field: Le champ "%{field}" est obligatoire.
         select_fields: Le champ "%{field}" n'est pas valide.
       force_extra_user_fields:
         redirect_message: Veuillez compléter les informations de votre profil avant

@@ -28,7 +28,9 @@ es:
       extra_user_fields:
         insights:
           column_total: Total de columna
-          description: Explora la actividad de los participantes en las dimensiones del perfil. Selecciona una métrica y dos campos de perfil para ver cómo se distribuye la participación.
+          description: Explora la actividad de los participantes en las dimensiones
+            del perfil. Selecciona una métrica y dos campos de perfil para ver cómo
+            se distribuye la participación.
           fields:
             age_span: Rango de edad
             country: País
@@ -48,7 +50,8 @@ es:
             participants: Participantes
             proposals_created: Propuestas creadas
             proposals_supported: Propuestas apoyadas
-          no_data: No se encontraron datos de participación para este espacio con los criterios seleccionados.
+          no_data: No se encontraron datos de participación para este espacio con
+            los criterios seleccionados.
           non_specified: No especificado / Prefiero no decirlo
           pivot_table_label: Tabla de datos de participación
           row_total: Total de fila
@@ -72,7 +75,8 @@ es:
             required: obligatorio
           boolean_fields:
             ngo:
-              description: Este campo es un campo booleano. El usuario podrá marcar si pertenece a una ONG
+              description: Este campo es un campo booleano. El usuario podrá marcar
+                si pertenece a una ONG
               label: Habilitar campo ONG
           fields:
             age_range:
@@ -114,6 +118,7 @@ es:
                 es menor de edad
               label: Activar campo de autorización parental
               limit: Establece la edad límite (por ejemplo 18 años)
+              limit_label: Edad límite
           form:
             callout:
               help: Activa la funcionalidad de campos de usuario adicionales personalizados
@@ -124,7 +129,9 @@ es:
               extra_user_fields_enabled: Activa los campos de usuario adicionales
               section: Campos adicionales disponibles para el formulario de inscripción
               section_extras: Campos personalizados adicionales
-              section_extras_description: Si has configurado campos de usuario adicionales, puedes gestionarlos aquí (Consulta la sección "Configuración mediante un inicializador" en el README del plugin).
+              section_extras_description: Si has configurado campos de usuario adicionales,
+                puedes gestionarlos aquí (Consulta la sección "Configuración mediante
+                un inicializador" en el README del plugin).
               table:
                 enabled: Habilitado
                 field: Campo
@@ -141,11 +148,13 @@ es:
             title: Gestiona campos de usuario adicionales
           select_fields:
             participant_type:
-              description: Este campo es una lista de tipos de participantes. Si está marcado, el usuario tendrá que elegir un tipo de participante
+              description: Este campo es una lista de tipos de participantes. Si está
+                marcado, el usuario tendrá que elegir un tipo de participante
               label: Habilitar campo de tipo de participante
           text_fields:
             motto:
-              description: Este campo es un campo de texto. Si está marcado, el usuario puede completar una frase o lema personal
+              description: Este campo es un campo de texto. Si está marcado, el usuario
+                puede completar una frase o lema personal
               label: Habilitar campo "Mi lema"
           update:
             failure: Se ha producido un error en la actualización
@@ -161,10 +170,10 @@ es:
         ngo:
           label: Soy miembro de una organización no gubernamental (ONG)
       errors:
-        required_field: El campo "%{field}" es obligatorio.
         select_fields: El campo "%{field}" no es válido.
       force_extra_user_fields:
-        redirect_message: Por favor, completa la información de tu perfil antes de continuar.
+        redirect_message: Por favor, completa la información de tu perfil antes de
+          continuar.
       genders:
         female: Mujer
         male: Hombre
@@ -183,10 +192,10 @@ es:
           underage: Soy menor de %{limit} años y acepto recibir una autorización parental
       select_fields:
         participant_type:
-          label: ¿Participas como individuo o oficialmente en nombre de una organización?
+          label: "¿Participas como individuo o oficialmente en nombre de una organización?"
       text_fields:
         motto:
-          label: ¿Cuál es tu lema?
+          label: "¿Cuál es tu lema?"
     statutory_representative:
       inform:
         body: |

@@ -115,6 +115,7 @@ en:
                 if is underage
               label: Enable parental authorization field
               limit: This sets the age limit (ex. 18 years old)
+              limit_label: Age limit
           form:
             callout:
               help: Enable custom extra user fields functionality to be able to manage
@@ -164,7 +165,6 @@ en:
         ngo:
           label: I am a member of a non-governmental organization (NGO)
       errors:
-        required_field: The field "%{field}" is required.
         select_fields: The field "%{field}" is not valid.
       force_extra_user_fields:
         redirect_message: Please complete your profile information before continuing.

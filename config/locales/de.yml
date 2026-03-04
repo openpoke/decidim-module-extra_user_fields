@@ -107,6 +107,7 @@ de:
               description: Dieses Feld ist ein boolesches Feld. Der Benutzer kann angeben, ob er minderjährig ist
               label: Feld für elterliche Genehmigung aktivieren
               limit: Dies legt die Altersgrenze fest (z.B. 18 Jahre)
+              limit_label: Altersgrenze
           form:
             callout:
               help: Aktivieren Sie die Funktion für benutzerdefinierte Anmeldefelder,
@@ -153,7 +154,6 @@ de:
         ngo:
           label: Ich bin Mitglied einer Nichtregierungsorganisation (NGO)
       errors:
-        required_field: Das Feld "%{field}" ist erforderlich.
         select_fields: Das Feld "%{field}" ist ungültig.
       force_extra_user_fields:
         redirect_message: Bitte vervollständigen Sie Ihre Profilinformationen, bevor Sie fortfahren.

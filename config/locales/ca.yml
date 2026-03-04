@@ -28,7 +28,9 @@ ca:
       extra_user_fields:
         insights:
           column_total: Total de columna
-          description: Explora l'activitat dels participants segons les dimensions del perfil. Selecciona una mètrica i dos camps de perfil per veure com es distribueix la participació.
+          description: Explora l'activitat dels participants segons les dimensions
+            del perfil. Selecciona una mètrica i dos camps de perfil per veure com
+            es distribueix la participació.
           fields:
             age_span: Rang d'edat
             country: País
@@ -48,7 +50,8 @@ ca:
             participants: Participants
             proposals_created: Propostes creades
             proposals_supported: Propostes recolzades
-          no_data: No s'han trobat dades de participació per a aquest espai amb els criteris seleccionats.
+          no_data: No s'han trobat dades de participació per a aquest espai amb els
+            criteris seleccionats.
           non_specified: No especificat / Prefereixo no dir-ho
           pivot_table_label: Taula de dades de participació
           row_total: Total de fila
@@ -72,7 +75,8 @@ ca:
             required: obligatori
           boolean_fields:
             ngo:
-              description: Aquest camp és un camp booleà. L'usuari podrà marcar si pertany a una ONG
+              description: Aquest camp és un camp booleà. L'usuari podrà marcar si
+                pertany a una ONG
               label: Habilitar camp ONG
           fields:
             age_range:
@@ -115,6 +119,7 @@ ca:
                 és menor d'edat
               label: Activar camp d'autorització parental
               limit: Estableix l'edat límit (per exemple 18 anys)
+              limit_label: Edat límit
           form:
             callout:
               help: Activa la funcionalitat de camps d'usuari addicionals personalitzats
@@ -125,7 +130,9 @@ ca:
               extra_user_fields_enabled: Activa els camps d'usuari addicionals
               section: Camps addicionals disponibles per al formulari d'inscripció
               section_extras: Camps personalitzats addicionals
-              section_extras_description: Si heu configurat camps d'usuari addicionals, podeu gestionar-los aquí (Consulteu la secció "Configuració mitjançant un inicialitzador" al README del connector).
+              section_extras_description: Si heu configurat camps d'usuari addicionals,
+                podeu gestionar-los aquí (Consulteu la secció "Configuració mitjançant
+                un inicialitzador" al README del connector).
               table:
                 enabled: Habilitat
                 field: Camp
@@ -142,11 +149,13 @@ ca:
             title: Gestiona camps d'usuari addicionals
           select_fields:
             participant_type:
-              description: Aquest camp és una llista de tipus de participants. Si està marcat, l'usuari haurà de triar un tipus de participant
+              description: Aquest camp és una llista de tipus de participants. Si
+                està marcat, l'usuari haurà de triar un tipus de participant
               label: Habilitar camp de tipus de participant
           text_fields:
             motto:
-              description: Aquest camp és un camp de text. Si està marcat, l'usuari pot omplir una frase o lema personal
+              description: Aquest camp és un camp de text. Si està marcat, l'usuari
+                pot omplir una frase o lema personal
               label: Habilitar camp "El meu lema"
           update:
             failure: S'ha produït un error en l'actualització
@@ -161,10 +170,10 @@ ca:
         ngo:
           label: Sóc membre d'una organització no governamental (ONG)
       errors:
-        required_field: El camp "%{field}" és obligatori.
         select_fields: El camp "%{field}" no és vàlid.
       force_extra_user_fields:
-        redirect_message: Si us plau, completeu la informació del vostre perfil abans de continuar.
+        redirect_message: Si us plau, completeu la informació del vostre perfil abans
+          de continuar.
       genders:
         female: Dona
         male: Home

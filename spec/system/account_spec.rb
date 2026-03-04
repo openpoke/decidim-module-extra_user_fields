@@ -59,7 +59,7 @@ describe "Account" do
   end
 
   let(:select_fields) { { "participant_type" => { "enabled" => true, "required" => false } } }
-  let(:boolean_fields) { ["ngo"] }
+  let(:boolean_fields) { { "ngo" => { "enabled" => true, "required" => false } } }
   let(:text_fields) { { "motto" => { "enabled" => true, "required" => false } } }
 
   before do
@@ -282,7 +282,7 @@ describe "Account" do
 
     context "when select_fields is not enabled" do
       let(:select_fields) do
-        ["another_field"]
+        { "another_field" => { "enabled" => true, "required" => false } }
       end
 
       it_behaves_like "does not display extra user field", "select_fields", "Select fields"
@@ -290,7 +290,7 @@ describe "Account" do
 
     context "when boolean_fields is not enabled" do
       let(:boolean_fields) do
-        ["another_field"]
+        { "another_field" => { "enabled" => true, "required" => false } }
       end
 
       it_behaves_like "does not display extra user field", "boolean_fields", "Boolean fields"
@@ -298,7 +298,7 @@ describe "Account" do
 
     context "when text_fields is not enabled" do
       let(:text_fields) do
-        ["another_field"]
+        { "another_field" => { "enabled" => true, "required" => false } }
       end
 
       it_behaves_like "does not display extra user field", "text_fields", "Text fields"

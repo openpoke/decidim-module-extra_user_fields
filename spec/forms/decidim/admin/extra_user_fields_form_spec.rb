@@ -156,8 +156,10 @@ module Decidim
               { "enabled" => true, "select_fields" => { "participant_type" => "foobar" } }
             end
 
-            it "strips entries with invalid states" do
-              expect(subject.select_fields).to eq({})
+            it "normalizes entries with invalid values to disabled state" do
+              result = subject.select_fields
+              pt = result["participant_type"] || result[:participant_type]
+              expect(pt).to eq({ "enabled" => false, "required" => false })
             end
           end
 
