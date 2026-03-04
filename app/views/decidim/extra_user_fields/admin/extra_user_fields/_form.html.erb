@@ -9,7 +9,7 @@
       </button>
     </div>
 
-    <div id="panel-global" class="card-section">
+    <div id="panel-global" class="card-section" aria-label="<%= t(".global.title") %>">
       <div class="row column">
         <%= form.check_box :enabled, label: t(".extra_user_fields.extra_user_fields_enabled"), data: { controller: :toggle, "toggle-toggle-value": "accordion-setup accordion-extras" } %>
       </div>
@@ -24,7 +24,7 @@
       </button>
     </div>
 
-    <div id="panel-setup" class="card-section">
+    <div id="panel-setup" class="card-section" aria-label="<%= t(".extra_user_fields.section") %>">
       <%= render layout: "decidim/extra_user_fields/admin/extra_user_fields/field_table" do %>
         <tbody>
           <% (Decidim::ExtraUserFields::PROFILE_FIELDS - ["phone_number"]).each do |field_name| %>
@@ -89,7 +89,7 @@
       </button>
     </div>
 
-    <div id="panel-extras" class="card-section">
+    <div id="panel-extras" class="card-section" aria-label="<%= t(".extra_user_fields.section_extras") %>">
       <div class="row column">
         <p class="help-text"><%= t(".extra_user_fields.section_extras_description") %></p>
       </div>
