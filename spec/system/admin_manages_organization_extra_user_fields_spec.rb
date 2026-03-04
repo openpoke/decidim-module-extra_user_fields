@@ -40,13 +40,13 @@ describe "Admin manages organization extra user fields" do
 
     it "displays enabled and required checkboxes for fields" do
       within "#accordion-setup" do
-        country_row = find("input[name='extra_user_fields[country]']", visible: :hidden).ancestor("tr")
+        country_row = find("input[name='extra_user_fields[country_enabled]']", visible: :hidden).ancestor("tr")
         within(country_row) do
           expect(page).to have_css("[data-field-state-target='enabled']")
           expect(page).to have_css("[data-field-state-target='required']")
         end
 
-        expect(page).to have_field("extra_user_fields[underage]", type: "hidden", visible: :hidden)
+        expect(page).to have_field("extra_user_fields[underage_enabled]", type: "hidden", visible: :hidden)
       end
     end
 
@@ -55,14 +55,14 @@ describe "Admin manages organization extra user fields" do
 
       within "#accordion-setup" do
         # Enable and require country
-        country_row = find("input[name='extra_user_fields[country]']", visible: :hidden).ancestor("tr")
+        country_row = find("input[name='extra_user_fields[country_enabled]']", visible: :hidden).ancestor("tr")
         within(country_row) do
           find("[data-field-state-target='enabled']").check
           find("[data-field-state-target='required']").check
         end
 
         # Enable gender (optional)
-        gender_row = find("input[name='extra_user_fields[gender]']", visible: :hidden).ancestor("tr")
+        gender_row = find("input[name='extra_user_fields[gender_enabled]']", visible: :hidden).ancestor("tr")
         within(gender_row) do
           find("[data-field-state-target='enabled']").check
         end
@@ -74,13 +74,13 @@ describe "Admin manages organization extra user fields" do
       visit decidim_extra_user_fields.root_path
 
       within "#accordion-setup" do
-        country_row = find("input[name='extra_user_fields[country]']", visible: :hidden).ancestor("tr")
+        country_row = find("input[name='extra_user_fields[country_enabled]']", visible: :hidden).ancestor("tr")
         within(country_row) do
           expect(find("[data-field-state-target='enabled']")).to be_checked
           expect(find("[data-field-state-target='required']")).to be_checked
         end
 
-        gender_row = find("input[name='extra_user_fields[gender]']", visible: :hidden).ancestor("tr")
+        gender_row = find("input[name='extra_user_fields[gender_enabled]']", visible: :hidden).ancestor("tr")
         within(gender_row) do
           expect(find("[data-field-state-target='enabled']")).to be_checked
           expect(find("[data-field-state-target='required']")).not_to be_checked
@@ -228,7 +228,7 @@ describe "Admin manages organization extra user fields" do
       check("extra_user_fields[enabled]")
 
       within "#accordion-setup" do
-        phone_row = find("input[name='extra_user_fields[phone_number]']", visible: :hidden).ancestor("tbody")
+        phone_row = find("input[name='extra_user_fields[phone_number_enabled]']", visible: :hidden).ancestor("tbody")
         within(phone_row) do
           find("[data-field-state-target='enabled']").check
           fill_in "extra_user_fields[phone_number_pattern]", with: "^\\+34[0-9]{9}$"
@@ -242,7 +242,7 @@ describe "Admin manages organization extra user fields" do
       visit decidim_extra_user_fields.root_path
 
       within "#accordion-setup" do
-        phone_row = find("input[name='extra_user_fields[phone_number]']", visible: :hidden).ancestor("tbody")
+        phone_row = find("input[name='extra_user_fields[phone_number_enabled]']", visible: :hidden).ancestor("tbody")
         within(phone_row) do
           expect(find("[data-field-state-target='enabled']")).to be_checked
           expect(page).to have_field("extra_user_fields[phone_number_pattern]", with: "^\\+34[0-9]{9}$")
@@ -261,7 +261,7 @@ describe "Admin manages organization extra user fields" do
       check("extra_user_fields[enabled]")
 
       within "#accordion-setup" do
-        underage_tbody = find("input[name='extra_user_fields[underage]']", visible: :hidden).ancestor("tbody")
+        underage_tbody = find("input[name='extra_user_fields[underage_enabled]']", visible: :hidden).ancestor("tbody")
         within(underage_tbody) do
           find("[data-field-state-target='enabled']").check
           select "16", from: "extra_user_fields[underage_limit]"
@@ -274,7 +274,7 @@ describe "Admin manages organization extra user fields" do
       visit decidim_extra_user_fields.root_path
 
       within "#accordion-setup" do
-        underage_tbody = find("input[name='extra_user_fields[underage]']", visible: :hidden).ancestor("tbody")
+        underage_tbody = find("input[name='extra_user_fields[underage_enabled]']", visible: :hidden).ancestor("tbody")
         within(underage_tbody) do
           expect(find("[data-field-state-target='enabled']")).to be_checked
           expect(page).to have_select("extra_user_fields[underage_limit]", selected: "16")
@@ -293,7 +293,7 @@ describe "Admin manages organization extra user fields" do
 
       # First enable country
       within "#accordion-setup" do
-        country_row = find("input[name='extra_user_fields[country]']", visible: :hidden).ancestor("tr")
+        country_row = find("input[name='extra_user_fields[country_enabled]']", visible: :hidden).ancestor("tr")
         within(country_row) do
           find("[data-field-state-target='enabled']").check
         end
@@ -306,7 +306,7 @@ describe "Admin manages organization extra user fields" do
 
       # Verify it's enabled
       within "#accordion-setup" do
-        country_row = find("input[name='extra_user_fields[country]']", visible: :hidden).ancestor("tr")
+        country_row = find("input[name='extra_user_fields[country_enabled]']", visible: :hidden).ancestor("tr")
         within(country_row) do
           expect(find("[data-field-state-target='enabled']")).to be_checked
         end
@@ -314,7 +314,7 @@ describe "Admin manages organization extra user fields" do
 
       # Now disable it
       within "#accordion-setup" do
-        country_row = find("input[name='extra_user_fields[country]']", visible: :hidden).ancestor("tr")
+        country_row = find("input[name='extra_user_fields[country_enabled]']", visible: :hidden).ancestor("tr")
         within(country_row) do
           find("[data-field-state-target='enabled']").uncheck
         end
@@ -327,7 +327,7 @@ describe "Admin manages organization extra user fields" do
 
       # Verify it's now disabled
       within "#accordion-setup" do
-        country_row = find("input[name='extra_user_fields[country]']", visible: :hidden).ancestor("tr")
+        country_row = find("input[name='extra_user_fields[country_enabled]']", visible: :hidden).ancestor("tr")
         within(country_row) do
           expect(find("[data-field-state-target='enabled']")).not_to be_checked
         end

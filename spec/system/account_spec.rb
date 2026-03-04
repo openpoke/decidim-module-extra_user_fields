@@ -58,9 +58,9 @@ describe "Account" do
     { "enabled" => true }
   end
 
-  let(:select_fields) { { "participant_type" => "optional" } }
+  let(:select_fields) { { "participant_type" => { "enabled" => true, "required" => false } } }
   let(:boolean_fields) { ["ngo"] }
-  let(:text_fields) { { "motto" => "optional" } }
+  let(:text_fields) { { "motto" => { "enabled" => true, "required" => false } } }
 
   before do
     switch_to_host(organization.host)
@@ -208,7 +208,7 @@ describe "Account" do
         end
 
         context "with text field mandatory" do
-          let(:text_fields) { { "motto" => "required" } }
+          let(:text_fields) { { "motto" => { "enabled" => true, "required" => true } } }
 
           it "displays the field as mandatory" do
             within "label[for='user_text_fields_motto']" do

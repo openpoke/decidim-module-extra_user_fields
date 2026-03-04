@@ -98,11 +98,11 @@ module Decidim
 
           it "loads collection fields" do
             select_result = subject.select_fields
-            expect(select_result[:participant_type] || select_result["participant_type"]).to eq({ enabled: true, required: true })
+            expect(select_result[:participant_type] || select_result["participant_type"]).to eq({ "enabled" => true, "required" => true })
             boolean_result = subject.boolean_fields
-            expect(boolean_result[:ngo] || boolean_result["ngo"]).to eq({ enabled: true, required: false })
+            expect(boolean_result[:ngo] || boolean_result["ngo"]).to eq({ "enabled" => true, "required" => false })
             text_result = subject.text_fields
-            expect(text_result[:motto] || text_result["motto"]).to eq({ enabled: true, required: false })
+            expect(text_result[:motto] || text_result["motto"]).to eq({ "enabled" => true, "required" => false })
           end
 
           context "with nil/missing standard field" do
@@ -125,46 +125,52 @@ module Decidim
           end
         end
 
-        describe "#select_fields" do
-          context "with Hash input containing valid keys" do
-            let(:attributes) { { select_fields: { participant_type: { "enabled" => true, "required" => true }, bogus: { "enabled" => true, "required" => false } } } }
+        describe "#map_model collection field filtering" do
+          let(:model) { build(:organization, extra_user_fields: org_fields) }
+
+          before { subject.map_model(model) }
+
+          context "when select_fields contain invalid keys" do
+            let(:org_fields) do
+              {
+                "enabled" => true,
+                "select_fields" => {
+                  "participant_type" => { "enabled" => true, "required" => true },
+                  "bogus" => { "enabled" => true, "required" => false }
+                }
+              }
+            end
 
             it "filters invalid keys and keeps valid ones" do
               result = subject.select_fields
-              expect(result[:participant_type] || result["participant_type"]).to eq({ enabled: true, required: true })
+              pt = result["participant_type"] || result[:participant_type]
+              expect(pt).to be_present
+              expect(pt["enabled"]).to be true
+              expect(pt["required"]).to be true
               expect(result.keys.map(&:to_s)).not_to include("bogus")
             end
           end
 
-          context "with Hash input containing invalid state values" do
-            let(:attributes) { { select_fields: { participant_type: "foobar" } } }
+          context "when select_fields contain non-hash values" do
+            let(:org_fields) do
+              { "enabled" => true, "select_fields" => { "participant_type" => "foobar" } }
+            end
 
             it "strips entries with invalid states" do
               expect(subject.select_fields).to eq({})
             end
           end
 
-          context "with nil input" do
-            let(:attributes) { { select_fields: nil } }
-
-            it "returns empty hash" do
-              expect(subject.select_fields).to eq({})
+          context "when boolean_fields contain invalid keys" do
+            let(:org_fields) do
+              {
+                "enabled" => true,
+                "boolean_fields" => {
+                  "ngo" => { "enabled" => true, "required" => false },
+                  "bogus" => { "enabled" => true, "required" => false }
+                }
+              }
             end
-          end
-        end
-
-        describe "#boolean_fields" do
-          context "with valid field names" do
-            let(:attributes) { { boolean_fields: { ngo: { "enabled" => true, "required" => false } } } }
-
-            it "keeps valid entries" do
-              result = subject.boolean_fields
-              expect(result[:ngo] || result["ngo"]).to eq({ enabled: true, required: false })
-            end
-          end
-
-          context "with invalid field names" do
-            let(:attributes) { { boolean_fields: { ngo: { "enabled" => true, "required" => false }, bogus: { "enabled" => true, "required" => false } } } }
 
             it "filters invalid entries" do
               result = subject.boolean_fields
@@ -173,27 +179,46 @@ module Decidim
             end
           end
 
-          context "with nil input" do
+          context "when text_fields contain invalid keys" do
+            let(:org_fields) do
+              {
+                "enabled" => true,
+                "text_fields" => {
+                  "motto" => { "enabled" => true, "required" => false },
+                  "bogus" => { "enabled" => true, "required" => true }
+                }
+              }
+            end
+
+            it "filters invalid keys and keeps valid ones" do
+              result = subject.text_fields
+              motto = result["motto"] || result[:motto]
+              expect(motto).to be_present
+              expect(motto["enabled"]).to be true
+              expect(motto["required"]).to be false
+              expect(result.keys.map(&:to_s)).not_to include("bogus")
+            end
+          end
+        end
+
+        describe "collection fields from params" do
+          context "with nil select_fields" do
+            let(:attributes) { { select_fields: nil } }
+
+            it "returns empty hash" do
+              expect(subject.select_fields).to eq({})
+            end
+          end
+
+          context "with nil boolean_fields" do
             let(:attributes) { { boolean_fields: nil } }
 
             it "returns empty hash" do
               expect(subject.boolean_fields).to eq({})
             end
           end
-        end
 
-        describe "#text_fields" do
-          context "with Hash input containing valid keys" do
-            let(:attributes) { { text_fields: { motto: { "enabled" => true, "required" => false }, bogus: { "enabled" => true, "required" => true } } } }
-
-            it "filters invalid keys and keeps valid ones" do
-              result = subject.text_fields
-              expect(result[:motto] || result["motto"]).to eq({ enabled: true, required: false })
-              expect(result.keys.map(&:to_s)).not_to include("bogus")
-            end
-          end
-
-          context "with nil input" do
+          context "with nil text_fields" do
             let(:attributes) { { text_fields: nil } }
 
             it "returns empty hash" do

@@ -43,13 +43,18 @@ module Decidim
         end
       end
 
+      COLLECTION_FIELDS = %w(select_fields boolean_fields text_fields).freeze
+
       def activated_extra_field?(field)
         value = extra_user_fields[field.to_s]
         return false if value.blank?
-        return value["enabled"] == true if value.is_a?(Hash)
+        return false unless value.is_a?(Hash)
 
-        # Fallback for non-hash values
-        false
+        if COLLECTION_FIELDS.include?(field.to_s)
+          value.any? { |_, v| v.is_a?(Hash) && v["enabled"] == true }
+        else
+          value["enabled"] == true
+        end
       end
 
       # Check if a field within a collection (select_fields, text_fields, boolean_fields) is required.

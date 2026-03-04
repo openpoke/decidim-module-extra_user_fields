@@ -33,8 +33,8 @@ module Decidim
           Decidim::ExtraUserFields::PROFILE_FIELDS.each do |field|
             field_data = model.extra_user_fields[field]
             if field_data.is_a?(Hash)
-              send(:"#{field}_enabled=", !!field_data["enabled"])
-              send(:"#{field}_required=", !!field_data["required"])
+              send(:"#{field}_enabled=", field_data["enabled"] == true)
+              send(:"#{field}_required=", field_data["required"] == true)
             else
               # Default to disabled if field data is missing or nil
               send(:"#{field}_enabled=", false)
@@ -45,8 +45,8 @@ module Decidim
           # Load underage settings
           underage_data = model.extra_user_fields["underage"]
           if underage_data.is_a?(Hash)
-            self.underage_enabled = !!underage_data["enabled"]
-            self.underage_required = !!underage_data["required"]
+            self.underage_enabled = underage_data["enabled"] == true
+            self.underage_required = underage_data["required"] == true
             self.underage_limit = underage_data["limit"] || Decidim::ExtraUserFields.underage_limit
           else
             self.underage_enabled = false
@@ -64,17 +64,18 @@ module Decidim
         private
 
         def normalize_collection_fields(value, valid_keys)
-          return {} unless value.is_a?(Hash)
-
           valid = valid_keys.map(&:to_s)
-          value.each_with_object({}) do |(k, v), result|
-            next unless valid.include?(k.to_s)
-            next unless v.is_a?(Hash)
+          defaults = valid.index_with { |_| { "enabled" => false, "required" => false } }
 
-            result[k] = v.merge({
-                                  "enabled" => !!v["enabled"],
-                                  "required" => !!(v["enabled"] && v["required"])
-                                })
+          return defaults unless value.is_a?(Hash)
+
+          valid.each_with_object({}) do |k, result|
+            v = value[k]
+            result[k] = if v.is_a?(Hash)
+                          v.merge("enabled" => v["enabled"] == true, "required" => v["enabled"] == true && v["required"] == true)
+                        else
+                          { "enabled" => false, "required" => false }
+                        end
           end
         end
       end

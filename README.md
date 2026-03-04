@@ -170,7 +170,7 @@ Decidim::ExtraUserFields.configure do |config|
   # decidim.extra_user_fields.admin.extra_user_fields.text_fields.field_name.label
   # decidim.extra_user_fields.admin.extra_user_fields.text_fields.field_name.description
   config_accessor :text_fields do
-    [ :hobbies:, :favorite_quote ]
+    [ :hobbies, :favorite_quote ]
   end
 end
 ```

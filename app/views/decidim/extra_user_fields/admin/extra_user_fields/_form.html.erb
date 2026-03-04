@@ -38,7 +38,7 @@
 
         <tbody data-controller="field-state" data-field-state-enabled-state-value="optional" data-field-state-disabled-state-value="disabled">
           <% phone_enabled = form.object.phone_number_enabled %>
-          <tr>
+          <tr data-field-state-target="row">
             <td>
               <%= t("phone_number.label", scope: "decidim.extra_user_fields.admin.extra_user_fields.fields") %>
               <br><span class="help-text"><%= t("phone_number.description", scope: "decidim.extra_user_fields.admin.extra_user_fields.fields") %></span>
@@ -59,7 +59,7 @@
         </tbody>
         <tbody data-controller="field-state" data-field-state-enabled-state-value="optional" data-field-state-disabled-state-value="disabled">
           <% underage_enabled = form.object.underage_enabled %>
-          <tr>
+          <tr data-field-state-target="row">
             <td rowspan="2">
               <%= t("underage.label", scope: "decidim.extra_user_fields.admin.extra_user_fields.fields") %>
               <br><span class="help-text"><%= t("underage.description", scope: "decidim.extra_user_fields.admin.extra_user_fields.fields") %></span>

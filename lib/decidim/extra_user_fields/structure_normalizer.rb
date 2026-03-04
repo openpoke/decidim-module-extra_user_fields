@@ -8,7 +8,7 @@ module Decidim
           next if organization.extra_user_fields.blank?
 
           normalized = normalize_structure(organization.extra_user_fields)
-          organization.update_column(:extra_user_fields, normalized)
+          organization.update_column(:extra_user_fields, normalized) # rubocop:disable Rails/SkipsModelValidations
         end
       end
 
@@ -36,29 +36,36 @@ module Decidim
 
       def normalize_profile_fields(fields, result)
         %w(country postal_code date_of_birth gender age_range location).each do |field|
-          next unless fields.key?(field)
+          next unless fields.has_key?(field)
 
           field_value = fields[field]
-          state = if field_value.is_a?(Hash) && field_value.key?("enabled")
-                    field_value["enabled"]
-                  else
-                    field_value
-                  end
-
-          result[field] = convert_state_to_booleans(state)
+          if already_normalized?(field_value)
+            result[field] = field_value
+          else
+            state = if field_value.is_a?(Hash) && field_value.has_key?("enabled")
+                      field_value["enabled"]
+                    else
+                      field_value
+                    end
+            result[field] = convert_state_to_booleans(state)
+          end
         end
       end
 
       def normalize_phone_number(fields, result)
-        return unless fields.key?("phone_number")
+        return unless fields.has_key?("phone_number")
 
         phone_data = fields["phone_number"]
         if phone_data.is_a?(Hash)
-          state = phone_data["enabled"]
-          result["phone_number"] = convert_state_to_booleans(state).merge(
-            "pattern" => phone_data["pattern"],
-            "placeholder" => phone_data["placeholder"]
-          ).compact
+          if already_normalized?(phone_data)
+            result["phone_number"] = phone_data
+          else
+            state = phone_data["enabled"]
+            result["phone_number"] = convert_state_to_booleans(state).merge(
+              "pattern" => phone_data["pattern"],
+              "placeholder" => phone_data["placeholder"]
+            ).compact
+          end
         else
           result["phone_number"] = convert_state_to_booleans(phone_data)
         end
@@ -71,10 +78,12 @@ module Decidim
         if underage_data.is_a?(Hash)
           # New format or partial migration
           enabled = underage_data["enabled"]
+          limit = underage_data["limit"] || underage_limit || 18
+          required = underage_data["required"] == true
           result["underage"] = {
             "enabled" => enabled.present? && enabled != false,
-            "required" => false,
-            "limit" => underage_limit || 18
+            "required" => required,
+            "limit" => limit
           }
         elsif underage_data.present?
           # Legacy boolean
@@ -94,11 +103,11 @@ module Decidim
 
       def normalize_select_fields(fields, result)
         select_data = fields["select_fields"]
-        return unless select_data.present?
+        return if select_data.blank?
         return unless select_data.is_a?(Hash)
 
         result["select_fields"] = select_data.transform_values do |value|
-          if value.is_a?(Hash) && value.key?("enabled")
+          if value.is_a?(Hash) && value.has_key?("enabled")
             value # Already normalized
           else
             convert_state_to_booleans(value)
@@ -108,7 +117,7 @@ module Decidim
 
       def normalize_boolean_fields(fields, result)
         boolean_data = fields["boolean_fields"]
-        return unless boolean_data.present?
+        return if boolean_data.blank?
 
         if boolean_data.is_a?(Array)
           # Legacy array format - all enabled, none required
@@ -117,7 +126,7 @@ module Decidim
           end
         elsif boolean_data.is_a?(Hash)
           result["boolean_fields"] = boolean_data.transform_values do |value|
-            if value.is_a?(Hash) && value.key?("enabled")
+            if value.is_a?(Hash) && value.has_key?("enabled")
               value # Already normalized
             else
               convert_state_to_booleans(value)
@@ -128,16 +137,22 @@ module Decidim
 
       def normalize_text_fields(fields, result)
         text_data = fields["text_fields"]
-        return unless text_data.present?
+        return if text_data.blank?
         return unless text_data.is_a?(Hash)
 
         result["text_fields"] = text_data.transform_values do |value|
-          if value.is_a?(Hash) && value.key?("enabled")
+          if value.is_a?(Hash) && value.has_key?("enabled")
             value # Already normalized
           else
             convert_state_to_booleans(value)
           end
         end
+      end
+
+      def already_normalized?(value)
+        value.is_a?(Hash) &&
+          [true, false].include?(value["enabled"]) &&
+          [true, false].include?(value["required"])
       end
 
       def convert_state_to_booleans(state)

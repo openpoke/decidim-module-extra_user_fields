@@ -148,7 +148,7 @@ describe "Extra user fields" do
   it_behaves_like "mandatory extra user fields", "location"
 
   context "when select field is required" do
-    let(:select_fields) { { "participant_type" => "required" } }
+    let(:select_fields) { { "participant_type" => { "enabled" => true, "required" => true } } }
 
     it "displays required indicator on select field" do
       within "#card__extra_user_fields" do
@@ -158,7 +158,7 @@ describe "Extra user fields" do
   end
 
   context "when text field is required" do
-    let(:text_fields) { { "motto" => "required" } }
+    let(:text_fields) { { "motto" => { "enabled" => true, "required" => true } } }
 
     it "displays required indicator on text field" do
       within "label[for='registration_user_text_fields_motto']" do

@@ -199,7 +199,7 @@ module Decidim
         let(:extra_user_fields) do
           {
             "enabled" => true,
-            "select_fields" => { "participant_type" => "required" }
+            "select_fields" => { "participant_type" => { "enabled" => true, "required" => true } }
           }
         end
 
@@ -212,7 +212,7 @@ module Decidim
         let(:extra_user_fields) do
           {
             "enabled" => true,
-            "text_fields" => { "motto" => "required" }
+            "text_fields" => { "motto" => { "enabled" => true, "required" => true } }
           }
         end
 
@@ -225,8 +225,8 @@ module Decidim
         let(:extra_user_fields) do
           {
             "enabled" => true,
-            "select_fields" => { "participant_type" => "optional" },
-            "text_fields" => { "motto" => "optional" }
+            "select_fields" => { "participant_type" => { "enabled" => true, "required" => false } },
+            "text_fields" => { "motto" => { "enabled" => true, "required" => false } }
           }
         end
 
@@ -334,7 +334,7 @@ module Decidim
           {
             "enabled" => true,
             "date_of_birth" => { "enabled" => false, "required" => false },
-            "select_fields" => { "participant_type" => "required" }
+            "select_fields" => { "participant_type" => { "enabled" => true, "required" => true } }
           }
         end
 
@@ -369,7 +369,7 @@ module Decidim
             {
               "enabled" => true,
               "date_of_birth" => { "enabled" => false, "required" => false },
-              "text_fields" => { "motto" => "required" }
+              "text_fields" => { "motto" => { "enabled" => true, "required" => true } }
             }
           end
 
@@ -403,7 +403,7 @@ module Decidim
             {
               "enabled" => true,
               "date_of_birth" => { "enabled" => false, "required" => false },
-              "text_fields" => { "motto" => "optional" }
+              "text_fields" => { "motto" => { "enabled" => true, "required" => false } }
             }
           end
 
@@ -446,8 +446,8 @@ module Decidim
             "enabled" => true,
             "country" => { "enabled" => true, "required" => true },
             "date_of_birth" => { "enabled" => false, "required" => false },
-            "select_fields" => { "participant_type" => "required" },
-            "text_fields" => { "motto" => "required" }
+            "select_fields" => { "participant_type" => { "enabled" => true, "required" => true } },
+            "text_fields" => { "motto" => { "enabled" => true, "required" => true } }
           }
         end
 
@@ -512,8 +512,8 @@ module Decidim
               "enabled" => true,
               "country" => { "enabled" => true, "required" => true },
               "date_of_birth" => { "enabled" => false, "required" => false },
-              "select_fields" => { "participant_type" => "required" },
-              "text_fields" => { "motto" => "optional" }
+              "select_fields" => { "participant_type" => { "enabled" => true, "required" => true } },
+              "text_fields" => { "motto" => { "enabled" => true, "required" => false } }
             }
           end
           let(:extended_data) do
@@ -625,7 +625,7 @@ module Decidim
           {
             "enabled" => true,
             "date_of_birth" => { "enabled" => false, "required" => false },
-            "select_fields" => { "participant_type" => "required" }
+            "select_fields" => { "participant_type" => { "enabled" => true, "required" => true } }
           }
         end
         let(:extended_data) { { "select_fields" => { "participant_type" => "individual" } } }
@@ -640,7 +640,7 @@ module Decidim
           {
             "enabled" => true,
             "date_of_birth" => { "enabled" => false, "required" => false },
-            "select_fields" => { "participant_type" => "required" }
+            "select_fields" => { "participant_type" => { "enabled" => true, "required" => true } }
           }
         end
         let(:extended_data) { { "select_fields" => {} } }
@@ -655,7 +655,7 @@ module Decidim
           {
             "enabled" => true,
             "date_of_birth" => { "enabled" => false, "required" => false },
-            "text_fields" => { "motto" => "required" }
+            "text_fields" => { "motto" => { "enabled" => true, "required" => true } }
           }
         end
         let(:extended_data) { { "text_fields" => { "motto" => "Carpe diem" } } }
@@ -670,7 +670,7 @@ module Decidim
           {
             "enabled" => true,
             "date_of_birth" => { "enabled" => false, "required" => false },
-            "text_fields" => { "motto" => "required" }
+            "text_fields" => { "motto" => { "enabled" => true, "required" => true } }
           }
         end
         let(:extended_data) { { "text_fields" => {} } }
@@ -685,7 +685,7 @@ module Decidim
           {
             "enabled" => true,
             "date_of_birth" => { "enabled" => false, "required" => false },
-            "select_fields" => { "participant_type" => "optional" }
+            "select_fields" => { "participant_type" => { "enabled" => true, "required" => false } }
           }
         end
         let(:extended_data) { {} }

@@ -36,9 +36,9 @@ module Decidim
             "location" => location,
             "underage" => underage,
             "underage_limit" => underage_limit,
-            "select_fields" => { "participant_type" => "optional", "non_existing_field" => "optional" },
+            "select_fields" => { "participant_type" => { "enabled" => true, "required" => false }, "non_existing_field" => { "enabled" => true, "required" => false } },
             "boolean_fields" => %w(ngo non_existing_field),
-            "text_fields" => { "motto" => "optional", "non_existing_field" => "optional" }
+            "text_fields" => { "motto" => { "enabled" => true, "required" => false }, "non_existing_field" => { "enabled" => true, "required" => false } }
           }
         end
         let(:form) do

@@ -10,9 +10,9 @@ module Decidim
         {
           "enabled" => true,
           "phone_number" => { "enabled" => true, "required" => false, "pattern" => "^\\+33", "placeholder" => "+33..." },
-          "select_fields" => { "participant_type" => "required" },
-          "boolean_fields" => ["ngo"],
-          "text_fields" => { "motto" => "optional" }
+          "select_fields" => { "participant_type" => { "enabled" => true, "required" => true } },
+          "boolean_fields" => { "ngo" => { "enabled" => true, "required" => false } },
+          "text_fields" => { "motto" => { "enabled" => true, "required" => false } }
         }
       end
 
