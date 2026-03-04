@@ -70,6 +70,9 @@ fr:
         exports:
           users: Participants
         extra_user_fields:
+          aria:
+            enabled: activé
+            required: obligatoire
           boolean_fields:
             ngo:
               description: Ce champ est un champ booléen. L'utilisateur pourra cocher

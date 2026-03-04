@@ -26,6 +26,37 @@ ca:
       exports:
         export_as: Exporta com a %{export_format}
       extra_user_fields:
+        insights:
+          column_total: Total de columna
+          description: Explora l'activitat dels participants segons les dimensions del perfil. Selecciona una mètrica i dos camps de perfil per veure com es distribueix la participació.
+          fields:
+            age_span: Rang d'edat
+            country: País
+            gender: Gènere
+            location: Localització
+            postal_code: Codi postal
+          legend:
+            fewer: Menys
+            higher_total: Total més alt
+            lower_total: Total més baix
+            more: Més
+            non_specified: No especificat / Prefereixo no dir-ho
+          menu_title: Estadístiques
+          metrics:
+            budget_votes: Vots pressupostaris
+            comments: Comentaris
+            participants: Participants
+            proposals_created: Propostes creades
+            proposals_supported: Propostes recolzades
+          no_data: No s'han trobat dades de participació per a aquest espai amb els criteris seleccionats.
+          non_specified: No especificat / Prefereixo no dir-ho
+          pivot_table_label: Taula de dades de participació
+          row_total: Total de fila
+          selectors:
+            cols: Columnes (eix X)
+            metric: Mètrica
+            rows: Files (eix Y)
+          title: Estadístiques de l'espai participatiu
         menu:
           title: Gestiona camps d'usuari addicionals
     components:
@@ -36,6 +67,13 @@ ca:
         exports:
           users: Participants
         extra_user_fields:
+          aria:
+            enabled: habilitat
+            required: obligatori
+          boolean_fields:
+            ngo:
+              description: Aquest camp és un camp booleà. L'usuari podrà marcar si pertany a una ONG
+              label: Habilitar camp ONG
           fields:
             age_range:
               description: Aquest camp és una llista de rangs d'edat. Si está activat,
@@ -86,11 +124,30 @@ ca:
             extra_user_fields:
               extra_user_fields_enabled: Activa els camps d'usuari addicionals
               section: Camps addicionals disponibles per al formulari d'inscripció
+              section_extras: Camps personalitzats addicionals
+              section_extras_description: Si heu configurat camps d'usuari addicionals, podeu gestionar-los aquí (Consulteu la secció "Configuració mitjançant un inicialitzador" al README del connector).
+              table:
+                enabled: Habilitat
+                field: Camp
+                required: Obligatori
             global:
               title: Activar / desactivar la funcionalitat
+            states:
+              disabled: Desactivat
+              enabled: Activat
+              optional: Opcional
+              required: Obligatori
           index:
             save: Desa la configuració
             title: Gestiona camps d'usuari addicionals
+          select_fields:
+            participant_type:
+              description: Aquest camp és una llista de tipus de participants. Si està marcat, l'usuari haurà de triar un tipus de participant
+              label: Habilitar camp de tipus de participant
+          text_fields:
+            motto:
+              description: Aquest camp és un camp de text. Si està marcat, l'usuari pot omplir una frase o lema personal
+              label: Habilitar camp "El meu lema"
           update:
             failure: S'ha produït un error en l'actualització
             success: Camps d'usuari addicionals actualitzats correctament a l'organització
@@ -100,15 +157,36 @@ ca:
         61_or_more: 61 o més
         prefer_not_to_say: Prefereixo no dir-ho
         up_to_16: 16 o menys
+      boolean_fields:
+        ngo:
+          label: Sóc membre d'una organització no governamental (ONG)
+      errors:
+        required_field: El camp "%{field}" és obligatori.
+        select_fields: El camp "%{field}" no és vàlid.
+      force_extra_user_fields:
+        redirect_message: Si us plau, completeu la informació del vostre perfil abans de continuar.
       genders:
         female: Dona
         male: Home
         other: Altre
         prefer_not_to_say: Prefereixo no dir-ho
+      insight_age_spans:
+        21_to_30: 21 a 30
+        31_to_40: 31 a 40
+        41_to_50: 41 a 50
+        51_to_60: 51 a 60
+        61_or_more: Més de 60
+        up_to_20: Menys de 20
       registration_form:
         signup:
           legend: Més informació
           underage: Sóc menor de %{limit} anys i accepto rebre una autorització parental
+      select_fields:
+        participant_type:
+          label: Participeu com a persona individual o oficialment en nom d'una organització?
+      text_fields:
+        motto:
+          label: Quin és el teu lema?
     statutory_representative:
       inform:
         body: |

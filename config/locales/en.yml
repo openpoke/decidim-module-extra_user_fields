@@ -67,6 +67,9 @@ en:
         exports:
           users: Participants
         extra_user_fields:
+          aria:
+            enabled: enabled
+            required: required
           boolean_fields:
             ngo:
               description: This field is a Boolean field. User will be able to check

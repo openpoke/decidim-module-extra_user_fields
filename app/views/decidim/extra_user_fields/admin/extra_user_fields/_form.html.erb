@@ -44,10 +44,10 @@
               <br><span class="help-text"><%= t("phone_number.description", scope: "decidim.extra_user_fields.admin.extra_user_fields.fields") %></span>
             </td>
             <td class="text-center">
-              <%= form.check_box :phone_number_enabled, label: "", aria: { label: "Phone number enabled" }, data: { action: "field-state#toggleEnabled", "field-state-target": "enabled" } %>
+              <%= form.check_box :phone_number_enabled, label: "", aria: { label: "#{t("phone_number.label", scope: "decidim.extra_user_fields.admin.extra_user_fields.fields")} #{t(".aria.enabled")}" }, data: { action: "field-state#toggleEnabled", "field-state-target": "enabled" } %>
             </td>
             <td class="text-center">
-              <%= form.check_box :phone_number_required, label: "", aria: { label: "Phone number required" }, data: { action: "field-state#toggleRequired", "field-state-target": "required" } %>
+              <%= form.check_box :phone_number_required, label: "", aria: { label: "#{t("phone_number.label", scope: "decidim.extra_user_fields.admin.extra_user_fields.fields")} #{t(".aria.required")}" }, data: { action: "field-state#toggleRequired", "field-state-target": "required" } %>
             </td>
           </tr>
           <tr data-field-state-target="subfields" <%= "hidden" unless phone_enabled %>>
@@ -65,10 +65,10 @@
               <br><span class="help-text"><%= t("underage.description", scope: "decidim.extra_user_fields.admin.extra_user_fields.fields") %></span>
             </td>
             <td class="text-center">
-              <%= form.check_box :underage_enabled, label: "", aria: { label: "Underage enabled" }, data: { action: "field-state#toggleEnabled", "field-state-target": "enabled" } %>
+              <%= form.check_box :underage_enabled, label: "", aria: { label: "#{t("underage.label", scope: "decidim.extra_user_fields.admin.extra_user_fields.fields")} #{t(".aria.enabled")}" }, data: { action: "field-state#toggleEnabled", "field-state-target": "enabled" } %>
             </td>
             <td class="text-center">
-              <%= form.check_box :underage_required, label: "", aria: { label: "Underage required" }, data: { action: "field-state#toggleRequired", "field-state-target": "required" } %>
+              <%= form.check_box :underage_required, label: "", aria: { label: "#{t("underage.label", scope: "decidim.extra_user_fields.admin.extra_user_fields.fields")} #{t(".aria.required")}" }, data: { action: "field-state#toggleRequired", "field-state-target": "required" } %>
             </td>
           </tr>
           <tr data-field-state-target="subfields" <%= "hidden" unless underage_enabled %>>

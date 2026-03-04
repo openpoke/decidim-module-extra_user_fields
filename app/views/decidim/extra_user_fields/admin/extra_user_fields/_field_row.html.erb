@@ -4,9 +4,9 @@
     <%= label %><% if help_text.present? %><br><span class="help-text"><%= help_text %></span><% end %>
   </td>
   <td class="text-center">
-    <%= form.check_box :"#{field_name}_enabled", label: "", aria: { label: "#{label} enabled" }, data: { action: "field-state#toggleEnabled", "field-state-target": "enabled" } %>
+    <%= form.check_box :"#{field_name}_enabled", label: "", aria: { label: "#{label} #{t(".aria.enabled")}" }, data: { action: "field-state#toggleEnabled", "field-state-target": "enabled" } %>
   </td>
   <td class="text-center">
-    <%= form.check_box :"#{field_name}_required", label: "", aria: { label: "#{label} required" }, data: { action: "field-state#toggleRequired", "field-state-target": "required" } %>
+    <%= form.check_box :"#{field_name}_required", label: "", aria: { label: "#{label} #{t(".aria.required")}" }, data: { action: "field-state#toggleRequired", "field-state-target": "required" } %>
   </td>
 </tr>
