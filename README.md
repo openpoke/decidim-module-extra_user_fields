@@ -162,7 +162,7 @@ Decidim::ExtraUserFields.configure do |config|
     [:ngo, :newsletter]
   end
 
-    # If extra text fields are needed, they can be added as an aRRAY here
+    # If extra text fields are needed, they can be added as an Array here
   # For the user interface, you can define labels and descriptions for the fields (optionally):
   # decidim.extra_user_fields.text_fields.field_name.label
   # decidim.extra_user_fields.text_fields.field_name.description

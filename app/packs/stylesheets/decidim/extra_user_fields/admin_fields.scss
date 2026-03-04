@@ -1,16 +1,17 @@
 .extra-fields-table {
   table-layout: fixed;
 
-  tr:nth-child(even) {
+  tr, tr:nth-child(even), tr:nth-child(odd) {
     background: transparent;
   }
 
   .field-row--disabled {
-    @apply bg-background;
+    background-color: #f3f4f7 !important;
+
     td { @apply text-gray; }
   }
 
   .field-row--required {
-    background-color: rgb(var(--warning-rgb) / 0.15) !important;
+    background-color: #fff3cd !important;
   }
 }

@@ -151,7 +151,7 @@ describe "Extra user fields" do
     let(:select_fields) { { "participant_type" => { "enabled" => true, "required" => true } } }
 
     it "displays required indicator on select field" do
-      within "#card__extra_user_fields" do
+      within "label[for='registration_user_select_fields_participant_type']" do
         expect(page).to have_css("span.label-required")
       end
     end

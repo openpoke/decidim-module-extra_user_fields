@@ -9,36 +9,43 @@ module Decidim
         let(:organization) { create(:organization, extra_user_fields: {}) }
         let(:user) { create(:user, :admin, :confirmed, organization:) }
 
-        let(:postal_code) { "optional" }
-        let(:extra_user_fields_enabled) { true }
-        let(:country) { "required" }
-        let(:gender) { "optional" }
-        let(:age_range) { "optional" }
-        let(:date_of_birth) { "required" }
-        let(:phone_number) { "optional" }
         let(:phone_number_pattern) { "^(\\+34)?[0-9 ]{9,12}$" }
         let(:phone_number_placeholder) { "+34999888777" }
-        let(:location) { "disabled" }
-        let(:underage) { true }
-        let(:underage_limit) { 18 }
 
         let(:form_params) do
           {
-            "postal_code" => postal_code,
-            "enabled" => extra_user_fields_enabled,
-            "country" => country,
-            "gender" => gender,
-            "age_range" => age_range,
-            "date_of_birth" => date_of_birth,
-            "phone_number" => phone_number,
+            "enabled" => true,
+            "country_enabled" => true,
+            "country_required" => true,
+            "gender_enabled" => true,
+            "gender_required" => false,
+            "age_range_enabled" => true,
+            "age_range_required" => false,
+            "date_of_birth_enabled" => true,
+            "date_of_birth_required" => true,
+            "postal_code_enabled" => true,
+            "postal_code_required" => false,
+            "phone_number_enabled" => true,
+            "phone_number_required" => false,
             "phone_number_pattern" => phone_number_pattern,
-            "phone_number_placeholder" => phone_number_placeholder,
-            "location" => location,
-            "underage" => underage,
-            "underage_limit" => underage_limit,
-            "select_fields" => { "participant_type" => { "enabled" => true, "required" => false }, "non_existing_field" => { "enabled" => true, "required" => false } },
-            "boolean_fields" => %w(ngo non_existing_field),
-            "text_fields" => { "motto" => { "enabled" => true, "required" => false }, "non_existing_field" => { "enabled" => true, "required" => false } }
+            "phone_number_placeholder_en" => phone_number_placeholder,
+            "location_enabled" => false,
+            "location_required" => false,
+            "underage_enabled" => true,
+            "underage_required" => false,
+            "underage_limit" => 18,
+            "select_fields" => {
+              "participant_type" => { "enabled" => "true", "required" => "false" },
+              "non_existing_field" => { "enabled" => "true", "required" => "false" }
+            },
+            "boolean_fields" => {
+              "ngo" => { "enabled" => "true", "required" => "false" },
+              "non_existing_field" => { "enabled" => "true", "required" => "false" }
+            },
+            "text_fields" => {
+              "motto" => { "enabled" => "true", "required" => "false" },
+              "non_existing_field" => { "enabled" => "true", "required" => "false" }
+            }
           }
         end
         let(:form) do
@@ -85,14 +92,15 @@ module Decidim
               expect(extra_user_fields).to include("postal_code" => { "enabled" => true, "required" => false })
               expect(extra_user_fields).to include("gender" => { "enabled" => true, "required" => false })
               expect(extra_user_fields).to include("age_range" => { "enabled" => true, "required" => false })
-              expect(extra_user_fields).to include("phone_number" => { "enabled" => true, "required" => false, "pattern" => phone_number_pattern, "placeholder" => phone_number_placeholder })
+              phone = extra_user_fields["phone_number"]
+              expect(phone).to include("enabled" => true, "required" => false, "pattern" => phone_number_pattern)
+              expect(phone["placeholder"]).to include("en" => phone_number_placeholder)
               expect(extra_user_fields).to include("location" => { "enabled" => false, "required" => false })
               expect(extra_user_fields).to include("underage" => { "enabled" => true, "required" => false, "limit" => 18 })
-              expect(extra_user_fields).to include("select_fields" => { "participant_type" => { "enabled" => true, "required" => false } })
-              expect(extra_user_fields).to include("boolean_fields" => { "ngo" => { "enabled" => true, "required" => false } })
-              expect(extra_user_fields).to include("text_fields" => { "motto" => { "enabled" => true, "required" => false } })
-              expect(extra_user_fields).not_to have_key("force_extra_user_fields")
-              expect(extra_user_fields).not_to have_key("underage_limit") # Now nested in underage
+              expect(extra_user_fields["select_fields"]).to include("participant_type" => { "enabled" => true, "required" => false })
+              expect(extra_user_fields["boolean_fields"]).to include("ngo" => { "enabled" => true, "required" => false })
+              expect(extra_user_fields["text_fields"]).to include("motto" => { "enabled" => true, "required" => false })
+              expect(extra_user_fields).not_to have_key("underage_limit")
             end
           end
         end

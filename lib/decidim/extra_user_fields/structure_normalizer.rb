@@ -81,7 +81,7 @@ module Decidim
           limit = underage_data["limit"] || underage_limit || 18
           required = underage_data["required"] == true
           result["underage"] = {
-            "enabled" => enabled.present? && enabled != false,
+            "enabled" => enabled == true || enabled == "true",
             "required" => required,
             "limit" => limit
           }
@@ -104,48 +104,37 @@ module Decidim
       def normalize_select_fields(fields, result)
         select_data = fields["select_fields"]
         return if select_data.blank?
-        return unless select_data.is_a?(Hash)
 
-        result["select_fields"] = select_data.transform_values do |value|
-          if value.is_a?(Hash) && value.has_key?("enabled")
-            value # Already normalized
-          else
-            convert_state_to_booleans(value)
-          end
-        end
+        result["select_fields"] = normalize_collection(select_data)
       end
 
       def normalize_boolean_fields(fields, result)
         boolean_data = fields["boolean_fields"]
         return if boolean_data.blank?
 
-        if boolean_data.is_a?(Array)
-          # Legacy array format - all enabled, none required
-          result["boolean_fields"] = boolean_data.index_with do |_field|
-            { "enabled" => true, "required" => false }
-          end
-        elsif boolean_data.is_a?(Hash)
-          result["boolean_fields"] = boolean_data.transform_values do |value|
-            if value.is_a?(Hash) && value.has_key?("enabled")
-              value # Already normalized
-            else
-              convert_state_to_booleans(value)
-            end
-          end
-        end
+        result["boolean_fields"] = normalize_collection(boolean_data)
       end
 
       def normalize_text_fields(fields, result)
         text_data = fields["text_fields"]
         return if text_data.blank?
-        return unless text_data.is_a?(Hash)
 
-        result["text_fields"] = text_data.transform_values do |value|
-          if value.is_a?(Hash) && value.has_key?("enabled")
-            value # Already normalized
-          else
-            convert_state_to_booleans(value)
+        result["text_fields"] = normalize_collection(text_data)
+      end
+
+      def normalize_collection(data)
+        if data.is_a?(Array)
+          data.index_with { |_| { "enabled" => true, "required" => false } }
+        elsif data.is_a?(Hash)
+          data.transform_values do |value|
+            if value.is_a?(Hash) && value.has_key?("enabled")
+              value
+            else
+              convert_state_to_booleans(value)
+            end
           end
+        else
+          {}
         end
       end
 

@@ -7,7 +7,7 @@
     </td>
     <td class="text-center">
       <input type="hidden" name="extra_user_fields[boolean_fields][<%= field %>][enabled]" value="false" id="extra_user_fields_boolean_field_<%= field %>">
-      <input type="checkbox" name="extra_user_fields[boolean_fields][<%= field %>][enabled]" value="true" data-field-state-target="enabled" data-action="field-state#toggleEnabled" <%= "checked" if field_state["enabled"] %>>
+      <input type="checkbox" name="extra_user_fields[boolean_fields][<%= field %>][enabled]" value="true" aria-label="<%= field.to_s.humanize %> enabled" data-field-state-target="enabled" data-action="field-state#toggleEnabled" <%= "checked" if field_state["enabled"] %>>
     </td>
     <td></td>
   </tr>

@@ -52,18 +52,20 @@ module Decidim
 
         def standard_fields
           (Decidim::ExtraUserFields::PROFILE_FIELDS - %w(phone_number)).index_with do |field|
+            enabled = form.public_send(:"#{field}_enabled") == true
             {
-              "enabled" => form.public_send(:"#{field}_enabled") == true,
-              "required" => form.public_send(:"#{field}_required") == true
+              "enabled" => enabled,
+              "required" => enabled && form.public_send(:"#{field}_required") == true
             }
           end
         end
 
         def phone_number_fields
+          enabled = form.phone_number_enabled == true
           {
             "phone_number" => {
-              "enabled" => form.phone_number_enabled == true,
-              "required" => form.phone_number_required == true,
+              "enabled" => enabled,
+              "required" => enabled && form.phone_number_required == true,
               "pattern" => form.phone_number_pattern.presence,
               "placeholder" => form.phone_number_placeholder.presence
             }.compact
@@ -71,9 +73,10 @@ module Decidim
         end
 
         def underage_fields
+          enabled = form.underage_enabled == true
           {
-            "enabled" => form.underage_enabled == true,
-            "required" => form.underage_required == true,
+            "enabled" => enabled,
+            "required" => enabled && form.underage_required == true,
             "limit" => form.underage_limit || Decidim::ExtraUserFields.underage_limit
           }
         end
