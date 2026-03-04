@@ -2,16 +2,16 @@
   <div id="card__extra_user_fields" class="form__wrapper form__wrapper-block">
     <h2 class="h4"><%= t(".signup.legend") %></h2>
 
-    <% if current_organization.activated_extra_field?(:date_of_birth) %>
-      <div><%= f.date_field :date_of_birth, data: { controller: "date-picker" } %></div>
-    <% end %>
+    <%= render "decidim/extra_user_fields/date_of_birth_field", f: f, current_organization: current_organization %>
 
     <% if current_organization.activated_extra_field?(:gender) %>
-      <%= f.collection_select :gender, f.object.gender_options_for_select, :first, :last %>
+      <%= f.collection_select :gender, f.object.gender_options_for_select, :first, :last,
+                              { required: f.object.gender_required?, include_blank: "" } %>
     <% end %>
 
     <% if current_organization.activated_extra_field?(:age_range) %>
-      <%= f.collection_select :age_range, f.object.age_range_options_for_select, :first, :last %>
+      <%= f.collection_select :age_range, f.object.age_range_options_for_select, :first, :last,
+                              { required: f.object.age_range_required?, include_blank: "" } %>
     <% end %>
 
     <% if current_organization.activated_extra_field?(:country) %>
@@ -35,14 +35,14 @@
     <% if current_organization.activated_extra_field?(:underage) %>
       <% if current_organization.activated_extra_field?(:date_of_birth) %>
         <div class="fieldset hidden" id="underage_fieldset">
-          <%= f.check_box :underage, id: "underage_checkbox", label:  t(".signup.underage", limit: current_organization.age_limit?) %>
+          <%= f.check_box :underage, id: "underage_checkbox", label:  t(".signup.underage", limit: current_organization.age_limit) %>
           <div class="field <%= f.object.date_of_birth.present? ? '' : 'hidden' %>" id="statutory_representative_email_field">
             <%= f.text_field :statutory_representative_email %>
           </div>
         </div>
       <% else %>
         <div class="fieldset">
-          <%= f.check_box :underage, id: "underage_checkbox", label:  t(".signup.underage", limit: current_organization.age_limit?) %>
+          <%= f.check_box :underage, id: "underage_checkbox", label:  t(".signup.underage", limit: current_organization.age_limit) %>
           <div class="field hidden" id="statutory_representative_email_field">
             <%= f.text_field :statutory_representative_email %>
           </div>

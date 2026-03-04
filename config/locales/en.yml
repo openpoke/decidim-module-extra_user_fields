@@ -67,6 +67,9 @@ en:
         exports:
           users: Participants
         extra_user_fields:
+          aria:
+            enabled: enabled
+            required: required
           boolean_fields:
             ngo:
               description: This field is a Boolean field. User will be able to check
@@ -74,29 +77,29 @@ en:
               label: Enable NGO field
           fields:
             age_range:
-              description: This field is a list of age ranges. If checked, user will
-                have to choose an age range
-              label: Enable age range field
+              description: This field is a list of age ranges. The user will have
+                to choose an age range
+              label: Age range
             country:
-              description: This field is a list of countries. If checked, user will
-                have to choose a country
-              label: Enable country field
+              description: This field is a list of countries. The user will have to
+                choose a country
+              label: Country
             date_of_birth:
-              description: This field is a Date field. If checked, user will have
-                to register a birth date by using a Date picker
-              label: Enable date of birth field
+              description: This field is a Date field. The user will have to register
+                a birth date by using a Date picker
+              label: Date of birth
             gender:
-              description: This field is a list of genders. If checked, user will
-                have to choose a gender
-              label: Enable gender field
+              description: This field is a list of genders. The user will have to
+                choose a gender
+              label: Gender
             location:
-              description: This field is a String field. If checked, user will have
-                to fill in a location
-              label: Enable location field
+              description: This field is a String field. The user will have to fill
+                in a location
+              label: Location
             phone_number:
-              description: This field is a telephone field. If checked, user will
-                have to fill in a phone number
-              label: Enable phone number field
+              description: This field is a telephone field. The user will have to
+                fill in a phone number
+              label: Phone number
               pattern: Phone numbers validation pattern (regexp)
               pattern_help_html: Copy this regular expression <code class="label">^(\+34|0034|34)?[
                 -]*[6-9][ -]*([0-9][ -]*){8}$</code> to validate this phone format
@@ -104,14 +107,15 @@ en:
                 target="_blank">here</a>.
               placeholder: Phone number placeholder
             postal_code:
-              description: This field is a String field. If checked, user will have
-                to fill in a postal code
-              label: Enable postal code field
+              description: This field is a String field. The user will have to fill
+                in a postal code
+              label: Postal code
             underage:
               description: This field is a Boolean field. User will be able to check
                 if is underage
               label: Enable parental authorization field
               limit: This sets the age limit (ex. 18 years old)
+              limit_label: Age limit
           form:
             callout:
               help: Enable custom extra user fields functionality to be able to manage
@@ -124,8 +128,17 @@ en:
               section_extras_description: If you have configured any extra user fields,
                 you can manage them here (See section "Configuration through an initializer"
                 in the plugin README).
+              table:
+                enabled: Enabled
+                field: Field
+                required: Required
             global:
               title: Activate / deactivate functionality
+            states:
+              disabled: Disabled
+              enabled: Enabled
+              optional: Optional
+              required: Required
           index:
             save: Save configuration
             title: Manage extra user fields
@@ -153,6 +166,8 @@ en:
           label: I am a member of a non-governmental organization (NGO)
       errors:
         select_fields: The field "%{field}" is not valid.
+      force_extra_user_fields:
+        redirect_message: Please complete your profile information before continuing.
       genders:
         female: Female
         male: Male

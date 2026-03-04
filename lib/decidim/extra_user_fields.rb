@@ -11,6 +11,8 @@ module Decidim
   module ExtraUserFields
     include ActiveSupport::Configurable
 
+    PROFILE_FIELDS = %w(country postal_code date_of_birth gender age_range phone_number location).freeze
+
     config_accessor :underage_limit do
       ENV.fetch("EXTRA_USER_FIELDS_UNDERAGE_LIMIT", 18).to_i
     end
@@ -65,7 +67,7 @@ module Decidim
       [:ngo]
     end
 
-    # If extra text fields are needed, they can be added as a Hash here (key is the field, value whether mandatory or not).
+    # If extra text fields are needed, they can be added as an Array here.
     # For the user interface, you can defined labels and descriptions for the fields (optionally):
     # decidim.extra_user_fields.text_fields.field_name.label
     # decidim.extra_user_fields.text_fields.field_name.description
@@ -73,9 +75,7 @@ module Decidim
     # decidim.extra_user_fields.admin.extra_user_fields.text_fields.field_name.label
     # decidim.extra_user_fields.admin.extra_user_fields.text_fields.field_name.description
     config_accessor :text_fields do
-      {
-        motto: false
-      }
+      [:motto]
     end
 
     # Extra user fields allowed as pivot table axes in the Insights page.

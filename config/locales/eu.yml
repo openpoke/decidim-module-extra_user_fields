@@ -27,6 +27,9 @@ eu:
         exports:
           users: Parte-hartzaileak
         extra_user_fields:
+          aria:
+            enabled: gaituta
+            required: beharrezkoa
           fields:
             age_range:
               description: Eremu hau adin tarte bat da. Erabiltzaileek adin tarte

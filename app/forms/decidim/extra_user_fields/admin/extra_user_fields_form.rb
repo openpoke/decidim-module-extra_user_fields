@@ -7,56 +7,75 @@ module Decidim
         include TranslatableAttributes
 
         attribute :enabled, Boolean
-        attribute :country, Boolean
-        attribute :postal_code, Boolean
-        attribute :date_of_birth, Boolean
-        attribute :gender, Boolean
-        attribute :age_range, Boolean
-        attribute :phone_number, Boolean
-        attribute :location, Boolean
-        attribute :underage, Boolean
+
+        # Profile fields - each field has enabled and required booleans
+        Decidim::ExtraUserFields::PROFILE_FIELDS.each do |field|
+          attribute :"#{field}_enabled", Boolean
+          attribute :"#{field}_required", Boolean
+        end
+
+        # Underage is separate (not in PROFILE_FIELDS)
+        attribute :underage_enabled, Boolean
+        attribute :underage_required, Boolean
         attribute :underage_limit, Integer
 
         attribute :phone_number_pattern, String
         translatable_attribute :phone_number_placeholder, String
 
-        attribute :select_fields, Array, default: []
-        attribute :boolean_fields, Array, default: []
-        attribute :text_fields, Array, default: []
+        # Collection fields - stored as hashes with field names as keys
+        attribute :select_fields, Hash, default: {}
+        attribute :boolean_fields, Hash, default: {}
+        attribute :text_fields, Hash, default: {}
 
         def map_model(model)
           self.enabled = model.extra_user_fields["enabled"]
-          self.country = model.extra_user_fields.dig("country", "enabled")
-          self.postal_code = model.extra_user_fields.dig("postal_code", "enabled")
-          self.date_of_birth = model.extra_user_fields.dig("date_of_birth", "enabled")
-          self.gender = model.extra_user_fields.dig("gender", "enabled")
-          self.age_range = model.extra_user_fields.dig("age_range", "enabled")
-          self.phone_number = model.extra_user_fields.dig("phone_number", "enabled")
-          self.location = model.extra_user_fields.dig("location", "enabled")
-          self.underage = model.extra_user_fields.dig("underage", "enabled")
-          self.underage_limit = model.extra_user_fields.fetch("underage_limit", Decidim::ExtraUserFields.underage_limit)
+
+          Decidim::ExtraUserFields::PROFILE_FIELDS.each do |field|
+            field_data = model.extra_user_fields[field]
+            if field_data.is_a?(Hash)
+              send(:"#{field}_enabled=", field_data["enabled"] == true)
+              send(:"#{field}_required=", field_data["required"] == true)
+            else
+              # Default to disabled if field data is missing or nil
+              send(:"#{field}_enabled=", false)
+              send(:"#{field}_required=", false)
+            end
+          end
+
+          # Load underage settings
+          underage_data = model.extra_user_fields["underage"]
+          if underage_data.is_a?(Hash)
+            self.underage_enabled = underage_data["enabled"] == true
+            self.underage_required = underage_data["required"] == true
+            self.underage_limit = underage_data["limit"] || Decidim::ExtraUserFields.underage_limit
+          else
+            self.underage_enabled = false
+            self.underage_required = false
+            self.underage_limit = Decidim::ExtraUserFields.underage_limit
+          end
+
           self.phone_number_pattern = model.extra_user_fields.dig("phone_number", "pattern")
           self.phone_number_placeholder = model.extra_user_fields.dig("phone_number", "placeholder")
-          self.select_fields = model.extra_user_fields["select_fields"] || []
-          self.boolean_fields = model.extra_user_fields["boolean_fields"] || []
-          self.text_fields = model.extra_user_fields["text_fields"] || []
+          self.select_fields = normalize_collection_fields(model.extra_user_fields["select_fields"], Decidim::ExtraUserFields.select_fields.keys)
+          self.boolean_fields = normalize_collection_fields(model.extra_user_fields["boolean_fields"], Decidim::ExtraUserFields.boolean_fields.map(&:to_s))
+          self.text_fields = normalize_collection_fields(model.extra_user_fields["text_fields"], Decidim::ExtraUserFields.text_fields)
         end
 
-        def select_fields
-          super.filter do |field|
-            Decidim::ExtraUserFields.select_fields.keys.map(&:to_s).include?(field)
-          end
-        end
+        private
 
-        def boolean_fields
-          super.filter do |field|
-            Decidim::ExtraUserFields.boolean_fields.map(&:to_s).include?(field)
-          end
-        end
+        def normalize_collection_fields(value, valid_keys)
+          valid = valid_keys.map(&:to_s)
+          defaults = valid.index_with { |_| { "enabled" => false, "required" => false } }
 
-        def text_fields
-          super.filter do |field|
-            Decidim::ExtraUserFields.text_fields.keys.map(&:to_s).include?(field)
+          return defaults unless value.is_a?(Hash)
+
+          valid.each_with_object({}) do |k, result|
+            v = value[k]
+            result[k] = if v.is_a?(Hash)
+                          v.merge("enabled" => v["enabled"] == true, "required" => v["enabled"] == true && v["required"] == true)
+                        else
+                          { "enabled" => false, "required" => false }
+                        end
           end
         end
       end

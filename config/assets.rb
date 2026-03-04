@@ -20,7 +20,8 @@ Decidim::Shakapacker.register_path("#{base_path}/app/packs")
 # `stylesheet_pack_tag`.
 Decidim::Shakapacker.register_entrypoints(
   decidim_extra_user_fields: "#{base_path}/app/packs/entrypoints/decidim_extra_user_fields.js",
-  decidim_extra_user_fields_css: "#{base_path}/app/packs/entrypoints/decidim_extra_user_fields.scss"
+  decidim_extra_user_fields_css: "#{base_path}/app/packs/entrypoints/decidim_extra_user_fields.scss",
+  decidim_extra_user_fields_admin: "#{base_path}/app/packs/entrypoints/decidim_extra_user_fields_admin.js"
 )
 
 # If you want to import some extra SCSS files in the Decidim main SCSS file

@@ -58,26 +58,11 @@ describe "Account" do
     { "enabled" => true }
   end
 
-  let(:select_fields) do
-    ["participant_type"]
-  end
-
-  let(:boolean_fields) do
-    ["ngo"]
-  end
-
-  let(:text_fields) do
-    ["motto"]
-  end
-
-  let(:enabled_text_fields) do
-    {
-      motto: false
-    }
-  end
+  let(:select_fields) { { "participant_type" => { "enabled" => true, "required" => false } } }
+  let(:boolean_fields) { { "ngo" => { "enabled" => true, "required" => false } } }
+  let(:text_fields) { { "motto" => { "enabled" => true, "required" => false } } }
 
   before do
-    allow(Decidim::ExtraUserFields).to receive(:text_fields).and_return(enabled_text_fields)
     switch_to_host(organization.host)
     login_as user, scope: :user
   end
@@ -223,11 +208,7 @@ describe "Account" do
         end
 
         context "with text field mandatory" do
-          let(:enabled_text_fields) do
-            {
-              motto: true
-            }
-          end
+          let(:text_fields) { { "motto" => { "enabled" => true, "required" => true } } }
 
           it "displays the field as mandatory" do
             within "label[for='user_text_fields_motto']" do
@@ -237,9 +218,7 @@ describe "Account" do
               fill_in :user_text_fields_motto, with: ""
               find("*[type=submit]").click
             end
-            within "label[for='user_text_fields_motto']" do
-              expect(page).to have_content("There is an error in this field.")
-            end
+            expect(page).to have_content("cannot be blank")
           end
         end
       end
@@ -303,7 +282,7 @@ describe "Account" do
 
     context "when select_fields is not enabled" do
       let(:select_fields) do
-        ["another_field"]
+        { "another_field" => { "enabled" => true, "required" => false } }
       end
 
       it_behaves_like "does not display extra user field", "select_fields", "Select fields"
@@ -311,7 +290,7 @@ describe "Account" do
 
     context "when boolean_fields is not enabled" do
       let(:boolean_fields) do
-        ["another_field"]
+        { "another_field" => { "enabled" => true, "required" => false } }
       end
 
       it_behaves_like "does not display extra user field", "boolean_fields", "Boolean fields"
@@ -319,7 +298,7 @@ describe "Account" do
 
     context "when text_fields is not enabled" do
       let(:text_fields) do
-        ["another_field"]
+        { "another_field" => { "enabled" => true, "required" => false } }
       end
 
       it_behaves_like "does not display extra user field", "text_fields", "Text fields"

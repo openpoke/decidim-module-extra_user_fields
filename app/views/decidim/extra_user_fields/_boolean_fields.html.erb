@@ -1,4 +1,4 @@
-<% f.object.custom_boolean_fields.each do |field, label| %>
+<% f.object.custom_boolean_fields.each do |field| %>
   <div class="fieldset">
     <%= label_tag f.field_id("boolean_fields_#{field}") do %>
       <%= check_box_tag "user[boolean_fields][]",

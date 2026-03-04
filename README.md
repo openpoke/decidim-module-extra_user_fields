@@ -21,12 +21,6 @@ Add this line to your application's Gemfile:
 gem 'decidim-extra_user_fields', github: 'openpoke/decidim-module-extra_user_fields'
 ```
 
-or for the original one:
-
-```ruby
-gem 'decidim-extra_user_fields', github: 'PopulateTools/decidim-module-extra_user_fields'
-```
-
 And then execute:
 
 ```bash
@@ -34,6 +28,16 @@ bundle
 bin/rails decidim:upgrade
 bin/rails db:migrate
 ```
+
+### Upgrading from older versions
+
+If you're upgrading from a version before the boolean structure refactoring, you need to normalize the extra user fields structure. Run the following rake task:
+
+```bash
+bin/rails decidim_extra_user_fields:normalize_structure
+```
+
+This will convert the old string-based field states (`disabled`/`optional`/`required`) to the new boolean-based structure (`enabled` and `required` boolean flags).
 
 > **EXPERTS ONLY**
 >
@@ -158,7 +162,7 @@ Decidim::ExtraUserFields.configure do |config|
     [:ngo, :newsletter]
   end
 
-    # If extra text fields are needed, they can be added as a Hash here (key is the field, value whether mandatory or not).
+    # If extra text fields are needed, they can be added as an Array here
   # For the user interface, you can define labels and descriptions for the fields (optionally):
   # decidim.extra_user_fields.text_fields.field_name.label
   # decidim.extra_user_fields.text_fields.field_name.description
@@ -166,10 +170,7 @@ Decidim::ExtraUserFields.configure do |config|
   # decidim.extra_user_fields.admin.extra_user_fields.text_fields.field_name.label
   # decidim.extra_user_fields.admin.extra_user_fields.text_fields.field_name.description
   config_accessor :text_fields do
-    {
-      hobbies: false, 
-      favorite_quote: true
-    }
+    [ :hobbies, :favorite_quote ]
   end
 end
 ```
