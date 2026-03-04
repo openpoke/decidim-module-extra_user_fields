@@ -72,6 +72,7 @@ module Decidim::ExtraUserFields::Admin
         expect(result).to include("Gender")
         expect(result).to include("Age span")
         expect(result).to include("onchange")
+        expect(result).to include("requestSubmit()")
       end
 
       it "marks the selected option" do

@@ -35,6 +35,13 @@ module Decidim::ExtraUserFields::Admin
         label = helper.space_option_label(space)
         expect(label).to include("Mon Processus")
       end
+
+      it "handles string titles" do
+        space = OpenStruct.new(title: "Plain Title", class: Decidim::ParticipatoryProcess)
+        label = helper.space_option_label(space)
+        expect(label).to include("Plain Title")
+        expect(label).to match(/\[.*\]/)
+      end
     end
 
     describe "#space_option_value" do
@@ -109,6 +116,11 @@ module Decidim::ExtraUserFields::Admin
       it "adds space-divider on col_index 0 after first space" do
         result = helper.benchmarking_col_total_cell(:space, "young", space_index: 1, col_index: 0)
         expect(result).to include("insights-table__space-divider")
+      end
+
+      it "does not add space-divider on first space" do
+        result = helper.benchmarking_col_total_cell(:space, "young", space_index: 0, col_index: 0)
+        expect(result).not_to include("insights-table__space-divider")
       end
     end
 

@@ -45,13 +45,13 @@ module Decidim::ExtraUserFields
         expect(result).to include("--tc:#1a1a1a")
       end
 
-      it "uses dark text color when intensity is at threshold 0.6" do
-        # intensity = (value - min) / (max - min) = (8 - 0) / (10 - 0) = 0.8
+      it "uses white text color when intensity is above 0.6" do
+        # intensity = (8 - 0) / (10 - 0) = 0.8
         result = wrapper.intensity_vars(8, 0, 10)
         expect(result).to include("--tc:#fff")
       end
 
-      it "uses dark text color when intensity is just below 0.6" do
+      it "uses dark text color when intensity is exactly 0.6" do
         # intensity = (6 - 0) / (10 - 0) = 0.6 — exactly 0.6 is NOT > 0.6
         result = wrapper.intensity_vars(6, 0, 10)
         expect(result).to include("--tc:#1a1a1a")

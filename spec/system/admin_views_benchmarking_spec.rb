@@ -16,6 +16,12 @@ describe "Admin views benchmarking" do
       visit decidim_extra_user_fields.benchmarking_path
     end
 
+    it "renders the benchmarking menu item in the sidebar" do
+      within(".sidebar-menu") do
+        expect(page).to have_content("Benchmarking")
+      end
+    end
+
     it "displays the page title" do
       expect(page).to have_content("Comparative stats across spaces")
     end
@@ -189,6 +195,18 @@ describe "Admin views benchmarking" do
 
     it "gracefully handles invalid space ID" do
       visit decidim_extra_user_fields.benchmarking_path(spaces: ["Decidim::ParticipatoryProcess:999999"])
+
+      expect(page).to have_content("Select one or more participatory spaces to compare")
+    end
+
+    it "gracefully handles non-manifest class name" do
+      visit decidim_extra_user_fields.benchmarking_path(spaces: ["Decidim::User:1"])
+
+      expect(page).to have_content("Select one or more participatory spaces to compare")
+    end
+
+    it "gracefully handles malformed space keys" do
+      visit decidim_extra_user_fields.benchmarking_path(spaces: [":1", "ClassName:", ""])
 
       expect(page).to have_content("Select one or more participatory spaces to compare")
     end
