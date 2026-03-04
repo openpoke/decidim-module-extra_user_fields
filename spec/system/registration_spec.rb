@@ -6,8 +6,8 @@ def fill_registration_form
   fill_in :registration_user_name, with: "Nikola Tesla"
   fill_in :registration_user_email, with: "nikola.tesla@example.org"
   fill_in :registration_user_password, with: "sekritpass123"
-  page.check("registration_user_newsletter")
-  page.check("registration_user_tos_agreement")
+  check("registration_user_newsletter")
+  check("registration_user_tos_agreement")
 end
 
 def fill_extra_user_fields
@@ -17,7 +17,7 @@ def fill_extra_user_fields
   select "Argentina", from: :registration_user_country
   select "Individual", from: :registration_user_select_fields_participant_type
   check "registration_user_boolean_fields_ngo"
-  fill_in :registration_registration_user_text_fields_motto, with: "I think, therefore I am."
+  fill_in :registration_user_text_fields_motto, with: "I think, therefore I am."
   fill_in :registration_user_postal_code, with: "00000"
   fill_in :registration_user_phone_number, with: "0123456789"
   fill_in :registration_user_location, with: "Cahors"
@@ -51,46 +51,17 @@ describe "Extra user fields" do
     }
   end
 
-  let(:date_of_birth) do
-    { "enabled" => true }
-  end
-
-  let(:postal_code) do
-    { "enabled" => true }
-  end
-
-  let(:country) do
-    { "enabled" => true }
-  end
-
-  let(:gender) do
-    { "enabled" => true }
-  end
-
-  let(:age_range) do
-    { "enabled" => true }
-  end
-
-  let(:phone_number) do
-    { "enabled" => true, "pattern" => phone_number_pattern, "placeholder" => nil }
-  end
+  let(:date_of_birth) { { "enabled" => "required" } }
+  let(:postal_code) { { "enabled" => "required" } }
+  let(:country) { { "enabled" => "required" } }
+  let(:gender) { { "enabled" => "required" } }
+  let(:age_range) { { "enabled" => "required" } }
+  let(:phone_number) { { "enabled" => "required", "pattern" => phone_number_pattern, "placeholder" => nil } }
   let(:phone_number_pattern) { "^(\\+34)?[0-9 ]{9,12}$" }
-
-  let(:location) do
-    { "enabled" => true }
-  end
-
-  let(:select_fields) do
-    ["participant_type"]
-  end
-
-  let(:boolean_fields) do
-    ["ngo"]
-  end
-
-  let(:text_fields) do
-    ["motto"]
-  end
+  let(:location) { { "enabled" => "required" } }
+  let(:select_fields) { { "participant_type" => "optional" } }
+  let(:boolean_fields) { ["ngo"] }
+  let(:text_fields) { { "motto" => "optional" } }
 
   before do
     switch_to_host(organization.host)
@@ -175,6 +146,26 @@ describe "Extra user fields" do
   it_behaves_like "mandatory extra user fields", "postal_code"
   it_behaves_like "mandatory extra user fields", "phone_number"
   it_behaves_like "mandatory extra user fields", "location"
+
+  context "when select field is required" do
+    let(:select_fields) { { "participant_type" => "required" } }
+
+    it "displays required indicator on select field" do
+      within "#card__extra_user_fields" do
+        expect(page).to have_css("span.label-required")
+      end
+    end
+  end
+
+  context "when text field is required" do
+    let(:text_fields) { { "motto" => "required" } }
+
+    it "displays required indicator on text field" do
+      within "label[for='registration_user_text_fields_motto']" do
+        expect(page).to have_css("span.label-required")
+      end
+    end
+  end
 
   context "when extra_user_fields is disabled" do
     let(:organization) { create(:organization, :extra_user_fields_disabled) }

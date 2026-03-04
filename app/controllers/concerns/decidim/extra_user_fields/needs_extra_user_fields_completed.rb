@@ -17,8 +17,8 @@ module Decidim
         return unless request.format.html?
         return unless current_user
         return unless current_user.tos_accepted?
-        return unless current_organization.respond_to?(:force_extra_user_fields?)
-        return unless current_organization.force_extra_user_fields?
+        return unless current_organization.respond_to?(:has_required_extra_user_fields?)
+        return unless current_organization.has_required_extra_user_fields?
         return if current_organization.extra_user_fields_complete?(current_user)
         return if permitted_extra_fields_path?
 
@@ -32,7 +32,7 @@ module Decidim
       end
 
       def permitted_extra_fields_path?
-        return true if request.path.start_with?(decidim.download_your_data_path)
+        return true if request.path.start_with?(decidim.download_your_data_path.split("?").first)
 
         permitted_paths = [
           decidim.account_path,
@@ -41,7 +41,9 @@ module Decidim
           decidim.accept_tos_path
         ]
 
-        permitted_paths.any? { |path| path.split("?").first == request.path }
+        # Strip query string (e.g. ?locale=fr) before comparing against request.path,
+        # matching the pattern used by Decidim core in NeedsTosAccepted.
+        permitted_paths.find { |el| el.split("?").first == request.path }
       end
     end
   end

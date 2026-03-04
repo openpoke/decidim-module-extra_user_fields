@@ -19,11 +19,29 @@ module Decidim
           end
         end
 
+        def field_enabled?(state)
+          state.present? && state != "disabled"
+        end
+
+        def field_required?(state)
+          state == "required"
+        end
+
+        def field_row_class(state)
+          if state.blank? || state == "disabled"
+            "field-row--disabled"
+          elsif state == "required"
+            "field-row--required"
+          else
+            ""
+          end
+        end
+
         def custom_select_fields(form)
           return {} unless Decidim::ExtraUserFields.select_fields.is_a?(Hash)
 
           Decidim::ExtraUserFields.select_fields.keys.index_with do |field|
-            form.object.select_fields.include?(field.to_s)
+            form.object.select_fields[field] || form.object.select_fields[field.to_s] || "disabled"
           end
         end
 
@@ -39,7 +57,7 @@ module Decidim
           return {} unless Decidim::ExtraUserFields.text_fields.is_a?(Hash)
 
           Decidim::ExtraUserFields.text_fields.keys.index_with do |field|
-            form.object.text_fields.include?(field.to_s)
+            form.object.text_fields[field] || form.object.text_fields[field.to_s] || "disabled"
           end
         end
       end

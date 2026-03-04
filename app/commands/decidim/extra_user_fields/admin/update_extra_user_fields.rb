@@ -38,32 +38,31 @@ module Decidim
           )
         end
 
-        # rubocop:disable Metrics/CyclomaticComplexity
-        # rubocop:disable Metrics/PerceivedComplexity
         def extra_user_fields
-          {
+          standard_fields.merge(
             "enabled" => form.enabled.presence || false,
-            "force_extra_user_fields" => form.force_extra_user_fields.presence || false,
-            "date_of_birth" => { "enabled" => form.date_of_birth.presence || false },
-            "country" => { "enabled" => form.country.presence || false },
-            "postal_code" => { "enabled" => form.postal_code.presence || false },
-            "gender" => { "enabled" => form.gender.presence || false },
-            "age_range" => { "enabled" => form.age_range.presence || false },
-            "phone_number" => {
-              "enabled" => form.phone_number.presence || false,
-              "pattern" => form.phone_number_pattern.presence,
-              "placeholder" => form.phone_number_placeholder.presence
-            },
-            "location" => { "enabled" => form.location.presence || false },
+            "phone_number" => phone_number_fields,
             "underage" => { "enabled" => form.underage || false },
             "underage_limit" => form.underage_limit || Decidim::ExtraUserFields.underage_limit,
-            "select_fields" => form.select_fields.to_a,
+            "select_fields" => form.select_fields,
             "boolean_fields" => form.boolean_fields.to_a,
-            "text_fields" => form.text_fields.to_a
+            "text_fields" => form.text_fields
+          )
+        end
+
+        def standard_fields
+          (Decidim::ExtraUserFields::PROFILE_FIELDS - %w(phone_number)).index_with do |field|
+            { "enabled" => form.public_send(field).presence || "disabled" }
+          end
+        end
+
+        def phone_number_fields
+          {
+            "enabled" => form.phone_number.presence || "disabled",
+            "pattern" => form.phone_number_pattern.presence,
+            "placeholder" => form.phone_number_placeholder.presence
           }
         end
-        # rubocop:enable Metrics/CyclomaticComplexity
-        # rubocop:enable Metrics/PerceivedComplexity
       end
     end
   end

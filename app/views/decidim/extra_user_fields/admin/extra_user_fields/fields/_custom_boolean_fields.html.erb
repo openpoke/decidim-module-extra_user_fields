@@ -1,0 +1,11 @@
+<% custom_boolean_fields(form).each do |field, checked| %>
+  <% state_value = checked ? field.to_s : "" %>
+  <%= render "decidim/extra_user_fields/admin/extra_user_fields/field_row",
+             label: t("decidim.extra_user_fields.admin.extra_user_fields.boolean_fields.#{field}.label", default: field.to_s.humanize),
+             help_text: t("decidim.extra_user_fields.admin.extra_user_fields.boolean_fields.#{field}.description", default: ""),
+             state: state_value,
+             input_name: "extra_user_fields[boolean_fields][]",
+             input_id: "extra_user_fields_boolean_field_#{field}",
+             has_required: false,
+             stimulus_values: { "enabled-state": field.to_s, "disabled-state": "" } %>
+<% end %>

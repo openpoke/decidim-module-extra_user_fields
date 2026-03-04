@@ -11,12 +11,7 @@ module Decidim
   module ExtraUserFields
     include ActiveSupport::Configurable
 
-    # Fields that are enforced when force_extra_user_fields is enabled.
-    # Underage is excluded because it is a hidden field that cannot be changed on the profile page.
-    # Boolean fields are excluded because an unchecked state is a valid default.
-    config_accessor :enforceable_fields do
-      %w(country postal_code date_of_birth gender age_range phone_number location)
-    end
+    PROFILE_FIELDS = %w(country postal_code date_of_birth gender age_range phone_number location).freeze
 
     config_accessor :underage_limit do
       ENV.fetch("EXTRA_USER_FIELDS_UNDERAGE_LIMIT", 18).to_i

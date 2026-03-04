@@ -6,16 +6,9 @@ module Decidim
   describe Organization do
     subject(:organization) { build(:organization, extra_user_fields:) }
 
-    let(:extra_user_fields) do
-      {
-        "enabled" => extra_user_field,
-        "date_of_birth" => date_of_birth
-      }
-    end
+    let(:extra_user_fields) { { "enabled" => extra_user_field, "date_of_birth" => date_of_birth } }
     let(:extra_user_field) { true }
-    let(:date_of_birth) do
-      { "enabled" => true }
-    end
+    let(:date_of_birth) { { "enabled" => true } }
     let(:omniauth_secrets) do
       {
         facebook: {
@@ -149,46 +142,124 @@ module Decidim
       end
     end
 
-    describe "#force_extra_user_fields?" do
-      context "when extra user fields are enabled and force flag is on" do
+    describe "#has_required_extra_user_fields?" do
+      context "when a standard field is required" do
         let(:extra_user_fields) do
           {
             "enabled" => true,
-            "force_extra_user_fields" => true,
-            "date_of_birth" => { "enabled" => true }
+            "date_of_birth" => { "enabled" => "required" }
           }
         end
 
         it "returns true" do
-          expect(subject).to be_force_extra_user_fields
+          expect(subject).to have_required_extra_user_fields
         end
       end
 
-      context "when force flag is off" do
+      context "when all fields are optional" do
         let(:extra_user_fields) do
           {
             "enabled" => true,
-            "force_extra_user_fields" => false,
-            "date_of_birth" => { "enabled" => true }
+            "date_of_birth" => { "enabled" => "optional" }
           }
         end
 
         it "returns false" do
-          expect(subject).not_to be_force_extra_user_fields
+          expect(subject).not_to have_required_extra_user_fields
         end
       end
 
-      context "when extra user fields are disabled" do
+      context "when all fields are disabled" do
         let(:extra_user_fields) do
           {
-            "enabled" => false,
-            "force_extra_user_fields" => true,
-            "date_of_birth" => { "enabled" => true }
+            "enabled" => true,
+            "date_of_birth" => { "enabled" => "disabled" }
           }
         end
 
         it "returns false" do
-          expect(subject).not_to be_force_extra_user_fields
+          expect(subject).not_to have_required_extra_user_fields
+        end
+      end
+
+      context "when extra user fields are disabled globally" do
+        let(:extra_user_fields) do
+          {
+            "enabled" => false,
+            "date_of_birth" => { "enabled" => "required" }
+          }
+        end
+
+        it "returns false" do
+          expect(subject).not_to have_required_extra_user_fields
+        end
+      end
+
+      context "when a select field is required" do
+        let(:extra_user_fields) do
+          {
+            "enabled" => true,
+            "select_fields" => { "participant_type" => "required" }
+          }
+        end
+
+        it "returns true" do
+          expect(subject).to have_required_extra_user_fields
+        end
+      end
+
+      context "when a text field is required" do
+        let(:extra_user_fields) do
+          {
+            "enabled" => true,
+            "text_fields" => { "motto" => "required" }
+          }
+        end
+
+        it "returns true" do
+          expect(subject).to have_required_extra_user_fields
+        end
+      end
+
+      context "when collection fields are optional" do
+        let(:extra_user_fields) do
+          {
+            "enabled" => true,
+            "select_fields" => { "participant_type" => "optional" },
+            "text_fields" => { "motto" => "optional" }
+          }
+        end
+
+        it "returns false" do
+          expect(subject).not_to have_required_extra_user_fields
+        end
+      end
+    end
+
+    describe "#required_extra_field?" do
+      context "when field is required" do
+        let(:extra_user_fields) do
+          {
+            "enabled" => true,
+            "country" => { "enabled" => "required" }
+          }
+        end
+
+        it "returns true" do
+          expect(subject.required_extra_field?(:country)).to be true
+        end
+      end
+
+      context "when field is optional" do
+        let(:extra_user_fields) do
+          {
+            "enabled" => true,
+            "country" => { "enabled" => "optional" }
+          }
+        end
+
+        it "returns false" do
+          expect(subject.required_extra_field?(:country)).to be false
         end
       end
     end
@@ -198,13 +269,13 @@ module Decidim
       let(:extra_user_fields) do
         {
           "enabled" => true,
-          "date_of_birth" => { "enabled" => true },
-          "country" => { "enabled" => true },
-          "gender" => { "enabled" => false }
+          "date_of_birth" => { "enabled" => "required" },
+          "country" => { "enabled" => "required" },
+          "gender" => { "enabled" => "disabled" }
         }
       end
 
-      context "when all activated fields are filled in" do
+      context "when all required fields are filled in" do
         let(:extended_data) { { "date_of_birth" => "2000-01-01", "country" => "ES" } }
 
         it "returns true" do
@@ -212,7 +283,7 @@ module Decidim
         end
       end
 
-      context "when an activated field is missing" do
+      context "when a required field is missing" do
         let(:extended_data) { { "date_of_birth" => "2000-01-01" } }
 
         it "returns false" do
@@ -220,7 +291,22 @@ module Decidim
         end
       end
 
-      context "when a non-activated field is missing" do
+      context "when an optional field is missing" do
+        let(:extra_user_fields) do
+          {
+            "enabled" => true,
+            "date_of_birth" => { "enabled" => "required" },
+            "country" => { "enabled" => "optional" }
+          }
+        end
+        let(:extended_data) { { "date_of_birth" => "2000-01-01" } }
+
+        it "returns true because optional fields are not enforced" do
+          expect(subject.extra_user_fields_complete?(user)).to be true
+        end
+      end
+
+      context "when a disabled field is missing" do
         let(:extended_data) { { "date_of_birth" => "2000-01-01", "country" => "ES" } }
 
         it "returns true even without gender" do
@@ -228,12 +314,12 @@ module Decidim
         end
       end
 
-      context "when no fields are activated" do
+      context "when no fields are required" do
         let(:extra_user_fields) do
           {
             "enabled" => true,
-            "date_of_birth" => { "enabled" => false },
-            "country" => { "enabled" => false }
+            "date_of_birth" => { "enabled" => "disabled" },
+            "country" => { "enabled" => "optional" }
           }
         end
         let(:extended_data) { {} }
@@ -247,8 +333,8 @@ module Decidim
         let(:extra_user_fields) do
           {
             "enabled" => true,
-            "date_of_birth" => { "enabled" => false },
-            "select_fields" => ["participant_type"]
+            "date_of_birth" => { "enabled" => "disabled" },
+            "select_fields" => { "participant_type" => "required" }
           }
         end
 
@@ -278,20 +364,14 @@ module Decidim
       end
 
       context "when text_fields are activated" do
-        let(:extra_user_fields) do
-          {
-            "enabled" => true,
-            "date_of_birth" => { "enabled" => false },
-            "text_fields" => ["motto"]
-          }
-        end
-
-        before do
-          allow(Decidim::ExtraUserFields).to receive(:text_fields).and_return(enabled_text_fields)
-        end
-
-        context "when text field is mandatory" do
-          let(:enabled_text_fields) { { motto: true } }
+        context "when text field is required" do
+          let(:extra_user_fields) do
+            {
+              "enabled" => true,
+              "date_of_birth" => { "enabled" => "disabled" },
+              "text_fields" => { "motto" => "required" }
+            }
+          end
 
           context "when user has filled the text field" do
             let(:extended_data) { { "text_fields" => { "motto" => "Carpe diem" } } }
@@ -319,7 +399,13 @@ module Decidim
         end
 
         context "when text field is optional" do
-          let(:enabled_text_fields) { { motto: false } }
+          let(:extra_user_fields) do
+            {
+              "enabled" => true,
+              "date_of_birth" => { "enabled" => "disabled" },
+              "text_fields" => { "motto" => "optional" }
+            }
+          end
 
           context "when user has not filled the text field" do
             let(:extended_data) { { "text_fields" => {} } }
@@ -343,7 +429,7 @@ module Decidim
         let(:extra_user_fields) do
           {
             "enabled" => true,
-            "date_of_birth" => { "enabled" => false },
+            "date_of_birth" => { "enabled" => "disabled" },
             "boolean_fields" => ["ngo"]
           }
         end
@@ -355,19 +441,14 @@ module Decidim
       end
 
       context "when both standard and collection fields are activated" do
-        let(:enabled_text_fields) { { motto: true } }
         let(:extra_user_fields) do
           {
             "enabled" => true,
-            "country" => { "enabled" => true },
-            "date_of_birth" => { "enabled" => false },
-            "select_fields" => ["participant_type"],
-            "text_fields" => ["motto"]
+            "country" => { "enabled" => "required" },
+            "date_of_birth" => { "enabled" => "disabled" },
+            "select_fields" => { "participant_type" => "required" },
+            "text_fields" => { "motto" => "required" }
           }
-        end
-
-        before do
-          allow(Decidim::ExtraUserFields).to receive(:text_fields).and_return(enabled_text_fields)
         end
 
         context "when all fields are filled" do
@@ -411,7 +492,7 @@ module Decidim
           end
         end
 
-        context "when mandatory text field is missing" do
+        context "when required text field is missing" do
           let(:extended_data) do
             {
               "country" => "FR",
@@ -426,7 +507,15 @@ module Decidim
         end
 
         context "when optional text field is missing" do
-          let(:enabled_text_fields) { { motto: false } }
+          let(:extra_user_fields) do
+            {
+              "enabled" => true,
+              "country" => { "enabled" => "required" },
+              "date_of_birth" => { "enabled" => "disabled" },
+              "select_fields" => { "participant_type" => "required" },
+              "text_fields" => { "motto" => "optional" }
+            }
+          end
           let(:extended_data) do
             {
               "country" => "FR",
@@ -442,8 +531,172 @@ module Decidim
       end
     end
 
+    describe "#collection_field_required?" do
+      context "when collection field is required (Hash format)" do
+        let(:extra_user_fields) { { "enabled" => true, "select_fields" => { "participant_type" => "required" } } }
+
+        it "returns true" do
+          expect(subject.collection_field_required?(:select_fields, :participant_type)).to be true
+        end
+      end
+
+      context "when collection field is optional (Hash format)" do
+        let(:extra_user_fields) { { "enabled" => true, "select_fields" => { "participant_type" => "optional" } } }
+
+        it "returns false" do
+          expect(subject.collection_field_required?(:select_fields, :participant_type)).to be false
+        end
+      end
+
+      context "when collection is absent" do
+        let(:extra_user_fields) { { "enabled" => true } }
+
+        it "returns false" do
+          expect(subject.collection_field_required?(:select_fields, :participant_type)).to be false
+        end
+      end
+    end
+
+    describe "#extra_user_field_configuration" do
+      context "when field is activated with extra config" do
+        let(:extra_user_fields) do
+          {
+            "enabled" => true,
+            "phone_number" => { "enabled" => "optional", "pattern" => "^\\+33", "placeholder" => "+33..." }
+          }
+        end
+
+        it "returns config hash without the enabled key" do
+          config = subject.extra_user_field_configuration(:phone_number)
+          expect(config).to eq({ "pattern" => "^\\+33", "placeholder" => "+33..." })
+          expect(config).not_to have_key("enabled")
+        end
+      end
+
+      context "when field is disabled" do
+        let(:extra_user_fields) { { "enabled" => true, "country" => { "enabled" => "disabled" } } }
+
+        it "returns empty hash" do
+          expect(subject.extra_user_field_configuration(:country)).to eq({})
+        end
+      end
+
+      context "when field is a collection (Hash format)" do
+        let(:extra_user_fields) { { "enabled" => true, "select_fields" => { "participant_type" => "required" } } }
+
+        it "returns the collection hash" do
+          expect(subject.extra_user_field_configuration(:select_fields)).to eq({ "participant_type" => "required" })
+        end
+      end
+
+      context "when field does not exist" do
+        let(:extra_user_fields) { { "enabled" => true } }
+
+        it "returns empty hash" do
+          expect(subject.extra_user_field_configuration(:nonexistent)).to eq({})
+        end
+      end
+    end
+
+    describe "#age_limit" do
+      context "when underage_limit is set" do
+        let(:extra_user_fields) { { "enabled" => true, "underage_limit" => 16 } }
+
+        it "returns the integer value" do
+          expect(subject.age_limit).to eq(16)
+        end
+      end
+
+      context "when underage_limit is not set" do
+        let(:extra_user_fields) { { "enabled" => true } }
+
+        it "returns 0" do
+          expect(subject.age_limit).to eq(0)
+        end
+      end
+    end
+
+    describe "#extra_user_fields_complete? with Hash-format collection fields" do
+      let(:user) { build(:user, organization:, extended_data:) }
+
+      context "when a required select field is filled (Hash format)" do
+        let(:extra_user_fields) do
+          {
+            "enabled" => true,
+            "date_of_birth" => { "enabled" => "disabled" },
+            "select_fields" => { "participant_type" => "required" }
+          }
+        end
+        let(:extended_data) { { "select_fields" => { "participant_type" => "individual" } } }
+
+        it "returns true" do
+          expect(subject.extra_user_fields_complete?(user)).to be true
+        end
+      end
+
+      context "when a required select field is missing (Hash format)" do
+        let(:extra_user_fields) do
+          {
+            "enabled" => true,
+            "date_of_birth" => { "enabled" => "disabled" },
+            "select_fields" => { "participant_type" => "required" }
+          }
+        end
+        let(:extended_data) { { "select_fields" => {} } }
+
+        it "returns false" do
+          expect(subject.extra_user_fields_complete?(user)).to be false
+        end
+      end
+
+      context "when a required text field is filled (Hash format)" do
+        let(:extra_user_fields) do
+          {
+            "enabled" => true,
+            "date_of_birth" => { "enabled" => "disabled" },
+            "text_fields" => { "motto" => "required" }
+          }
+        end
+        let(:extended_data) { { "text_fields" => { "motto" => "Carpe diem" } } }
+
+        it "returns true" do
+          expect(subject.extra_user_fields_complete?(user)).to be true
+        end
+      end
+
+      context "when a required text field is missing (Hash format)" do
+        let(:extra_user_fields) do
+          {
+            "enabled" => true,
+            "date_of_birth" => { "enabled" => "disabled" },
+            "text_fields" => { "motto" => "required" }
+          }
+        end
+        let(:extended_data) { { "text_fields" => {} } }
+
+        it "returns false" do
+          expect(subject.extra_user_fields_complete?(user)).to be false
+        end
+      end
+
+      context "when an optional collection field is missing (Hash format)" do
+        let(:extra_user_fields) do
+          {
+            "enabled" => true,
+            "date_of_birth" => { "enabled" => "disabled" },
+            "select_fields" => { "participant_type" => "optional" }
+          }
+        end
+        let(:extended_data) { {} }
+
+        it "returns true" do
+          expect(subject.extra_user_fields_complete?(user)).to be true
+        end
+      end
+    end
+
     describe "#activated_extra_field?" do
-      it "returns the value of given key" do
+      it "returns true for legacy boolean enabled" do
         expect(subject).to be_activated_extra_field(:date_of_birth)
       end
 
@@ -458,6 +711,30 @@ module Decidim
 
         it "returns false" do
           expect(subject).not_to be_activated_extra_field(:date_of_birth)
+        end
+      end
+
+      context "when field is disabled" do
+        let(:date_of_birth) { { "enabled" => "disabled" } }
+
+        it "returns false" do
+          expect(subject).not_to be_activated_extra_field(:date_of_birth)
+        end
+      end
+
+      context "when field is optional" do
+        let(:date_of_birth) { { "enabled" => "optional" } }
+
+        it "returns true" do
+          expect(subject).to be_activated_extra_field(:date_of_birth)
+        end
+      end
+
+      context "when field is required" do
+        let(:date_of_birth) { { "enabled" => "required" } }
+
+        it "returns true" do
+          expect(subject).to be_activated_extra_field(:date_of_birth)
         end
       end
     end

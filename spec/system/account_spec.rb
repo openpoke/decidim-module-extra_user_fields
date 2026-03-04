@@ -58,26 +58,11 @@ describe "Account" do
     { "enabled" => true }
   end
 
-  let(:select_fields) do
-    ["participant_type"]
-  end
-
-  let(:boolean_fields) do
-    ["ngo"]
-  end
-
-  let(:text_fields) do
-    ["motto"]
-  end
-
-  let(:enabled_text_fields) do
-    {
-      motto: false
-    }
-  end
+  let(:select_fields) { { "participant_type" => "optional" } }
+  let(:boolean_fields) { ["ngo"] }
+  let(:text_fields) { { "motto" => "optional" } }
 
   before do
-    allow(Decidim::ExtraUserFields).to receive(:text_fields).and_return(enabled_text_fields)
     switch_to_host(organization.host)
     login_as user, scope: :user
   end
@@ -223,11 +208,7 @@ describe "Account" do
         end
 
         context "with text field mandatory" do
-          let(:enabled_text_fields) do
-            {
-              motto: true
-            }
-          end
+          let(:text_fields) { { "motto" => "required" } }
 
           it "displays the field as mandatory" do
             within "label[for='user_text_fields_motto']" do
@@ -237,9 +218,7 @@ describe "Account" do
               fill_in :user_text_fields_motto, with: ""
               find("*[type=submit]").click
             end
-            within "label[for='user_text_fields_motto']" do
-              expect(page).to have_content("There is an error in this field.")
-            end
+            expect(page).to have_content("cannot be blank")
           end
         end
       end

@@ -1,0 +1,8 @@
+<% custom_select_fields(form).each do |field, state| %>
+  <%= render "decidim/extra_user_fields/admin/extra_user_fields/field_row",
+             label: t("decidim.extra_user_fields.admin.extra_user_fields.select_fields.#{field}.label", default: field.to_s.humanize),
+             help_text: t("decidim.extra_user_fields.admin.extra_user_fields.select_fields.#{field}.description", default: ""),
+             state: state,
+             input_name: "extra_user_fields[select_fields][#{field}]",
+             input_id: "extra_user_fields_select_field_#{field}" %>
+<% end %>

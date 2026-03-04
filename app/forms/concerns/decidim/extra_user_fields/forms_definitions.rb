@@ -24,19 +24,21 @@ module Decidim
         attribute :boolean_fields, Array, default: []
         attribute :text_fields, Hash, default: {}
 
-        validates :country, presence: true, if: :country?
-        validates :postal_code, presence: true, if: :postal_code?
-        validates :date_of_birth, presence: true, if: :date_of_birth?
-        validates :gender, presence: true, inclusion: { in: Decidim::ExtraUserFields.genders.map(&:to_s) }, if: :gender?
-        validates :age_range, presence: true, inclusion: { in: Decidim::ExtraUserFields.age_ranges.map(&:to_s) }, if: :age_range?
-        validates :phone_number, presence: true, if: :phone_number?
+        validates :country, presence: true, if: :country_required?
+        validates :postal_code, presence: true, if: :postal_code_required?
+        validates :date_of_birth, presence: true, if: :date_of_birth_required?
+        validates :gender, presence: true, if: :gender_required?
+        validates :gender, inclusion: { in: Decidim::ExtraUserFields.genders.map(&:to_s) }, allow_blank: true, if: :gender?
+        validates :age_range, presence: true, if: :age_range_required?
+        validates :age_range, inclusion: { in: Decidim::ExtraUserFields.age_ranges.map(&:to_s) }, allow_blank: true, if: :age_range?
+        validates :phone_number, presence: true, if: :phone_number_required?
         validates(
           :phone_number,
           format: { with: ->(form) { Regexp.new(form.current_organization.extra_user_field_configuration(:phone_number)["pattern"]) } },
           if: :phone_number_format?
         )
 
-        validates :location, presence: true, if: :location?
+        validates :location, presence: true, if: :location_required?
         validates :underage, presence: true, if: :underage?
         validates :statutory_representative_email,
                   presence: true,
@@ -44,6 +46,7 @@ module Decidim
                   if: :underage_accepted?
         validate :birth_date_under_limit
         validate :select_fields_configured
+        validate :required_collection_fields
       end
 
       def map_model(model)
@@ -63,40 +66,32 @@ module Decidim
         self.statutory_representative_email = extended_data[:statutory_representative_email]
       end
 
+      # Virtual readers for individual custom collection fields.
+      # These let the form builder access per-field values and errors
+      # so it can apply is-invalid-label / is-invalid-input automatically.
+      Decidim::ExtraUserFields.select_fields.each_key do |field_name|
+        define_method(:"select_fields_#{field_name}") do
+          (select_fields || {})[field_name.to_s] || (select_fields || {})[field_name.to_sym]
+        end
+      end
+
+      Decidim::ExtraUserFields.text_fields.each_key do |field_name|
+        define_method(:"text_fields_#{field_name}") do
+          (text_fields || {})[field_name.to_s] || (text_fields || {})[field_name.to_sym]
+        end
+      end
+
       private
 
-      def country?
-        extra_user_fields_enabled && current_organization.activated_extra_field?(:country)
-      end
-
-      def date_of_birth?
-        extra_user_fields_enabled && current_organization.activated_extra_field?(:date_of_birth)
-      end
-
-      def gender?
-        extra_user_fields_enabled && current_organization.activated_extra_field?(:gender)
-      end
-
-      def age_range?
-        extra_user_fields_enabled && current_organization.activated_extra_field?(:age_range)
-      end
-
-      def postal_code?
-        extra_user_fields_enabled && current_organization.activated_extra_field?(:postal_code)
-      end
-
-      def phone_number?
-        extra_user_fields_enabled && current_organization.activated_extra_field?(:phone_number)
+      Decidim::ExtraUserFields::PROFILE_FIELDS.map(&:to_sym).each do |field|
+        define_method(:"#{field}?") { extra_user_fields_enabled && current_organization.activated_extra_field?(field) }
+        define_method(:"#{field}_required?") { extra_user_fields_enabled && current_organization.required_extra_field?(field) }
       end
 
       def phone_number_format?
         return false unless phone_number?
 
         current_organization.extra_user_field_configuration(:phone_number)["pattern"].present?
-      end
-
-      def location?
-        extra_user_fields_enabled && current_organization.activated_extra_field?(:location)
       end
 
       def underage?
@@ -155,6 +150,24 @@ module Decidim
 
           label = I18n.t("decidim.extra_user_fields.select_fields.#{field}.label", default: field.to_s.humanize)
           errors.add(:base, I18n.t("decidim.extra_user_fields.errors.select_fields", field: label))
+        end
+      end
+
+      def required_collection_fields
+        return unless extra_user_fields_enabled
+
+        [:select_fields, :text_fields].each do |collection|
+          next unless current_organization.activated_extra_field?(collection)
+
+          active = current_organization.extra_user_field_configuration(collection)
+          next unless active.is_a?(Hash)
+
+          active.each do |field_name, _|
+            next unless current_organization.collection_field_required?(collection, field_name)
+            next if send(collection)[field_name.to_s].present? || send(collection)[field_name.to_sym].present?
+
+            errors.add(:"#{collection}_#{field_name}", :blank)
+          end
         end
       end
     end

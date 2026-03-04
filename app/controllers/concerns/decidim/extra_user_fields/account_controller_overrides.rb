@@ -11,8 +11,8 @@ module Decidim
       def show
         super
 
-        return unless current_organization.respond_to?(:force_extra_user_fields?)
-        return unless current_organization.force_extra_user_fields?
+        return unless current_organization.respond_to?(:has_required_extra_user_fields?)
+        return unless current_organization.has_required_extra_user_fields?
         return if current_organization.extra_user_fields_complete?(current_user)
 
         @account.validate

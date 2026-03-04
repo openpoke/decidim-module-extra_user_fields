@@ -35,14 +35,14 @@
     <% if current_organization.activated_extra_field?(:underage) %>
       <% if current_organization.activated_extra_field?(:date_of_birth) %>
         <div class="fieldset hidden" id="underage_fieldset">
-          <%= f.check_box :underage, id: "underage_checkbox", label:  t(".signup.underage", limit: current_organization.age_limit?) %>
+          <%= f.check_box :underage, id: "underage_checkbox", label:  t(".signup.underage", limit: current_organization.age_limit) %>
           <div class="field <%= f.object.date_of_birth.present? ? '' : 'hidden' %>" id="statutory_representative_email_field">
             <%= f.text_field :statutory_representative_email %>
           </div>
         </div>
       <% else %>
         <div class="fieldset">
-          <%= f.check_box :underage, id: "underage_checkbox", label:  t(".signup.underage", limit: current_organization.age_limit?) %>
+          <%= f.check_box :underage, id: "underage_checkbox", label:  t(".signup.underage", limit: current_organization.age_limit) %>
           <div class="field hidden" id="statutory_representative_email_field">
             <%= f.text_field :statutory_representative_email %>
           </div>
