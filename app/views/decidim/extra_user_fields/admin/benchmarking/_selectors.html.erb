@@ -6,7 +6,8 @@
             selected_spaces.map { |s| space_option_value(s) }
           ),
           multiple: true,
-          data: { multiselect: "true" } %>
+          data: { multiselect: "true" },
+          aria: { label: t("decidim.admin.extra_user_fields.benchmarking.select_spaces") } %>
   </div>
 
   <div class="insights-selectors">
