@@ -160,29 +160,48 @@ module Decidim
             expect(user.password_updated_at).to be_nil
           end
 
-          it "notifies about registration with oauth data" do
-            user = create(:user, email:, organization:)
-            identity = Decidim::Identity.new(id: 1234)
-            allow(command).to receive(:create_identity).and_return(identity)
-            puts "user id in test: #{user.id}, tos_agreement: #{user.tos_agreement}"
-            expect(ActiveSupport::Notifications)
-              .to receive(:publish)
-              .with(
-                "decidim.user.omniauth_registration",
-                user_id: user.id,
-                identity_id: 1234,
-                provider:,
-                uid:,
-                email:,
-                name: "Facebook User",
-                nickname: "facebook_user",
-                avatar_url: "http://www.example.com/foo.jpg",
-                raw_data: {},
-                tos_agreement: true,
-                accepted_tos_version: user.accepted_tos_version,
-                newsletter_notifications_at: user.newsletter_notifications_at
-              )
-            command.call
+          context "when notifying about registration with oauth data" do
+            let(:identity) { Decidim::Identity.new(id: 1234) }
+
+            before do
+              allow(command).to receive(:create_identity).and_return(identity)
+            end
+
+            context "when the user is already confirmed" do
+              it "publishes the omniauth registration event" do
+                user = create(:user, :confirmed, email:, organization:)
+                expect(ActiveSupport::Notifications)
+                  .to receive(:publish)
+                  .with(
+                    "decidim.user.omniauth_registration",
+                    user_id: user.id,
+                    identity_id: 1234,
+                    provider:,
+                    uid:,
+                    email:,
+                    name: "Facebook User",
+                    nickname: "facebook_user",
+                    avatar_url: "http://www.example.com/foo.jpg",
+                    raw_data: {},
+                    tos_agreement: true,
+                    accepted_tos_version: user.accepted_tos_version,
+                    newsletter_notifications_at: user.newsletter_notifications_at
+                  )
+                command.call
+              end
+            end
+
+            context "when the user is not confirmed" do
+              it "confirms the user and publishes the omniauth registration event" do
+                user = create(:user, email:, organization:)
+                allow(ActiveSupport::Notifications).to receive(:publish).and_call_original
+                expect(ActiveSupport::Notifications)
+                  .to receive(:publish)
+                  .with("decidim.user.omniauth_registration", hash_including(user_id: user.id))
+                command.call
+                expect(user.reload).to be_confirmed
+              end
+            end
           end
 
           describe "user linking" do

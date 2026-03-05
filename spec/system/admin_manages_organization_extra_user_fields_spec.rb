@@ -338,7 +338,7 @@ describe "Admin manages organization extra user fields" do
   context "and no translations are provided" do
     let(:custom_select_fields) { { animal_type: { dog: "I love dogs", cat: "I love cats" } } }
     let(:custom_boolean_fields) { [:dog_person] }
-    let(:custom_text_fields) { { pet_name: false } }
+    let(:custom_text_fields) { [:pet_name] }
 
     before do
       allow(Decidim::ExtraUserFields).to receive(:select_fields).and_return(custom_select_fields)
