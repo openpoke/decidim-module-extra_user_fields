@@ -3,12 +3,14 @@
 module Decidim
   module ExtraUserFields
     module Admin
-      # Command to export insights pivot table data from a participatory space.
+      # A command with all the business logic to export insights pivot table data.
       class ExportInsights < Decidim::Command
-        # format - a string representing the export format (CSV, JSON, Excel)
-        # current_user - the user performing the action
-        # participatory_space - the scoped participatory space
-        # pivot_params - hash with :metric, :row_field, :col_field
+        # Public: Initializes the command.
+        #
+        # format              - A String with the export format (CSV, JSON, Excel).
+        # current_user        - The user performing the export.
+        # participatory_space - The participatory space to scope the data.
+        # pivot_params        - A Hash with :metric, :row_field, :col_field.
         def initialize(format, current_user, participatory_space, pivot_params)
           @format = format
           @current_user = current_user
@@ -16,9 +18,11 @@ module Decidim
           @pivot_params = pivot_params
         end
 
-        # Enqueues an async export job.
+        # Executes the command. Broadcasts these events:
         #
-        # Broadcasts :ok if successful.
+        # - :ok when the export job is enqueued.
+        #
+        # Returns nothing.
         def call
           Decidim.traceability.perform_action!(
             :export_insights,

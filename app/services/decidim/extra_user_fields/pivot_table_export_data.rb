@@ -2,12 +2,16 @@
 
 module Decidim
   module ExtraUserFields
-    # Converts a PivotTable into an array of hashes suitable for export.
-    # Each hash represents one row of the table (plus a totals row).
+    # A class with the responsibility to convert a PivotTable into an array of hashes for export.
     class PivotTableExportData
       ROW_HEADER_KEY = "Row"
       TOTAL_KEY = "Total"
 
+      # Public: Initializes the converter.
+      #
+      # pivot_table - A PivotTable instance to convert.
+      # row_field   - A String with the row field name.
+      # col_field   - A String with the column field name.
       def initialize(pivot_table, row_field:, col_field:)
         @pivot_table = pivot_table
         @row_field_obj = InsightFields.for(row_field)

@@ -4,11 +4,13 @@ module Decidim
   module ExtraUserFields
     module Admin
       module ApplicationHelper
-        # Renders a Decidim-style export dropdown button.
+        # Renders an export dropdown button with format options.
         #
-        # dropdown_id - unique HTML id for the dropdown menu
-        # formats - array of format strings (e.g. %w(CSV JSON Excel))
-        # block - yields each format, must return [label, url] or [label, url, http_method]
+        # dropdown_id - A String with the unique HTML id for the dropdown menu.
+        # formats     - An Array of format strings (defaults to DEFAULT_EXPORT_FORMATS).
+        # block       - Yields each format, must return [label, url] or [label, url, http_method].
+        #
+        # Returns an ActiveSupport::SafeBuffer.
         def export_dropdown(dropdown_id: "export-dropdown", formats: AdminEngine::DEFAULT_EXPORT_FORMATS, &block)
           button = content_tag(:button,
                                class: "button button__sm button__transparent-secondary",
@@ -36,6 +38,7 @@ module Decidim
           content_tag(:div, class: "relative") { button + menu }
         end
 
+        # Renders the export dropdown for the users list.
         def users_export_dropdown
           export_name = t("decidim.extra_user_fields.admin.exports.users")
 

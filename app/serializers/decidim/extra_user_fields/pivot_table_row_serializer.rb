@@ -2,9 +2,9 @@
 
 module Decidim
   module ExtraUserFields
-    # Serializer for pivot table export rows.
-    # Each resource is already a ready-made hash, so serialize returns it as-is.
+    # This class serializes a pivot table row so it can be exported to CSV, JSON or other formats.
     class PivotTableRowSerializer < Decidim::Exporters::Serializer
+      # Public: Exports a hash with the serialized data for this row.
       def serialize
         resource
       end
