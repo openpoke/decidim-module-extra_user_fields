@@ -17,6 +17,22 @@ module Decidim
           enforce_permission_to :read, :insights
         end
 
+        def export
+          enforce_permission_to :export, :insights
+
+          ExportInsights.call(
+            params[:export_format],
+            current_user,
+            current_participatory_space,
+            { metric: current_metric, row_field: current_row_field, col_field: current_col_field }
+          ) do
+            on(:ok) do
+              flash[:notice] = t("decidim.admin.exports.notice")
+              redirect_back(fallback_location: root_path)
+            end
+          end
+        end
+
         private
 
         def pivot_table_presenter

@@ -35,6 +35,18 @@ module Decidim
 
           InsightFields.for(field_name).value_label(value)
         end
+
+        def insights_export_dropdown
+          export_path = "#{request.path}/export"
+          export_name = t("decidim.admin.extra_user_fields.insights.export_name")
+
+          export_dropdown(dropdown_id: "insights-export-dropdown") do |fmt|
+            label = t("decidim.admin.exports.export_as", name: export_name, export_format: fmt)
+            url = "#{export_path}?#{{ export_format: fmt, metric: current_metric,
+                                      rows: current_row_field, cols: current_col_field }.to_query}"
+            [label, url, :post]
+          end
+        end
       end
     end
   end

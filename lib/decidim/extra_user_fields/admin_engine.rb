@@ -57,6 +57,27 @@ module Decidim
                         icon_name: "bar-chart-box-line",
                         active: is_active_link?(decidim_extra_user_fields.benchmarking_path)
         end
+
+        Decidim.menu :admin_menu do |menu|
+          menu.remove_item :insights
+
+          menu.add_item :insights_with_benchmarking,
+                        I18n.t("menu.insights", scope: "decidim.admin"),
+                        decidim_admin.statistics_path,
+                        icon_name: "line-chart",
+                        position: 11,
+                        if: allowed_to?(:read, :statistics),
+                        active: [
+                          %w(
+                            decidim/admin/statistics
+                            decidim/demographics/admin/settings
+                            decidim/demographics/admin/questions
+                            decidim/demographics/admin/responses
+                            decidim/demographics/admin/publish_responses
+                            decidim/extra_user_fields/admin/benchmarking
+                          ), []
+                        ]
+        end
       end
 
       initializer "decidim_extra_user_fields.insights_routes" do

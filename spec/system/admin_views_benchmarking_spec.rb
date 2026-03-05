@@ -22,6 +22,10 @@ describe "Admin views benchmarking" do
       end
     end
 
+    it "highlights the Insights menu item in the main admin menu" do
+      expect(page).to have_css("[aria-current='page']", text: "Insights")
+    end
+
     it "displays the page title" do
       expect(page).to have_content("Comparative stats across spaces")
     end

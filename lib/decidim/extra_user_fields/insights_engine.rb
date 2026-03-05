@@ -9,6 +9,7 @@ module Decidim
 
       routes do
         root to: "admin/insights#show"
+        post "export", to: "admin/insights#export", as: :export
       end
     end
   end

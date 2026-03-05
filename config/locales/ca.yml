@@ -43,6 +43,7 @@ ca:
             lower_total: Total més baix
             more: Més
             non_specified: No especificat / Prefereixo no dir-ho
+          export_name: Estadístiques
           menu_title: Estadístiques
           metrics:
             budget_votes: Vots pressupostaris

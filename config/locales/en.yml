@@ -36,6 +36,7 @@ en:
           column_total: Column Total
           description: Explore participant activity across profile dimensions. Select
             a metric and two profile fields to see how participation is distributed.
+          export_name: Insights
           fields:
             age_span: Age span
             country: Country

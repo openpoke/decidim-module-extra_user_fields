@@ -51,6 +51,7 @@ fr:
             lower_total: Total faible
             more: Plus
             non_specified: Non spécifié / Préfère ne pas dire
+          export_name: Aperçus
           menu_title: Aperçus
           metrics:
             budget_votes: Votes budgétaires
