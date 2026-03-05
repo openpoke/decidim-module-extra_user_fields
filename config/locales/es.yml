@@ -30,7 +30,8 @@ es:
           menu_title: Análisis comparativo
           no_data: No se encontraron datos de participación para los espacios seleccionados.
           select_spaces: Elija espacios participativos para comparar
-          select_spaces_prompt: Seleccione uno o más espacios participativos para comparar.
+          select_spaces_prompt: Seleccione uno o más espacios participativos para
+            comparar.
           table_label: Tabla de análisis comparativo
           title: Estadísticas comparativas entre espacios
         insights:

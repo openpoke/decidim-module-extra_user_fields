@@ -200,7 +200,8 @@ fr:
             autorisation parentale
       select_fields:
         participant_type:
-          label: Participez-vous en tant qu'individu ou officiellement au nom d'une organisation?
+          label: Participez-vous en tant qu'individu ou officiellement au nom d'une
+            organisation?
       text_fields:
         motto:
           label: Quelle est votre devise?
