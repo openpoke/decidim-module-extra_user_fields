@@ -26,6 +26,13 @@ ca:
       exports:
         export_as: Exporta com a %{export_format}
       extra_user_fields:
+        benchmarking:
+          menu_title: Anàlisi comparativa
+          no_data: No s'han trobat dades de participació per als espais seleccionats.
+          select_spaces: Escolliu espais participatius per comparar
+          select_spaces_prompt: Seleccioneu un o més espais participatius per comparar.
+          table_label: Taula d'anàlisi comparativa
+          title: Estadístiques comparatives entre espais
         insights:
           column_total: Total de columna
           description: Explora l'activitat dels participants segons les dimensions

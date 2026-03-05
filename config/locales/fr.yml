@@ -27,12 +27,12 @@ fr:
         export_as: Exporter au format %{export_format}
       extra_user_fields:
         benchmarking:
-          menu_title: Benchmarking
+          menu_title: Analyse comparative
           no_data: Aucune donnée de participation trouvée pour les espaces sélectionnés.
           select_spaces: Choisissez des espaces participatifs à comparer
           select_spaces_prompt: Sélectionnez un ou plusieurs espaces participatifs
             à comparer.
-          table_label: Tableau de comparaison benchmarking
+          table_label: Tableau d'analyse comparative
           title: Statistiques comparatives entre espaces
         insights:
           column_total: Total colonne
@@ -176,7 +176,7 @@ fr:
         up_to_16: 16 ou moins
       boolean_fields:
         ngo:
-          label: Activer le champ ONG
+          label: Je suis membre d'une organisation non gouvernementale (ONG)
       errors:
         select_fields: Le champ "%{field}" n'est pas valide.
       force_extra_user_fields:
@@ -201,10 +201,11 @@ fr:
             autorisation parentale
       select_fields:
         participant_type:
-          label: Activer le champ type de participant
+          label: Participez-vous en tant qu'individu ou officiellement au nom d'une
+            organisation?
       text_fields:
         motto:
-          label: Activer le champ "Mon slogan"
+          label: Quelle est votre devise?
     statutory_representative:
       inform:
         body: |
