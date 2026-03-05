@@ -31,6 +31,7 @@ es:
           description: Explora la actividad de los participantes en las dimensiones
             del perfil. Selecciona una métrica y dos campos de perfil para ver cómo
             se distribuye la participación.
+          export_name: Estadísticas
           fields:
             age_span: Rango de edad
             country: País
@@ -43,7 +44,6 @@ es:
             lower_total: Total más bajo
             more: Más
             non_specified: No especificado / Prefiero no decirlo
-          export_name: Estadísticas
           menu_title: Estadísticas
           metrics:
             budget_votes: Votos presupuestarios

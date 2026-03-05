@@ -39,6 +39,7 @@ fr:
           description: Explorez l'activité des participants selon les dimensions de
             profil. Sélectionnez une métrique et deux champs de profil pour voir comment
             la participation est répartie.
+          export_name: Aperçus
           fields:
             age_span: Tranche d'âge
             country: Pays
@@ -51,7 +52,6 @@ fr:
             lower_total: Total faible
             more: Plus
             non_specified: Non spécifié / Préfère ne pas dire
-          export_name: Aperçus
           menu_title: Aperçus
           metrics:
             budget_votes: Votes budgétaires

@@ -31,6 +31,7 @@ ca:
           description: Explora l'activitat dels participants segons les dimensions
             del perfil. Selecciona una mètrica i dos camps de perfil per veure com
             es distribueix la participació.
+          export_name: Estadístiques
           fields:
             age_span: Rang d'edat
             country: País
@@ -43,7 +44,6 @@ ca:
             lower_total: Total més baix
             more: Més
             non_specified: No especificat / Prefereixo no dir-ho
-          export_name: Estadístiques
           menu_title: Estadístiques
           metrics:
             budget_votes: Vots pressupostaris

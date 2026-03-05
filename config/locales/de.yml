@@ -28,7 +28,10 @@ de:
       extra_user_fields:
         insights:
           column_total: Spaltensumme
-          description: Erkunden Sie die Teilnehmeraktivität über Profildimensionen hinweg. Wählen Sie eine Metrik und zwei Profilfelder aus, um zu sehen, wie die Teilnahme verteilt ist.
+          description: Erkunden Sie die Teilnehmeraktivität über Profildimensionen
+            hinweg. Wählen Sie eine Metrik und zwei Profilfelder aus, um zu sehen,
+            wie die Teilnahme verteilt ist.
+          export_name: Einblicke
           fields:
             age_span: Altersgruppe
             country: Land
@@ -41,7 +44,6 @@ de:
             lower_total: Niedrigere Summe
             more: Mehr
             non_specified: Nicht angegeben / Möchte nicht sagen
-          export_name: Einblicke
           menu_title: Einblicke
           metrics:
             budget_votes: Budgetstimmen
@@ -49,7 +51,8 @@ de:
             participants: Teilnehmer
             proposals_created: Erstellte Vorschläge
             proposals_supported: Unterstützte Vorschläge
-          no_data: Für diesen Bereich wurden mit den ausgewählten Kriterien keine Teilnahmedaten gefunden.
+          no_data: Für diesen Bereich wurden mit den ausgewählten Kriterien keine
+            Teilnahmedaten gefunden.
           non_specified: Nicht angegeben / Möchte nicht sagen
           pivot_table_label: Teilnahmedatentabelle
           row_total: Zeilensumme
@@ -73,7 +76,8 @@ de:
             required: erforderlich
           boolean_fields:
             ngo:
-              description: Dieses Feld ist ein boolesches Feld. Der Benutzer kann angeben, ob er einer NGO angehört
+              description: Dieses Feld ist ein boolesches Feld. Der Benutzer kann
+                angeben, ob er einer NGO angehört
               label: NGO-Feld aktivieren
           fields:
             age_range:
@@ -105,7 +109,8 @@ de:
                 eine Postleitzahl auswählen.
               label: Das Postleitzahlenfeld aktivieren.
             underage:
-              description: Dieses Feld ist ein boolesches Feld. Der Benutzer kann angeben, ob er minderjährig ist
+              description: Dieses Feld ist ein boolesches Feld. Der Benutzer kann
+                angeben, ob er minderjährig ist
               label: Feld für elterliche Genehmigung aktivieren
               limit: Dies legt die Altersgrenze fest (z.B. 18 Jahre)
               limit_label: Altersgrenze
@@ -119,7 +124,9 @@ de:
               extra_user_fields_enabled: Benutzerdefinierte Anmeldefelder aktivieren
               section: Verfügbare Anmeldefelder für das Anmeldeformular
               section_extras: Zusätzliche benutzerdefinierte Felder
-              section_extras_description: Wenn Sie zusätzliche Benutzerfelder konfiguriert haben, können Sie diese hier verwalten (siehe Abschnitt "Konfiguration über einen Initializer" im Plugin-README).
+              section_extras_description: Wenn Sie zusätzliche Benutzerfelder konfiguriert
+                haben, können Sie diese hier verwalten (siehe Abschnitt "Konfiguration
+                über einen Initializer" im Plugin-README).
               table:
                 enabled: Aktiviert
                 field: Feld
@@ -136,11 +143,13 @@ de:
             title: Benutzerdefinierte Anmeldefelder verwalten
           select_fields:
             participant_type:
-              description: Dieses Feld ist eine Liste von Teilnehmertypen. Der Benutzer muss einen Teilnehmertyp auswählen
+              description: Dieses Feld ist eine Liste von Teilnehmertypen. Der Benutzer
+                muss einen Teilnehmertyp auswählen
               label: Teilnehmertyp-Feld aktivieren
           text_fields:
             motto:
-              description: Dieses Feld ist ein Textfeld. Der Benutzer kann einen persönlichen Satz oder ein Motto eingeben
+              description: Dieses Feld ist ein Textfeld. Der Benutzer kann einen persönlichen
+                Satz oder ein Motto eingeben
               label: Feld "Mein Motto" aktivieren
           update:
             failure: Bei der Aktualisierung ist ein Fehler aufgetreten.
@@ -157,7 +166,8 @@ de:
       errors:
         select_fields: Das Feld "%{field}" ist ungültig.
       force_extra_user_fields:
-        redirect_message: Bitte vervollständigen Sie Ihre Profilinformationen, bevor Sie fortfahren.
+        redirect_message: Bitte vervollständigen Sie Ihre Profilinformationen, bevor
+          Sie fortfahren.
       genders:
         female: Frau
         male: Mann
@@ -173,10 +183,12 @@ de:
       registration_form:
         signup:
           legend: Weitere Informationen
-          underage: Ich bin unter %{limit} Jahre alt und stimme zu, eine elterliche Genehmigung einzuholen
+          underage: Ich bin unter %{limit} Jahre alt und stimme zu, eine elterliche
+            Genehmigung einzuholen
       select_fields:
         participant_type:
-          label: Nehmen Sie als Einzelperson oder offiziell im Namen einer Organisation teil?
+          label: Nehmen Sie als Einzelperson oder offiziell im Namen einer Organisation
+            teil?
       text_fields:
         motto:
           label: Was ist Ihr Motto?
