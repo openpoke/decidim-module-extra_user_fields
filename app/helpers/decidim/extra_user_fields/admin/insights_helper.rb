@@ -15,7 +15,7 @@ module Decidim
                 param_name,
                 options_for_select(options.map { |opt| [block.call(opt), opt] }, selected_value),
                 class: "insights-selectors__select",
-                onchange: "this.form.submit();"
+                onchange: "this.form.requestSubmit();"
               )
           end
         end

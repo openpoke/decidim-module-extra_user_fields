@@ -25,6 +25,13 @@ en:
       exports:
         export_as: Export %{export_format}
       extra_user_fields:
+        benchmarking:
+          menu_title: Benchmarking
+          no_data: No participation data found for the selected spaces.
+          select_spaces: Choose participatory spaces for comparison
+          select_spaces_prompt: Select one or more participatory spaces to compare.
+          table_label: Benchmarking comparison table
+          title: Comparative stats across spaces
         insights:
           column_total: Column Total
           description: Explore participant activity across profile dimensions. Select
