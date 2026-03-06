@@ -54,6 +54,22 @@ module Decidim
           content_tag(:td, number_with_delimiter(comparative_pivot_presenter.combined_grand_total),
                       class: "insights-table__grand-total")
         end
+
+        def benchmarking_export_dropdown
+          export_name = t("decidim.admin.extra_user_fields.benchmarking.export_name")
+          base_params = {
+            metric: current_metric,
+            rows: current_row_field,
+            cols: current_col_field,
+            spaces: selected_spaces.map { |s| space_option_value(s) }
+          }
+
+          export_dropdown(dropdown_id: "benchmarking-export-dropdown") do |fmt|
+            label = t("decidim.admin.exports.export_as", name: export_name, export_format: fmt)
+            url = AdminEngine.routes.url_helpers.benchmarking_export_path(**base_params, export_format: fmt)
+            [label, url, :post]
+          end
+        end
       end
     end
   end

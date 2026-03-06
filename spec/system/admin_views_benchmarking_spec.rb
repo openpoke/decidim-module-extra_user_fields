@@ -22,6 +22,10 @@ describe "Admin views benchmarking" do
       end
     end
 
+    it "highlights the Insights menu item in the main admin menu" do
+      expect(page).to have_css("[aria-current='page']", text: "Insights")
+    end
+
     it "displays the page title" do
       expect(page).to have_content("Comparative stats across spaces")
     end
@@ -226,6 +230,59 @@ describe "Admin views benchmarking" do
       visit decidim_extra_user_fields.benchmarking_path(spaces: [":1", "ClassName:", ""])
 
       expect(page).to have_content("Select one or more participatory spaces to compare")
+    end
+  end
+
+  context "when export button is available" do
+    let!(:process_a) { create(:participatory_process, :with_steps, organization:, title: { "en" => "Export Process" }) }
+    let!(:component_a) { create(:proposal_component, :published, participatory_space: process_a) }
+    let(:author) { create(:user, :confirmed, organization:, extended_data: { "gender" => "female", "date_of_birth" => 25.years.ago.to_date.to_s }) }
+
+    before do
+      create(:proposal, :published, component: component_a, users: [author])
+    end
+
+    it "shows the Export button when data is present" do
+      space_value = "#{process_a.class.name}:#{process_a.id}"
+      visit decidim_extra_user_fields.benchmarking_path(spaces: [space_value])
+
+      within(".item_show__header") do
+        expect(page).to have_content("Export")
+      end
+    end
+
+    it "does not show the Export button when no spaces are selected" do
+      visit decidim_extra_user_fields.benchmarking_path
+
+      within(".item_show__header") do
+        expect(page).to have_no_content("Export")
+      end
+    end
+
+    it "shows flash notice when clicking export" do
+      space_value = "#{process_a.class.name}:#{process_a.id}"
+      visit decidim_extra_user_fields.benchmarking_path(spaces: [space_value])
+
+      within(".item_show__header") do
+        click_on "Export"
+      end
+
+      click_on "Export CSV"
+
+      expect(page).to have_content("Your export is currently in progress")
+    end
+
+    it "sends an export email with benchmarking in the subject" do
+      space_value = "#{process_a.class.name}:#{process_a.id}"
+      visit decidim_extra_user_fields.benchmarking_path(spaces: [space_value])
+
+      within(".item_show__header") do
+        click_on "Export"
+      end
+
+      perform_enqueued_jobs { click_on "Export CSV" }
+
+      expect(last_email.subject).to include("benchmarking")
     end
   end
 

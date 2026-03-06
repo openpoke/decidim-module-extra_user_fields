@@ -262,6 +262,42 @@ describe "Admin views insights" do
     end
   end
 
+  context "when exporting insights" do
+    let!(:participatory_process) { create(:participatory_process, :with_steps, organization:) }
+    let!(:proposal_component) { create(:proposal_component, :published, participatory_space: participatory_process) }
+    let(:user_with_data) { create(:user, :confirmed, organization:, extended_data: { "gender" => "female", "date_of_birth" => 25.years.ago.to_date.to_s }) }
+
+    before do
+      create(:proposal, :published, component: proposal_component, users: [user_with_data])
+      visit decidim_admin_participatory_process_insights.root_path(
+        participatory_process_slug: participatory_process.slug
+      )
+    end
+
+    it "shows the export dropdown button" do
+      expect(page).to have_button("Export")
+    end
+
+    it "shows export format options in the dropdown" do
+      click_on "Export"
+      expect(page).to have_content("CSV")
+      expect(page).to have_content("JSON")
+      expect(page).to have_content("Excel")
+    end
+
+    it "triggers export and shows flash notice" do
+      click_on "Export"
+      perform_enqueued_jobs { click_on "CSV" }
+      expect(page).to have_content("Your export is currently in progress")
+    end
+
+    it "sends an export email with insights in the subject" do
+      click_on "Export"
+      perform_enqueued_jobs { click_on "CSV" }
+      expect(last_email.subject).to include("insights")
+    end
+  end
+
   context "when user is not admin" do
     let!(:participatory_process) { create(:participatory_process, organization:) }
     let(:user) { create(:user, :confirmed, organization:) }

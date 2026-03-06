@@ -26,6 +26,7 @@ en:
         export_as: Export %{export_format}
       extra_user_fields:
         benchmarking:
+          export_name: Benchmarking
           menu_title: Benchmarking
           no_data: No participation data found for the selected spaces.
           select_spaces: Choose participatory spaces for comparison
@@ -36,6 +37,7 @@ en:
           column_total: Column Total
           description: Explore participant activity across profile dimensions. Select
             a metric and two profile fields to see how participation is distributed.
+          export_name: Insights
           fields:
             age_span: Age span
             country: Country

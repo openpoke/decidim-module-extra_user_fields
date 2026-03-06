@@ -4,16 +4,33 @@ module Decidim
   module ExtraUserFields
     module Admin
       class BenchmarkingController < Decidim::Admin::ApplicationController
+        include PivotParamsConcern
         layout "decidim/admin/insights"
 
         helper InsightsHelper
         helper BenchmarkingHelper
 
-        helper_method :comparative_pivot_presenter, :current_metric, :current_row_field, :current_col_field,
-                      :available_metrics, :available_fields, :selected_spaces, :available_spaces
+        helper_method :comparative_pivot_presenter, :selected_spaces, :available_spaces
 
         def show
           enforce_permission_to :read, :insights
+        end
+
+        def export
+          enforce_permission_to :export, :insights
+
+          ExportPivotData.call(
+            params[:export_format],
+            current_user,
+            selected_spaces,
+            pivot_params,
+            export_name: "benchmarking"
+          ) do
+            on(:ok) do
+              flash[:notice] = t("decidim.admin.exports.notice")
+              redirect_back(fallback_location: decidim_extra_user_fields.benchmarking_path)
+            end
+          end
         end
 
         private
@@ -47,41 +64,11 @@ module Decidim
           end
         end
 
-        def current_metric
-          @current_metric ||= detect_metric(params[:metric]) || available_metrics.first
-        end
-
-        def current_row_field
-          @current_row_field ||= detect_field(params[:rows]) || available_fields.second || available_fields.first
-        end
-
-        def current_col_field
-          @current_col_field ||= detect_field(params[:cols]) || available_fields.first
-        end
-
-        def available_metrics
-          @available_metrics ||= InsightMetrics.available_metrics
-        end
-
-        def available_fields
-          @available_fields ||= Decidim::ExtraUserFields.insight_fields
-        end
-
         def permission_class_chain
           [
             ::Decidim::ExtraUserFields::Admin::Permissions,
             ::Decidim::Admin::Permissions
           ]
-        end
-
-        def detect_metric(name)
-          name = name.to_s
-          name if InsightMetrics.valid_metric?(name)
-        end
-
-        def detect_field(name)
-          name = name.to_s
-          name if available_fields.include?(name)
         end
 
         def parse_selected_spaces
