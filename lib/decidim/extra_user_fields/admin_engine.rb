@@ -20,6 +20,7 @@ module Decidim
         match "/extra_user_fields" => "extra_user_fields#update", :via => :patch, :as => "update"
 
         get "benchmarking", to: "benchmarking#show"
+        post "benchmarking/export", to: "benchmarking#export", as: :benchmarking_export
 
         root to: "extra_user_fields#index"
       end

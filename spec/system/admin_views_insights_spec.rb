@@ -290,6 +290,12 @@ describe "Admin views insights" do
       perform_enqueued_jobs { click_on "CSV" }
       expect(page).to have_content("Your export is currently in progress")
     end
+
+    it "sends an export email with insights in the subject" do
+      click_on "Export"
+      perform_enqueued_jobs { click_on "CSV" }
+      expect(last_email.subject).to include("insights")
+    end
   end
 
   context "when user is not admin" do

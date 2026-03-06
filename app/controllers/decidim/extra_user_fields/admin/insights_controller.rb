@@ -5,11 +5,11 @@ module Decidim
     module Admin
       class InsightsController < Decidim::Admin::ApplicationController
         include Decidim::Admin::ParticipatorySpaceAdminContext
+        include PivotParamsConcern
         participatory_space_admin_layout
         helper InsightsHelper
 
-        helper_method :pivot_table_presenter, :current_metric, :current_row_field, :current_col_field,
-                      :available_metrics, :available_fields
+        helper_method :pivot_table_presenter
 
         before_action :set_breadcrumbs
 
@@ -20,11 +20,12 @@ module Decidim
         def export
           enforce_permission_to :export, :insights
 
-          ExportInsights.call(
+          ExportPivotData.call(
             params[:export_format],
             current_user,
-            current_participatory_space,
-            { metric: current_metric, row_field: current_row_field, col_field: current_col_field }
+            [current_participatory_space],
+            pivot_params,
+            export_name: "insights"
           ) do
             on(:ok) do
               flash[:notice] = t("decidim.admin.exports.notice")
@@ -44,36 +45,6 @@ module Decidim
               col_field: current_col_field
             ).call
           )
-        end
-
-        def current_metric
-          @current_metric ||= detect_metric(params[:metric]) || available_metrics.first
-        end
-
-        def current_row_field
-          @current_row_field ||= detect_field(params[:rows]) || available_fields.second || available_fields.first
-        end
-
-        def current_col_field
-          @current_col_field ||= detect_field(params[:cols]) || available_fields.first
-        end
-
-        def available_metrics
-          @available_metrics ||= InsightMetrics.available_metrics
-        end
-
-        def available_fields
-          @available_fields ||= Decidim::ExtraUserFields.insight_fields
-        end
-
-        def detect_metric(name)
-          name = name.to_s
-          name if InsightMetrics.valid_metric?(name)
-        end
-
-        def detect_field(name)
-          name = name.to_s
-          name if available_fields.include?(name)
         end
 
         def permission_class_chain

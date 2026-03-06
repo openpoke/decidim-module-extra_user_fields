@@ -27,6 +27,7 @@ fr:
         export_as: Exporter au format %{export_format}
       extra_user_fields:
         benchmarking:
+          export_name: Analyse comparative
           menu_title: Analyse comparative
           no_data: Aucune donnée de participation trouvée pour les espaces sélectionnés.
           select_spaces: Choisissez des espaces participatifs à comparer
