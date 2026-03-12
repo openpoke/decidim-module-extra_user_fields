@@ -27,6 +27,7 @@ de:
         export_as: Exportieren im Format %{export_format}
       extra_user_fields:
         benchmarking:
+          export_name: Vergleichsanalyse
           menu_title: Vergleichsanalyse
           no_data: Für die ausgewählten Räume wurden keine Teilnahmedaten gefunden.
           select_spaces: Wählen Sie partizipative Räume zum Vergleich
@@ -39,6 +40,7 @@ de:
           description: Erkunden Sie die Teilnehmeraktivität über Profildimensionen
             hinweg. Wählen Sie eine Metrik und zwei Profilfelder aus, um zu sehen,
             wie die Teilnahme verteilt ist.
+          export_name: Einblicke
           fields:
             age_span: Altersgruppe
             country: Land

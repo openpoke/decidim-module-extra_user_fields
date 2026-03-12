@@ -27,6 +27,7 @@ es:
         export_as: Exportar como %{export_format}
       extra_user_fields:
         benchmarking:
+          export_name: Análisis comparativo
           menu_title: Análisis comparativo
           no_data: No se encontraron datos de participación para los espacios seleccionados.
           select_spaces: Elija espacios participativos para comparar
@@ -39,6 +40,7 @@ es:
           description: Explora la actividad de los participantes en las dimensiones
             del perfil. Selecciona una métrica y dos campos de perfil para ver cómo
             se distribuye la participación.
+          export_name: Estadísticas
           fields:
             age_span: Rango de edad
             country: País

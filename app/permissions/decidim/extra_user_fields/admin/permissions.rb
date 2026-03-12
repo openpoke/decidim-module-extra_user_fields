@@ -11,6 +11,7 @@ module Decidim
           allow! if access_extra_user_fields?
           allow! if update_extra_user_fields?
           allow! if read_insights?
+          allow! if export_insights?
 
           permission_action
         end
@@ -30,6 +31,11 @@ module Decidim
         def update_extra_user_fields?
           permission_action.subject == :extra_user_fields &&
             permission_action.action == :update
+        end
+
+        def export_insights?
+          permission_action.subject == :insights &&
+            permission_action.action == :export
         end
       end
     end
