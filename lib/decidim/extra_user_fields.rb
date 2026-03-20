@@ -102,5 +102,12 @@ module Decidim
         "budget_votes" => "Decidim::ExtraUserFields::Metrics::BudgetVotesMetric"
       }
     end
+
+    # Always return strings, regardless of whether the initializer used symbols or strings.
+    [:genders, :age_ranges, :insight_fields, :insight_age_spans].each do |accessor|
+      define_singleton_method(accessor) do
+        Array(config.send(accessor)).map(&:to_s)
+      end
+    end
   end
 end
