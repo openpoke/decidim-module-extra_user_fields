@@ -102,5 +102,13 @@ module Decidim
         "budget_votes" => "Decidim::ExtraUserFields::Metrics::BudgetVotesMetric"
       }
     end
+
+    # Normalize array config values to strings so that symbol/string
+    # mismatches from client initializers never cause duplicate entries.
+    [:genders, :age_ranges, :insight_fields, :insight_age_spans].each do |accessor|
+      define_singleton_method(accessor) do
+        Array(config.send(accessor)).map(&:to_s)
+      end
+    end
   end
 end
