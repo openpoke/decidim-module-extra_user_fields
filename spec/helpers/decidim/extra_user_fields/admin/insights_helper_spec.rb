@@ -84,9 +84,11 @@ module Decidim::ExtraUserFields::Admin
         expect(result).to eq("5")
       end
 
-      it "returns plain count when value equals total" do
+      it "shows 100% when value equals total" do
         result = helper.count_with_percentage(100, 100)
-        expect(result).to eq("100")
+        expect(result).to include("100")
+        expect(result).to include("100%")
+        expect(result).to include("insights-table__percentage")
       end
     end
 
