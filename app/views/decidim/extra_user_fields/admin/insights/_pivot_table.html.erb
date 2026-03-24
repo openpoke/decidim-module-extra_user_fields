@@ -37,11 +37,11 @@
                     <% value = pivot_table_presenter.cell(row, col) %>
                     <% cell_type = (row.nil? || col.nil?) ? "gray" : "colored" %>
                     <td class="insights-table__cell heatmap-cell--<%= cell_type %>" style="<%= pivot_table_presenter.cell_style(value, row, col) %>">
-                      <%= number_with_delimiter(value) %>
+                      <%= count_with_percentage(value, pivot_table_presenter.grand_total) %>
                     </td>
                   <% end %>
                   <td class="insights-table__row-total heatmap-total" style="<%= pivot_table_presenter.row_total_style(row_total_value) %>">
-                    <%= number_with_delimiter(row_total_value) %>
+                    <%= count_with_percentage(row_total_value, pivot_table_presenter.grand_total) %>
                   </td>
                 </tr>
               <% end %>
@@ -54,7 +54,7 @@
                 <% pivot_table_presenter.col_values.each do |col| %>
                   <% col_total_value = pivot_table_presenter.col_total(col) %>
                   <td class="insights-table__col-total heatmap-total" style="<%= pivot_table_presenter.col_total_style(col_total_value) %>">
-                    <%= number_with_delimiter(col_total_value) %>
+                    <%= count_with_percentage(col_total_value, pivot_table_presenter.grand_total) %>
                   </td>
                 <% end %>
                 <td class="insights-table__grand-total">

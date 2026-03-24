@@ -78,6 +78,12 @@
   &__grand-total {
     @apply text-xs font-bold;
   }
+
+  &__percentage {
+    @apply text-xs;
+
+    white-space: nowrap;
+  }
 }
 
 th.insights-table__corner-header,
