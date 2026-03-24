@@ -38,6 +38,16 @@ module Decidim
           InsightFields.for(field_name).value_label(value)
         end
 
+        # Formats a count with its percentage of the total in parentheses.
+        # Skips percentage when total is zero (avoids division by zero).
+        def count_with_percentage(value, total)
+          formatted = number_with_delimiter(value)
+          return formatted if total.zero?
+
+          pct = number_with_precision(value.to_f / total * 100, precision: 1, strip_insignificant_zeros: true)
+          safe_join([formatted, " ", content_tag(:span, "(#{pct}%)", class: "insights-table__percentage")])
+        end
+
         # Renders the export dropdown for the insights pivot table.
         def insights_export_dropdown
           export_path = "#{request.path}/export"

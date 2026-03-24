@@ -60,6 +60,38 @@ module Decidim::ExtraUserFields::Admin
       end
     end
 
+    describe "#count_with_percentage" do
+      it "returns count with percentage of total" do
+        result = helper.count_with_percentage(31, 100)
+        expect(result).to include("31")
+        expect(result).to include("31%")
+        expect(result).to include("insights-table__percentage")
+      end
+
+      it "strips insignificant zeros from percentage" do
+        result = helper.count_with_percentage(50, 100)
+        expect(result).to include("50%")
+        expect(result).not_to include("50.0%")
+      end
+
+      it "shows one decimal place when needed" do
+        result = helper.count_with_percentage(1, 3)
+        expect(result).to include("33.3%")
+      end
+
+      it "returns plain count when total is zero" do
+        result = helper.count_with_percentage(5, 0)
+        expect(result).to eq("5")
+      end
+
+      it "shows 100% when value equals total" do
+        result = helper.count_with_percentage(100, 100)
+        expect(result).to include("100")
+        expect(result).to include("100%")
+        expect(result).to include("insights-table__percentage")
+      end
+    end
+
     describe "#insight_selector_field" do
       it "renders a selector with label and select tag" do
         result = helper.insight_selector_field(:rows, %w(gender age_span), "gender", &:humanize)

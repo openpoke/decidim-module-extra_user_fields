@@ -83,6 +83,29 @@ module Decidim::ExtraUserFields
       end
     end
 
+    context "when config uses symbols instead of strings" do
+      let(:user_female) { create(:user, :confirmed, organization:, extended_data: { "gender" => "female", "date_of_birth" => 25.years.ago.to_date.to_s }) }
+      let(:user_male) { create(:user, :confirmed, organization:, extended_data: { "gender" => "male", "date_of_birth" => 35.years.ago.to_date.to_s }) }
+
+      before do
+        allow(Decidim::ExtraUserFields.config).to receive(:genders).and_return([:female, :male])
+        create(:proposal, :published, component: proposal_component, users: [user_female])
+        create(:proposal, :published, component: proposal_component, users: [user_male])
+      end
+
+      it "does not produce duplicate columns" do
+        result = subject.call
+        expect(result.row_values.count("female") + result.row_values.count(:female)).to eq(1)
+        expect(result.row_values.count("male") + result.row_values.count(:male)).to eq(1)
+      end
+
+      it "counts users correctly in normalized columns" do
+        result = subject.call
+        expect(result.cell("female", "21_to_30")).to eq(1)
+        expect(result.cell("male", "31_to_40")).to eq(1)
+      end
+    end
+
     context "with an invalid metric name" do
       subject { described_class.new(participatory_space: participatory_process, metric_name: "invalid", row_field: "gender", col_field: "age_span") }
 
