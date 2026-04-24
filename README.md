@@ -82,7 +82,7 @@ Once the fields are enabled, they will be shown in the user signup form and in t
 
 An extra feature of this plugin is to enable an Export action in the participants admin panel. This action allows to download a list of participants in CSV, JSON or Excel. The fields included in the export are the Decidim User attributes plus the extra fields enabled in the admin panel.
 
-![User export](docs/resources/extra_user_fields_export.png)
+![User export](docs/resources/extra_user_fields_export.gif)
 
 
 ## Configuration
