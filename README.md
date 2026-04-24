@@ -60,9 +60,9 @@ gem "decidim-extra_user_fields", github: "PopulateTools/decidim-module-extra_use
 
 ### Admin setup
 
-After installing the gem and migrating the database, you can enable the extra fields in the admin panel of the organization. Go to Settings > Manage extra user fields. There you can enable the fields you want to use. By default all fields are required and don't include any format validation.
+After installing the gem and migrating the database, you can enable the extra fields in the admin panel of the organization. Go to Participants > Manage extra user fields. There you can enable the fields you want to use and configure whether each field is required or optional. Fields don't include any format validation by default.
 
-![Admin panel](docs/resources/extra_user_fields_admin.png)
+![Admin panel](docs/resources/extra_user_fields_admin.gif)
 
 Most of the fields are plain text inputs, but other have a special format:
 
