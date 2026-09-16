@@ -64,7 +64,11 @@ module Decidim
 
       initializer "decidim_extra_user_fields.mount_routes" do
         Decidim::Core::Engine.routes do
-          mount Decidim::ExtraUserFields::Engine, at: "/extra_user_fields", as: "decidim_extra_user_fields_engine"
+          extend Decidim::Routes::LocaleRedirects
+
+          scope "/:locale", **locale_scope_options do
+            mount Decidim::ExtraUserFields::Engine, at: "/extra_user_fields", as: "decidim_extra_user_fields_engine"
+          end
         end
       end
     end

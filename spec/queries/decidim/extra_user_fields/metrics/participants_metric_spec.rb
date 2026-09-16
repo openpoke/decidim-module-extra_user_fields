@@ -48,7 +48,7 @@ module Decidim::ExtraUserFields::Metrics
       let!(:proposal) { create(:proposal, :published, component: proposal_component, users: [user1]) }
 
       before do
-        create(:proposal_vote, proposal: proposal, author: user2)
+        create(:proposal_vote, proposal:, author: user2)
       end
 
       it "includes the supporter" do
@@ -57,7 +57,7 @@ module Decidim::ExtraUserFields::Metrics
       end
 
       it "does not double-count a user who also authored" do
-        create(:proposal_vote, proposal: proposal, author: user1)
+        create(:proposal_vote, proposal:, author: user1)
         result = subject.call
         expect(result[user1.id]).to eq(1)
       end

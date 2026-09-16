@@ -47,10 +47,10 @@ This will convert the old string-based field states (`disabled`/`optional`/`requ
 > bin/rails decidim_extra_user_fields:install:migrations
 > ```
 
-You can also the version of the gem that matches your Decidim version:
-
+You can also use the version of the gem that matches your Decidim version:
 
 ```ruby
+gem "decidim-extra_user_fields", github: "openpoke/decidim-module-extra_user_fields", branch: "release/0.32-stable"
 gem "decidim-extra_user_fields", github: "openpoke/decidim-module-extra_user_fields", branch: "release/0.31-stable"
 gem "decidim-extra_user_fields", github: "openpoke/decidim-module-extra_user_fields", branch: "release/0.30-stable"
 gem "decidim-extra_user_fields", github: "PopulateTools/decidim-module-extra_user_fields", branch: "release/0.29-stable"

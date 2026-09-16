@@ -5,6 +5,7 @@ module Decidim
     module Admin
       class BenchmarkingController < Decidim::Admin::ApplicationController
         include PivotParamsConcern
+
         layout "decidim/admin/insights"
 
         helper InsightsHelper
@@ -28,7 +29,7 @@ module Decidim
           ) do
             on(:ok) do
               flash[:notice] = t("decidim.admin.exports.notice")
-              redirect_back(fallback_location: decidim_extra_user_fields.benchmarking_path)
+              redirect_back_or_to(decidim_extra_user_fields.benchmarking_path)
             end
           end
         end
@@ -79,7 +80,7 @@ module Decidim
             next unless id.present? && klass_name.present?
             next unless Decidim.participatory_space_manifests.any? { |m| m.model_class_name == klass_name }
 
-            klass_name.constantize.find_by(id: id, organization: current_organization)
+            klass_name.constantize.find_by(id:, organization: current_organization)
           end
         end
       end

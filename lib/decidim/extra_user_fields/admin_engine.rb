@@ -27,7 +27,11 @@ module Decidim
 
       initializer "decidim_extra_user_fields.admin_mount_routes" do
         Decidim::Core::Engine.routes do
-          mount Decidim::ExtraUserFields::AdminEngine, at: "/admin/extra_user_fields", as: "decidim_extra_user_fields"
+          extend Decidim::Routes::LocaleRedirects
+
+          scope "/:locale", **locale_scope_options do
+            mount Decidim::ExtraUserFields::AdminEngine, at: "/admin/extra_user_fields", as: "decidim_extra_user_fields"
+          end
         end
       end
 
@@ -83,14 +87,18 @@ module Decidim
 
       initializer "decidim_extra_user_fields.insights_routes" do
         Decidim::Core::Engine.routes do
-          Decidim.participatory_space_manifests.each do |manifest|
-            model_name = manifest.model_class_name.demodulize.underscore
-            slug_param = "#{model_name}_slug"
+          extend Decidim::Routes::LocaleRedirects
 
-            scope "/admin/#{manifest.name}/:#{slug_param}" do
-              mount Decidim::ExtraUserFields::InsightsEngine,
-                    at: "/insights",
-                    as: "decidim_admin_#{model_name}_insights"
+          scope "/:locale", **locale_scope_options do
+            Decidim.participatory_space_manifests.each do |manifest|
+              model_name = manifest.model_class_name.demodulize.underscore
+              slug_param = "#{model_name}_slug"
+
+              scope "/admin/#{manifest.name}/:#{slug_param}" do
+                mount Decidim::ExtraUserFields::InsightsEngine,
+                      at: "/insights",
+                      as: "decidim_admin_#{model_name}_insights"
+              end
             end
           end
         end

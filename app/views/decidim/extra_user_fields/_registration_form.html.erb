@@ -1,5 +1,5 @@
 <% if current_organization.extra_user_fields_enabled? %>
-  <div id="card__extra_user_fields" class="form__wrapper form__wrapper-block">
+  <div id="card__extra_user_fields" class="form__wrapper form__wrapper-block" data-underage-limit-url="<%= decidim_extra_user_fields_engine.retrieve_underage_limit_path %>">
     <h2 class="h4"><%= t(".signup.legend") %></h2>
 
     <%= render "decidim/extra_user_fields/date_of_birth_field", f: f, current_organization: current_organization %>

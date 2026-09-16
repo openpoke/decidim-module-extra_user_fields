@@ -44,13 +44,7 @@ module Decidim
           end
 
           flash[:notice] = t("decidim.admin.exports.notice")
-          redirect_to engine_routes.officializations_path
-        end
-
-        private
-
-        def engine_routes
-          Decidim::Admin::Engine.routes.url_helpers
+          redirect_to decidim_admin.officializations_path
         end
       end
     end

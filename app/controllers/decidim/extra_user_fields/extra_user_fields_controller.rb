@@ -6,7 +6,7 @@ module Decidim
     # this engine inherit.
     class ExtraUserFieldsController < ApplicationController
       def retrieve_underage_limit
-        underage_limit = current_organization.extra_user_fields["underage_limit"]
+        underage_limit = current_organization.extra_user_fields.dig("underage", "limit")
         if underage_limit.present?
           render json: { underage_limit: }
         else

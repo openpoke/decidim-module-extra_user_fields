@@ -127,7 +127,7 @@ describe "Account" do
 
       it "updates the user's data" do
         within_flash_messages do
-          expect(page).to have_content("successfully")
+          expect(page).to have_content("Your account was successfully updated.")
         end
 
         expect(page).to have_field(with: "Nikola Tesla")
@@ -179,7 +179,7 @@ describe "Account" do
 
         it "updates the user's data" do
           within_flash_messages do
-            expect(page).to have_content("successfully")
+            expect(page).to have_content("Your account was successfully updated.")
           end
         end
       end
@@ -199,7 +199,7 @@ describe "Account" do
 
         it "does not update the user's data" do
           within_flash_messages do
-            expect(page).to have_content("successfully")
+            expect(page).to have_content("Your account was successfully updated.")
           end
 
           expect(page).to have_field(with: "Nikola Tesla")
@@ -332,7 +332,7 @@ describe "Account" do
 
       it "toggles old and new password fields" do
         within "form.edit_user" do
-          expect(page).to have_content("must not be too common (e.g. 123456) and must be different from your nickname and your email.")
+          expect(page).to have_content("must not be too common (e.g. 123456) and must be different from your name, nickname, email and the organization's host.")
           expect(page).to have_field("user[password]", with: "", type: "password")
           expect(page).to have_field("user[old_password]", with: "", type: "password")
           click_on "Change password"
@@ -358,7 +358,7 @@ describe "Account" do
           find("*[type=submit]").click
         end
         within_flash_messages do
-          expect(page).to have_content("successfully")
+          expect(page).to have_content("Your account was successfully updated.")
         end
         expect(user.reload.encrypted_password).not_to eq(encrypted_password)
         expect(page).to have_no_field("user[password]", with: "", type: "password")
@@ -486,7 +486,7 @@ describe "Account" do
         end
 
         within_flash_messages do
-          expect(page).to have_content("successfully")
+          expect(page).to have_content("Your notifications settings were successfully updated.")
         end
       end
 
@@ -507,7 +507,7 @@ describe "Account" do
           end
 
           within_flash_messages do
-            expect(page).to have_content("successfully")
+            expect(page).to have_content("Your notifications settings were successfully updated.")
           end
         end
       end
@@ -531,7 +531,7 @@ describe "Account" do
         click_on "Yes, I want to delete my account"
 
         within_flash_messages do
-          expect(page).to have_content("successfully")
+          expect(page).to have_content("Your account was successfully deleted.")
         end
 
         click_link_or_button("Log in", match: :first)
@@ -593,7 +593,7 @@ describe "Account" do
           end
 
           within_flash_messages do
-            expect(page).to have_content("successfully")
+            expect(page).to have_content("Your notifications settings were successfully updated.")
           end
 
           find_by_id("allow_push_notifications", visible: false).execute_script("this.checked = true")

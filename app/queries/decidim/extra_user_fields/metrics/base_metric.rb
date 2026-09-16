@@ -20,7 +20,7 @@ module Decidim
         attr_reader :participatory_space
 
         def component_ids_for(manifest_name)
-          participatory_space.components.where(manifest_name: manifest_name).published.pluck(:id)
+          participatory_space.components.where(manifest_name:).published.pluck(:id)
         end
       end
     end

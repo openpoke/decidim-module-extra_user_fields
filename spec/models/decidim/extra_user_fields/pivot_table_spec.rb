@@ -4,7 +4,7 @@ require "spec_helper"
 
 module Decidim::ExtraUserFields
   describe PivotTable do
-    subject(:pivot_table) { described_class.new(row_values: row_values, col_values: col_values, cells: cells) }
+    subject(:pivot_table) { described_class.new(row_values:, col_values:, cells:) }
 
     let(:row_values) { %w(18_to_25 26_to_40) }
     let(:col_values) { %w(female male) }
