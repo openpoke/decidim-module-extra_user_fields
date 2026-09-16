@@ -1,10 +1,16 @@
 # frozen_string_literal: true
 
-DECIDIM_VERSION = "~> 0.31.0"
-
 source "https://rubygems.org"
 
 ruby RUBY_VERSION
+
+# Inside the development app, the relative require has to be one level up, as
+# the Gemfile is copied to the development_app folder (almost) as is.
+base_path = ""
+base_path = "../" if File.basename(__dir__) == "development_app"
+require_relative "#{base_path}lib/decidim/extra_user_fields/version"
+
+DECIDIM_VERSION = Decidim::ExtraUserFields::DECIDIM_VERSION
 
 gem "decidim", DECIDIM_VERSION
 gem "decidim-extra_user_fields", path: "."
@@ -19,7 +25,6 @@ group :development, :test do
 end
 
 group :development do
-  gem "faker", "~> 3.3.1"
   gem "letter_opener_web", "~> 2.0"
   gem "listen", "~> 3.1"
   gem "rubocop-faker"
