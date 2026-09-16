@@ -66,7 +66,7 @@ module Decidim
 
           export_dropdown(dropdown_id: "benchmarking-export-dropdown") do |fmt|
             label = t("decidim.admin.exports.export_as", name: export_name, export_format: fmt)
-            url = AdminEngine.routes.url_helpers.benchmarking_export_path(**base_params, export_format: fmt)
+            url = decidim_extra_user_fields.benchmarking_export_path(**base_params, export_format: fmt)
             [label, url, :post]
           end
         end

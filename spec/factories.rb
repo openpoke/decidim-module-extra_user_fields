@@ -30,7 +30,6 @@ FactoryBot.modify do
     official_url { Faker::Internet.url }
     enable_omnipresent_banner { false }
     badges_enabled { true }
-    user_groups_enabled { true }
     send_welcome_notification { true }
     comments_max_length { 1000 }
     admin_terms_of_service_body { Decidim::Faker::Localized.wrapped("<p>", "</p>") { generate_localized_title } }
@@ -47,7 +46,6 @@ FactoryBot.modify do
       }
     end
     file_upload_settings { Decidim::OrganizationSettings.default(:upload) }
-    enable_participatory_space_filters { true }
     extra_user_fields do
       {
         "enabled" => true

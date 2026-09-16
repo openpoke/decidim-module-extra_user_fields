@@ -6,6 +6,7 @@ module Decidim
       class InsightsController < Decidim::Admin::ApplicationController
         include Decidim::Admin::ParticipatorySpaceAdminContext
         include PivotParamsConcern
+
         participatory_space_admin_layout
         helper InsightsHelper
 
@@ -29,7 +30,7 @@ module Decidim
           ) do
             on(:ok) do
               flash[:notice] = t("decidim.admin.exports.notice")
-              redirect_back(fallback_location: root_path)
+              redirect_back_or_to(root_path)
             end
           end
         end

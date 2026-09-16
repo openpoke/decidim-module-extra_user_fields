@@ -27,7 +27,7 @@ module Decidim
         row_vals = merge_ordered_values(cells.keys, row_field_obj)
         col_vals = merge_ordered_values(cells.values.flat_map(&:keys).uniq, col_field_obj)
 
-        PivotTable.new(row_values: row_vals, col_values: col_vals, cells: cells)
+        PivotTable.new(row_values: row_vals, col_values: col_vals, cells:)
       end
 
       private

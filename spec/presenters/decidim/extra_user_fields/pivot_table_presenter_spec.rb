@@ -6,7 +6,7 @@ module Decidim::ExtraUserFields
   describe PivotTablePresenter do
     subject(:presenter) { described_class.new(pivot_table) }
 
-    let(:pivot_table) { PivotTable.new(row_values: row_values, col_values: col_values, cells: cells) }
+    let(:pivot_table) { PivotTable.new(row_values:, col_values:, cells:) }
     let(:row_values) { %w(female male) }
     let(:col_values) { %w(young old) }
     let(:cells) { { "female" => { "young" => 10, "old" => 5 }, "male" => { "young" => 3, "old" => 2 } } }

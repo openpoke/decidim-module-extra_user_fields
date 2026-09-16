@@ -87,7 +87,7 @@ describe "Force extra user fields completion" do
       end
 
       within_flash_messages do
-        expect(page).to have_content("successfully")
+        expect(page).to have_content("Your account was successfully updated.")
       end
 
       visit decidim.notifications_settings_path
@@ -169,7 +169,7 @@ describe "Force extra user fields completion" do
       end
 
       within_flash_messages do
-        expect(page).to have_content("successfully")
+        expect(page).to have_content("Your account was successfully updated.")
       end
 
       visit decidim.notifications_settings_path
@@ -258,7 +258,7 @@ describe "Force extra user fields completion" do
       end
 
       within_flash_messages do
-        expect(page).to have_content("successfully")
+        expect(page).to have_content("Your account was successfully updated.")
       end
 
       visit decidim.root_path
@@ -326,15 +326,13 @@ describe "Force extra user fields completion" do
     end
 
     context "with profile fields" do
-      %w(country gender date_of_birth postal_code age_range phone_number location).each do |field|
-        values = {
-          "country" => "ES", "gender" => "female", "date_of_birth" => "1990-01-01",
-          "postal_code" => "08001", "age_range" => "17_to_30", "phone_number" => "+34600000000",
-          "location" => "Barcelona"
-        }
-
+      {
+        "country" => "ES", "gender" => "female", "date_of_birth" => "1990-01-01",
+        "postal_code" => "08001", "age_range" => "17_to_30", "phone_number" => "+34600000000",
+        "location" => "Barcelona"
+      }.each do |field, value|
         it_behaves_like "redirects when required field is empty", field
-        it_behaves_like "no redirect when required field is filled", field, values[field]
+        it_behaves_like "no redirect when required field is filled", field, value
       end
     end
 

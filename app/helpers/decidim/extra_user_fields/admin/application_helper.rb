@@ -44,7 +44,7 @@ module Decidim
 
           export_dropdown(dropdown_id: "export-users-dropdown") do |fmt|
             label = t("decidim.admin.exports.export_as", name: export_name, export_format: fmt)
-            url = AdminEngine.routes.url_helpers.extra_user_fields_export_users_path(format: fmt)
+            url = decidim_extra_user_fields.extra_user_fields_export_users_path(format: fmt)
             [label, url]
           end
         end

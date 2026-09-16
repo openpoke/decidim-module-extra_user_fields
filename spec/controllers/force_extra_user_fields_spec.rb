@@ -24,7 +24,7 @@ module Decidim
       it "redirects to account path" do
         get :index
 
-        expect(response).to redirect_to("/account")
+        expect(response).to redirect_to(controller.decidim.account_path)
       end
 
       it "sets a warning flash message" do
@@ -68,7 +68,7 @@ module Decidim
       it "does not trigger extra fields redirect" do
         get :index
 
-        expect(response).not_to redirect_to("/account")
+        expect(response).not_to redirect_to(controller.decidim.account_path)
       end
     end
   end

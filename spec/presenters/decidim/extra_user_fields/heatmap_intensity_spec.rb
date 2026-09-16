@@ -8,6 +8,7 @@ module Decidim::ExtraUserFields
     let(:wrapper) do
       Class.new do
         include HeatmapIntensity
+
         public :intensity_vars, :total_intensity_vars
       end.new
     end

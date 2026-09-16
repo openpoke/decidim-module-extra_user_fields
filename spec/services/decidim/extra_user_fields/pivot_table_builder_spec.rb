@@ -88,7 +88,7 @@ module Decidim::ExtraUserFields
       let(:user_male) { create(:user, :confirmed, organization:, extended_data: { "gender" => "male", "date_of_birth" => 35.years.ago.to_date.to_s }) }
 
       before do
-        allow(Decidim::ExtraUserFields.config).to receive(:genders).and_return([:female, :male])
+        allow(Decidim::ExtraUserFields).to receive(:raw_genders).and_return([:female, :male])
         create(:proposal, :published, component: proposal_component, users: [user_female])
         create(:proposal, :published, component: proposal_component, users: [user_male])
       end

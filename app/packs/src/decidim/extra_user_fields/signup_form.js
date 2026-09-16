@@ -3,6 +3,8 @@ $(document).ready(function() {
     const statutoryRepresentativeEmailField = $('#statutory_representative_email_field');
     const dateOfBirthField = $('#registration_user_date_of_birth');
     const underageFieldSet = $('#underage_fieldset');
+    // The URL is rendered by the view so it carries the current locale prefix
+    const underageLimitUrl = $('#card__extra_user_fields').data('underage-limit-url');
     let underageLimit = 18;
 
     // Function to show or hide underage related fields based on age
@@ -42,9 +44,9 @@ $(document).ready(function() {
         updateUnderageFields();
     }
 
-    if (underageCheckbox.length) {
+    if (underageCheckbox.length && underageLimitUrl) {
         $.ajax({
-            url: '/extra_user_fields/underage_limit', // Updated to match the new route
+            url: underageLimitUrl,
             type: 'GET',
             success: function (data) {
                 underageLimit = data.underage_limit;

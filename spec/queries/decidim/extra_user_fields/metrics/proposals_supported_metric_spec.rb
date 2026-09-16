@@ -39,7 +39,7 @@ module Decidim::ExtraUserFields::Metrics
       let!(:proposal) { create(:proposal, :published, :hidden, component: proposal_component, users: [user1]) }
 
       before do
-        create(:proposal_vote, proposal: proposal, author: user2)
+        create(:proposal_vote, proposal:, author: user2)
       end
 
       it "does not count votes on hidden proposals" do
@@ -52,7 +52,7 @@ module Decidim::ExtraUserFields::Metrics
       let!(:proposal) { create(:proposal, :published, component: unpublished_component, users: [user1]) }
 
       before do
-        create(:proposal_vote, proposal: proposal, author: user2)
+        create(:proposal_vote, proposal:, author: user2)
       end
 
       it "does not count votes from unpublished components" do
@@ -66,7 +66,7 @@ module Decidim::ExtraUserFields::Metrics
       let!(:proposal) { create(:proposal, :published, component: other_component, users: [user1]) }
 
       before do
-        create(:proposal_vote, proposal: proposal, author: user2)
+        create(:proposal_vote, proposal:, author: user2)
       end
 
       it "does not count them" do

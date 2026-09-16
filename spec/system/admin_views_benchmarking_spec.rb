@@ -94,7 +94,7 @@ describe "Admin views benchmarking" do
       expect(page).to have_css("td.heatmap-cell--colored, td.heatmap-cell--gray")
 
       cell = find("td.insights-table__cell", text: /[1-9]/, match: :first)
-      expect(cell[:style]).to match(/--i:/)
+      expect(cell[:style]).to include("--i:")
     end
 
     it "shows the legend" do

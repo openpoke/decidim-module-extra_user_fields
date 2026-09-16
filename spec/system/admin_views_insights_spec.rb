@@ -151,7 +151,7 @@ describe "Admin views insights" do
     let!(:proposal) { create(:proposal, :published, component: proposal_component, users: [author]) }
 
     before do
-      create_list(:comment, 3, commentable: proposal, author: author)
+      create_list(:comment, 3, commentable: proposal, author:)
     end
 
     it "shows comments metric data when selected" do
@@ -198,17 +198,17 @@ describe "Admin views insights" do
 
     it "applies inline heatmap style to data cells" do
       cell = find("td.insights-table__cell", text: /[1-9]/, match: :first)
-      expect(cell[:style]).to match(/--i:/)
+      expect(cell[:style]).to include("--i:")
     end
 
     it "applies inline heatmap style to row total cells" do
       cell = find("td.heatmap-total.insights-table__row-total", text: /[1-9]/, match: :first)
-      expect(cell[:style]).to match(/--i:/)
+      expect(cell[:style]).to include("--i:")
     end
 
     it "applies inline heatmap style to column total cells" do
       cell = find("td.heatmap-total.insights-table__col-total", match: :first)
-      expect(cell[:style]).to match(/--i:/)
+      expect(cell[:style]).to include("--i:")
     end
   end
 
