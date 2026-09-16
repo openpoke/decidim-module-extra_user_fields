@@ -293,7 +293,12 @@ describe "Admin views insights" do
 
     it "sends an export email with insights in the subject" do
       click_on "Export"
-      perform_enqueued_jobs { click_on "CSV" }
+
+      perform_enqueued_jobs do
+        click_on "CSV"
+        expect(page).to have_content("Your export is currently in progress")
+      end
+
       expect(last_email.subject).to include("insights")
     end
   end

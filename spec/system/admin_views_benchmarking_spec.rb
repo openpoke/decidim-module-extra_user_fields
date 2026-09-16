@@ -280,7 +280,10 @@ describe "Admin views benchmarking" do
         click_on "Export"
       end
 
-      perform_enqueued_jobs { click_on "Export CSV" }
+      perform_enqueued_jobs do
+        click_on "Export CSV"
+        expect(page).to have_content("Your export is currently in progress")
+      end
 
       expect(last_email.subject).to include("benchmarking")
     end
