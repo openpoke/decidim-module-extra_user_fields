@@ -17,6 +17,13 @@ module Decidim
       def configure
         yield self
       end
+
+      # Returns the age in full years of someone born on birth_date, as of date.
+      def age(birth_date, date = Date.current)
+        age = date.year - birth_date.year
+        age -= 1 if date.month < birth_date.month || (date.month == birth_date.month && date.day < birth_date.day)
+        age
+      end
     end
 
     mattr_accessor :underage_limit, default: ENV.fetch("EXTRA_USER_FIELDS_UNDERAGE_LIMIT", 18).to_i

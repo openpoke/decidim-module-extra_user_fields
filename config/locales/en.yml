@@ -17,6 +17,8 @@ en:
         user:
           attributes:
             date_of_birth:
+              future: can't be in the future
+              too_young: is not valid. You must be at least %{minimum_age} years old
               underage: invalid. If you are underage, you must obtain parental authorization
   decidim:
     admin:
