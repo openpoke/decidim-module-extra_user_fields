@@ -99,6 +99,9 @@ en:
               description: This field is a Date field. The user will have to register
                 a birth date by using a Date picker
               label: Date of birth
+              minimum_age: Minimum age
+              minimum_age_help: Participants younger than this age will not be able
+                to register. Use 0 to only forbid birth dates in the future.
             gender:
               description: This field is a list of genders. The user will have to
                 choose a gender

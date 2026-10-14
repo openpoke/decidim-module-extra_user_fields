@@ -27,13 +27,34 @@
     <div id="panel-setup" class="card-section" aria-label="<%= t(".extra_user_fields.section") %>">
       <%= render layout: "decidim/extra_user_fields/admin/extra_user_fields/field_table" do %>
         <tbody>
-          <% (Decidim::ExtraUserFields::PROFILE_FIELDS - ["phone_number"]).each do |field_name| %>
+          <% (Decidim::ExtraUserFields::PROFILE_FIELDS - %w(date_of_birth phone_number)).each do |field_name| %>
             <%= render "decidim/extra_user_fields/admin/extra_user_fields/field_row",
                        label: t("#{field_name}.label", scope: "decidim.extra_user_fields.admin.extra_user_fields.fields"),
                        help_text: t("#{field_name}.description", scope: "decidim.extra_user_fields.admin.extra_user_fields.fields"),
                        field_name: field_name,
                        form: form %>
           <% end %>
+        </tbody>
+
+        <tbody data-controller="field-state" data-field-state-enabled-state-value="optional" data-field-state-disabled-state-value="disabled">
+          <% date_of_birth_enabled = form.object.date_of_birth_enabled %>
+          <tr data-field-state-target="row">
+            <td>
+              <%= t("date_of_birth.label", scope: "decidim.extra_user_fields.admin.extra_user_fields.fields") %>
+              <br><span class="help-text"><%= t("date_of_birth.description", scope: "decidim.extra_user_fields.admin.extra_user_fields.fields") %></span>
+            </td>
+            <td class="text-center">
+              <%= form.check_box :date_of_birth_enabled, label: "", aria: { label: "#{t("date_of_birth.label", scope: "decidim.extra_user_fields.admin.extra_user_fields.fields")} #{t("aria.enabled", scope: "decidim.extra_user_fields.admin.extra_user_fields")}" }, data: { action: "field-state#toggleEnabled", "field-state-target": "enabled" } %>
+            </td>
+            <td class="text-center">
+              <%= form.check_box :date_of_birth_required, label: "", aria: { label: "#{t("date_of_birth.label", scope: "decidim.extra_user_fields.admin.extra_user_fields.fields")} #{t("aria.required", scope: "decidim.extra_user_fields.admin.extra_user_fields")}" }, data: { action: "field-state#toggleRequired", "field-state-target": "required" } %>
+            </td>
+          </tr>
+          <tr data-field-state-target="subfields" <%= "hidden" unless date_of_birth_enabled %>>
+            <td colspan="3" class="pl-4">
+              <%= form.number_field :date_of_birth_minimum_age, min: 0, label: t("date_of_birth.minimum_age", scope: "decidim.extra_user_fields.admin.extra_user_fields.fields"), help_text: t("date_of_birth.minimum_age_help", scope: "decidim.extra_user_fields.admin.extra_user_fields.fields") %>
+            </td>
+          </tr>
         </tbody>
 
         <tbody data-controller="field-state" data-field-state-enabled-state-value="optional" data-field-state-disabled-state-value="disabled">
