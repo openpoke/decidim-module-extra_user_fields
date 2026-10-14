@@ -264,6 +264,30 @@ module Decidim
       end
     end
 
+    describe "#minimum_age" do
+      context "when the organization has a minimum age configured" do
+        let(:date_of_birth) { { "enabled" => true, "required" => false, "minimum_age" => 14 } }
+
+        it "returns the organization value" do
+          expect(subject.minimum_age).to eq(14)
+        end
+      end
+
+      context "when the organization has no minimum age configured" do
+        it "returns the global default" do
+          expect(subject.minimum_age).to eq(Decidim::ExtraUserFields.minimum_age)
+        end
+      end
+
+      context "when the global default is changed" do
+        before { allow(Decidim::ExtraUserFields).to receive(:minimum_age).and_return(16) }
+
+        it "returns the global value" do
+          expect(subject.minimum_age).to eq(16)
+        end
+      end
+    end
+
     describe "#extra_user_fields_complete?" do
       let(:user) { build(:user, organization:, extended_data:) }
       let(:extra_user_fields) do
