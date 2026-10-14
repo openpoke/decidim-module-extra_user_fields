@@ -23,6 +23,10 @@ module Decidim
 
     mattr_accessor :underage_options, default: ENV.fetch("EXTRA_USER_FIELDS_UNDERAGE_OPTIONS", "15 16 17 18 19 20 21").split.map(&:to_i)
 
+    # Default minimum age (in years) a participant must have for the date of birth to be valid.
+    # It can be overridden per organization in the admin. 0 only forbids dates in the future.
+    mattr_accessor :minimum_age, default: ENV.fetch("EXTRA_USER_FIELDS_MINIMUM_AGE", 0).to_i
+
     # These options require the I18n translations to be set in the locale files.
     # decidim.extra_user_fields.genders.female
     # decidim.extra_user_fields.genders.male
