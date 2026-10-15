@@ -19,10 +19,7 @@ module Decidim
         end
 
         def self.compute_age(date_string)
-          birth = Date.parse(date_string.to_s)
-          today = Date.current
-          age = today.year - birth.year
-          age -= 1 if today.month < birth.month || (today.month == birth.month && today.day < birth.day)
+          age = Decidim::ExtraUserFields.age(Date.parse(date_string.to_s))
           age if age >= 0
         rescue Date::Error
           nil

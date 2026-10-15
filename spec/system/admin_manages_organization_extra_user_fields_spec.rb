@@ -283,6 +283,31 @@ describe "Admin manages organization extra user fields" do
     end
   end
 
+  context "when date of birth minimum age is set" do
+    before do
+      visit decidim_extra_user_fields.root_path
+    end
+
+    it "persists minimum age after save and reload" do
+      check("extra_user_fields[enabled]")
+
+      within "#accordion-setup" do
+        date_of_birth_tbody = find("input[name='extra_user_fields[date_of_birth_enabled]']", visible: :hidden).ancestor("tbody")
+        within(date_of_birth_tbody) do
+          find("[data-field-state-target='enabled']").check
+          fill_in "extra_user_fields[date_of_birth_minimum_age]", with: 14
+        end
+      end
+
+      find("*[type=submit]", text: "Save configuration").click
+      expect(page).to have_content("Extra user fields correctly updated in organization")
+
+      visit decidim_extra_user_fields.root_path
+
+      expect(page).to have_field("extra_user_fields[date_of_birth_minimum_age]", with: "14")
+    end
+  end
+
   context "when disabling a previously enabled field" do
     before do
       visit decidim_extra_user_fields.root_path

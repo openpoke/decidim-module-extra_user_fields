@@ -17,11 +17,22 @@ module Decidim
       def configure
         yield self
       end
+
+      # Returns the age in full years of someone born on birth_date, as of date.
+      def age(birth_date, date = Date.current)
+        age = date.year - birth_date.year
+        age -= 1 if date.month < birth_date.month || (date.month == birth_date.month && date.day < birth_date.day)
+        age
+      end
     end
 
     mattr_accessor :underage_limit, default: ENV.fetch("EXTRA_USER_FIELDS_UNDERAGE_LIMIT", 18).to_i
 
     mattr_accessor :underage_options, default: ENV.fetch("EXTRA_USER_FIELDS_UNDERAGE_OPTIONS", "15 16 17 18 19 20 21").split.map(&:to_i)
+
+    # Default minimum age (in years) a participant must have for the date of birth to be valid.
+    # It can be overridden per organization in the admin. 0 only forbids dates in the future.
+    mattr_accessor :minimum_age, default: ENV.fetch("EXTRA_USER_FIELDS_MINIMUM_AGE", 0).to_i
 
     # These options require the I18n translations to be set in the locale files.
     # decidim.extra_user_fields.genders.female

@@ -42,6 +42,7 @@ module Decidim
           {
             "enabled" => form.enabled.presence || false,
             **standard_fields,
+            **date_of_birth_fields,
             **phone_number_fields,
             "underage" => underage_fields,
             "select_fields" => normalize_select_fields,
@@ -51,13 +52,24 @@ module Decidim
         end
 
         def standard_fields
-          (Decidim::ExtraUserFields::PROFILE_FIELDS - %w(phone_number)).index_with do |field|
+          (Decidim::ExtraUserFields::PROFILE_FIELDS - %w(date_of_birth phone_number)).index_with do |field|
             enabled = form.public_send(:"#{field}_enabled") == true
             {
               "enabled" => enabled,
               "required" => enabled && form.public_send(:"#{field}_required") == true
             }
           end
+        end
+
+        def date_of_birth_fields
+          enabled = form.date_of_birth_enabled == true
+          {
+            "date_of_birth" => {
+              "enabled" => enabled,
+              "required" => enabled && form.date_of_birth_required == true,
+              "minimum_age" => form.date_of_birth_minimum_age || Decidim::ExtraUserFields.minimum_age
+            }
+          }
         end
 
         def phone_number_fields

@@ -72,6 +72,10 @@ module Decidim
         extra_user_fields.dig("underage", "limit").to_i
       end
 
+      def minimum_age
+        (extra_user_fields.dig("date_of_birth", "minimum_age") || Decidim::ExtraUserFields.minimum_age).to_i
+      end
+
       def extra_user_field_configuration(field)
         return {} unless activated_extra_field?(field)
 

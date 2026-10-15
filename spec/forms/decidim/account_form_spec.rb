@@ -316,6 +316,17 @@ module Decidim
       end
     end
 
+    context "when the participant is younger than the minimum age" do
+      let(:extra_user_fields) { super().deep_merge("date_of_birth" => { "minimum_age" => 14 }) }
+      let(:date_of_birth) { Date.current - 10.years }
+
+      before { subject.valid? }
+
+      it "adds the too young error" do
+        expect(subject.errors.added?(:date_of_birth, :too_young, minimum_age: 14)).to be true
+      end
+    end
+
     describe "personal_url" do
       context "when it does not start with http" do
         let(:personal_url) { "example.org" }

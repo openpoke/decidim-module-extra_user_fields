@@ -132,6 +132,16 @@ module Decidim
       it { is_expected.not_to be_valid }
     end
 
+    context "when the date of birth is in the future" do
+      let(:date_of_birth) { Date.current + 1.day }
+
+      before { subject.valid? }
+
+      it "adds the future error" do
+        expect(subject.errors.added?(:date_of_birth, :future)).to be true
+      end
+    end
+
     describe "#newsletter_at" do
       subject { form.newsletter_at }
 

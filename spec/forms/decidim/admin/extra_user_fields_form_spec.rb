@@ -51,6 +51,12 @@ module Decidim
 
             it { is_expected.to be_valid }
           end
+
+          context "when the minimum age is not below the underage limit" do
+            let(:attributes) { { date_of_birth_enabled: true, date_of_birth_minimum_age: 18, underage_enabled: true, underage_limit: 18 } }
+
+            it { is_expected.not_to be_valid }
+          end
         end
 
         describe "#map_model" do
