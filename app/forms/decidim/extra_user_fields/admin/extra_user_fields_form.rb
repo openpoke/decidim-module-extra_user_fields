@@ -19,8 +19,13 @@ module Decidim
         attribute :underage_required, Boolean
         attribute :underage_limit, Integer
 
+        attribute :date_of_birth_minimum_age, Integer
+
         attribute :phone_number_pattern, String
         translatable_attribute :phone_number_placeholder, String
+
+        validates :date_of_birth_minimum_age, numericality: { only_integer: true, greater_than_or_equal_to: 0 }, allow_nil: true, if: :date_of_birth_enabled
+        validates :date_of_birth_minimum_age, numericality: { less_than: :underage_limit }, allow_nil: true, if: :underage_limit_applies?
 
         # Collection fields - stored as hashes with field names as keys
         attribute :select_fields, Hash, default: {}
@@ -54,6 +59,8 @@ module Decidim
             self.underage_limit = Decidim::ExtraUserFields.underage_limit
           end
 
+          self.date_of_birth_minimum_age = model.extra_user_fields.dig("date_of_birth", "minimum_age") || Decidim::ExtraUserFields.minimum_age
+
           self.phone_number_pattern = model.extra_user_fields.dig("phone_number", "pattern")
           self.phone_number_placeholder = model.extra_user_fields.dig("phone_number", "placeholder")
           self.select_fields = normalize_collection_fields(model.extra_user_fields["select_fields"], Decidim::ExtraUserFields.select_fields.keys)
@@ -62,6 +69,12 @@ module Decidim
         end
 
         private
+
+        # The minimum age only makes sense below the underage limit, otherwise
+        # nobody could ever declare being underage.
+        def underage_limit_applies?
+          date_of_birth_enabled && underage_enabled && underage_limit.present?
+        end
 
         def normalize_collection_fields(value, valid_keys)
           valid = valid_keys.map(&:to_s)

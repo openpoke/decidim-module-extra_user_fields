@@ -23,6 +23,7 @@ module Decidim
             "age_range_required" => false,
             "date_of_birth_enabled" => true,
             "date_of_birth_required" => true,
+            "date_of_birth_minimum_age" => 14,
             "postal_code_enabled" => true,
             "postal_code_required" => false,
             "phone_number_enabled" => true,
@@ -88,7 +89,7 @@ module Decidim
               extra_user_fields = organization.extra_user_fields
               expect(extra_user_fields).to include("enabled" => true)
               expect(extra_user_fields).to include("country" => { "enabled" => true, "required" => true })
-              expect(extra_user_fields).to include("date_of_birth" => { "enabled" => true, "required" => true })
+              expect(extra_user_fields).to include("date_of_birth" => { "enabled" => true, "required" => true, "minimum_age" => 14 })
               expect(extra_user_fields).to include("postal_code" => { "enabled" => true, "required" => false })
               expect(extra_user_fields).to include("gender" => { "enabled" => true, "required" => false })
               expect(extra_user_fields).to include("age_range" => { "enabled" => true, "required" => false })

@@ -93,8 +93,9 @@ Currently, the following ENV variables are supported:
 
 | ENV variable | Description | Default value |
 | ------------ | ----------- |-------|
-| EXTRA_USER_FIELDS_UNDERAGE_LIMIT | The minimum age limit to consider a user as underage. This is used to determine if the user falls into the underage category. | `18` |
+| EXTRA_USER_FIELDS_UNDERAGE_LIMIT | Default age under which a participant is considered underage and must provide a parental authorization (it does not prevent registration). Can be changed per organization in the admin. | `18` |
 | EXTRA_USER_FIELDS_UNDERAGE_OPTIONS | Options for selecting the age for when someone is considered "underage". | `15 16 17 18 19 20 21` |
+| EXTRA_USER_FIELDS_MINIMUM_AGE | Default minimum age a participant must have for the date of birth to be valid (participants younger than this cannot register). `0` only forbids dates in the future. Can be changed per organization in the admin and must be lower than the underage limit. | `0` |
 | EXTRA_USER_FIELDS_GENDERS | Options for the gender field (you need to add the corresponding I18n keys, ie: `decidim.extra_user_fields.genders.prefer_not_to_say` ) | `female male other prefer_not_to_say` |
 | EXTRA_USER_FIELDS_AGE_RANGES | Options for the age range field (you need to add the corresponding I18n keys, e.g., `decidim.extra_user_fields.age_ranges.up_to_16`) | `up_to_16 17_to_30 31_to_60 61_or_more prefer_not_to_say` |
 
@@ -122,6 +123,7 @@ Create an initializer (for instance `config/initializers/extra_user_fields.rb`) 
 Decidim::ExtraUserFields.configure do |config|
   config.genders = [:female, :male, :other, :prefer_not_to_say]
   config.age_ranges = ["30_or_younger", "31_or_older", "prefer_not_to_say"]
+  config.minimum_age = 14
   
   ...
 

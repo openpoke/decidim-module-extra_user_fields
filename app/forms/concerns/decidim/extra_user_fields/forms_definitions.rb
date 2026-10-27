@@ -44,6 +44,7 @@ module Decidim
                   presence: true,
                   "valid_email_2/email": { disposable: true },
                   if: :underage_accepted?
+        validate :date_of_birth_in_valid_range
         validate :birth_date_under_limit
         validate :select_fields_configured
         validate :required_collection_fields
@@ -110,19 +111,28 @@ module Decidim
         @extra_user_fields_enabled ||= current_organization.extra_user_fields_enabled?
       end
 
+      # Checks that the birth date is not in the future and that the participant
+      # has at least the minimum age configured for the organization.
+      def date_of_birth_in_valid_range
+        return unless date_of_birth? && date_of_birth.present?
+
+        if date_of_birth > Date.current
+          errors.add(:date_of_birth, :future)
+        elsif Decidim::ExtraUserFields.age(date_of_birth) < current_organization.minimum_age
+          errors.add(:date_of_birth, :too_young, minimum_age: current_organization.minimum_age)
+        end
+      end
+
       # Method to check if birth date is under the limit
       def birth_date_under_limit
         return unless date_of_birth? && underage?
 
         return if date_of_birth.blank? || underage.blank? || underage_limit.blank?
+        return if errors.include?(:date_of_birth)
 
-        age = calculate_age(date_of_birth)
+        age = Decidim::ExtraUserFields.age(date_of_birth)
 
         validate_age(age)
-      end
-
-      def calculate_age(date_of_birth)
-        Time.zone.today.year - date_of_birth.year - (Time.zone.today.yday < date_of_birth.yday ? 1 : 0)
       end
 
       def validate_age(age)
